@@ -10,6 +10,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './common/authGuard';
 import { AcadamicSchema } from './schemas/acadamic.schema';
+import { HealthController } from './controllers/health.controller';
+import { TerminusModule } from '@nestjs/terminus';
 
 
 @Module({
@@ -26,11 +28,20 @@ import { AcadamicSchema } from './schemas/acadamic.schema';
       secret: process.env.JWT_SECRET || 'your-secret-key',
       signOptions: { expiresIn: '1h' },
     }),
+    TerminusModule
   ],
-  controllers: [ StudentController, LoginController ],
-  providers: [ StudentService, AuthService, {
-    provide: APP_GUARD,
-    useClass: AuthGuard,
-  },],
+  controllers: [ 
+    StudentController, 
+    LoginController,
+    HealthController
+  ],
+  providers: [ 
+    StudentService,
+    AuthService, 
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    }
+  ],
 })
 export class AppModule {}
