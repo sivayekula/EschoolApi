@@ -3,7 +3,7 @@ import * as mongoose from 'mongoose';
 import { Tenant } from './tenant.schema';
 
 @Schema({ timestamps: true })
-export class Class extends mongoose.Document {
+export class Subject extends mongoose.Document {
 
   @Prop({ type: String, required: true, unique: true })
   name: string;
@@ -16,4 +16,4 @@ export class Class extends mongoose.Document {
   
 }
 
-export const ClassSchema = SchemaFactory.createForClass(Class);
+export const SubjectSchema = SchemaFactory.createForClass(Subject);

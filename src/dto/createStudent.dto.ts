@@ -29,7 +29,7 @@ export class CreateStudentDto {
 
   @IsString()
   @IsNotEmpty()
-  readonly dob: Date;
+  readonly DOB: Date;
 
   @IsString()
   @IsNotEmpty()
@@ -57,11 +57,11 @@ export class CreateStudentDto {
 
   @IsString()
   @IsNotEmpty()
-  readonly aadharNo: string;
+  readonly aadharNumber: string;
 
   @IsString()
   @IsNotEmpty()
-  readonly pic: string;
+  readonly profilePic: string;
 
   @IsString()
   @IsNotEmpty()

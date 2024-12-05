@@ -12,6 +12,10 @@ import { AuthGuard } from './common/authGuard';
 import { AcadamicSchema } from './schemas/acadamic.schema';
 import { HealthController } from './controllers/health.controller';
 import { TerminusModule } from '@nestjs/terminus';
+import { Class, ClassSchema } from './schemas/class.schema';
+import { GlobalController } from './controllers/global.controller';
+import { GlobalService } from './services/global.service';
+import { SubjectSchema } from './schemas/subjects.schema';
 
 
 @Module({
@@ -23,6 +27,8 @@ import { TerminusModule } from '@nestjs/terminus';
       {name: 'Student', schema: StudentSchema },
       {name: 'User', schema: UserSchema },
       {name: 'AcadamicSchema', schema: AcadamicSchema },
+      {name: 'Class', schema: ClassSchema },
+      {name: 'Subject', schema: SubjectSchema }
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -33,10 +39,12 @@ import { TerminusModule } from '@nestjs/terminus';
   controllers: [ 
     StudentController, 
     LoginController,
-    HealthController
+    HealthController,
+    GlobalController
   ],
   providers: [ 
-    StudentService,
+    StudentService, 
+    GlobalService,
     AuthService, 
     {
       provide: APP_GUARD,
