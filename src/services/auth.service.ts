@@ -31,7 +31,7 @@ export class AuthService {
       let isPasswordValid= await bcrypt.compare(pass, user.password)
       if(!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
       const { password, ...result } = user.toJSON();
-      let token = this.jwtService.sign({user: result, secret: process.env.JWT_SECRET || 'your-secret-key'});
+      let token = this.jwtService.sign({user: result});
       return {...result, ...{token}}
     }
   }
