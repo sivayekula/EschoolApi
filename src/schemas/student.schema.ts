@@ -8,7 +8,7 @@ import * as bcrypt from 'bcrypt';
 export class Student  extends mongoose.Document {
   
   @Prop({ type: String, required: true, unique: true })
-  admissionNo: string;
+  admissionNumber: string;
 
   @Prop({ type: String, required: true })
   firstName: string;

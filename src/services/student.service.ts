@@ -14,7 +14,7 @@ export class StudentService {
     @InjectModel('AcadamicSchema') private acadamicModel: Model<IAcadamic>
   ){}
   
-  async createStudent( createStudentDto: CreateStudentDto ): Promise<IStudent> {
+  async createStudent( createStudentDto ): Promise<IStudent> {
     try {
       let student = await this.studentModel.create(createStudentDto);
       await this.acadamicModel.create({ student: student._id, class: createStudentDto.class, section: createStudentDto.section, acadamicYear: createStudentDto.acadamicYear, status: 'active' });

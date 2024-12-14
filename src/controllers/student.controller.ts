@@ -11,8 +11,10 @@ export class StudentController {
   @Post('')
   async create( @Res() res, @Body() createStudentDto: CreateStudentDto) {
     try {
-      const newStudent = await this.studentService.createStudent( createStudentDto )
-      return res.status(HttpStatus.CREATED).json({ message: 'Student created successfully', data: newStudent });
+      console.log(createStudentDto);
+      return res.status(HttpStatus.OK).json({ message: 'Student created successfully', data: createStudentDto });
+      // const newStudent = await this.studentService.createStudent( createStudentDto )
+      // return res.status(HttpStatus.CREATED).json({ message: 'Student created successfully', data: newStudent });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }
