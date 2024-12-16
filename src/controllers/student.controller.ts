@@ -33,8 +33,8 @@ export class StudentController {
         return fee.id
       })
       let feeData = await this.feeService.getFees(fees);
-      await this.studentFeesService.createFees(requestBoy.feesData.map(fee => {
-        let indx = feeData.findIndex(f => f._id === fee.id)
+      const studentFees = requestBoy.feesData.map(fee => {
+        let indx = feeData.findIndex(f => f._id.toString() === fee.id)
         return {
           student: newStudent._id,
           fees: fee.id,
@@ -44,8 +44,9 @@ export class StudentController {
           instalmentAmount: fee.installmentAmount,
           amount : fee.totalFee
         }
-      }))
-      return res.status(HttpStatus.CREATED).json({ message: 'Student created successfully', data: 'newStudent' });
+      })
+      await this.studentFeesService.createFees(studentFees)
+      return res.status(HttpStatus.CREATED).json({ message: 'Student created successfully', data: newStudent });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }

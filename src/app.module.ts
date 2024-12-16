@@ -29,6 +29,11 @@ import { RoleSchema } from './schemas/role.schema';
 import { AcadamicService } from './services/acadamic.service';
 import { StudentFeesService } from './services/studentFees.service';
 import { StudentFeesSchema } from './schemas/studentFees.schema';
+import { ExamSchema } from './schemas/exam.schema';
+import { ExamController } from './controllers/exam.controller';
+import { ExamService } from './services/exam.service';
+import { SubjectController } from './controllers/subject.controller';
+import { SubjectService } from './services/subject.service';
 
 
 @Module({
@@ -45,7 +50,8 @@ import { StudentFeesSchema } from './schemas/studentFees.schema';
       {name: 'Staff', schema: StaffSchema },
       {name: 'Fee', schema: FeeSchema },
       {name: 'Role', schema: RoleSchema },
-      {name: 'StudentFees', schema: StudentFeesSchema }
+      {name: 'StudentFees', schema: StudentFeesSchema },
+      {name: 'Exams', schema: ExamSchema },
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -60,7 +66,9 @@ import { StudentFeesSchema } from './schemas/studentFees.schema';
     GlobalController,
     StaffController,
     UploadController,
-    FeeController
+    FeeController,
+    ExamController,
+    SubjectController
   ],
   providers: [ 
     StudentService, 
@@ -71,6 +79,8 @@ import { StudentFeesSchema } from './schemas/studentFees.schema';
     RoleService,
     AcadamicService,
     StudentFeesService,
+    ExamService,
+    SubjectService,
     AuthService, 
     {
       provide: APP_GUARD,
