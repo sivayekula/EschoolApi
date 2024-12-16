@@ -19,13 +19,13 @@ export class StudentFees  extends mongoose.Document {
   @Prop({ type: Date, required: true })
   dueDate: Date;
 
-  @Prop({ type: Date, required: true })
+  @Prop({ type: Date, required: false })
   paidDate: Date;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: false })
   paymentMode: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: false })
   paymentId: string;
 
   @Prop({ type: Number, required: true })
@@ -34,7 +34,7 @@ export class StudentFees  extends mongoose.Document {
   @Prop({ type: Number, required: true })
   amount: number;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: true, default: 'active' })
   status: string;
 }
 

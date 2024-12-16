@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsEmail, IsEmpty, IsEnum, IsNotEmpty, IsNotEmptyObject, IsNumber, IsString, MinLength } from "class-validator";
+import { IsArray, IsBoolean, IsEmail, IsEmpty, IsEnum, IsNotEmpty, IsNotEmptyObject, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
 
 
 class Address {
@@ -66,7 +66,7 @@ class PreviousSchool {
   readonly classStudied: string;
 
   @IsString()
-  readonly studyCertificate: string;
+  readonly studyProof: string;
 }
 
 class FeesData {
@@ -186,7 +186,7 @@ export class CreateStudentDto {
   readonly previousSchool: PreviousSchool;
 
   @IsBoolean()
-  @IsEmpty()
+  @IsOptional()
   readonly isDisabled: boolean;
 
   @IsArray()

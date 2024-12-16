@@ -24,6 +24,11 @@ import { UploadService } from './services/upload.service';
 import { FeeSchema } from './schemas/fee.schema';
 import { FeeController } from './controllers/fee.controller';
 import { FeeService } from './services/fee.service';
+import { RoleService } from './services/role.service';
+import { RoleSchema } from './schemas/role.schema';
+import { AcadamicService } from './services/acadamic.service';
+import { StudentFeesService } from './services/studentFees.service';
+import { StudentFeesSchema } from './schemas/studentFees.schema';
 
 
 @Module({
@@ -34,11 +39,13 @@ import { FeeService } from './services/fee.service';
     MongooseModule.forFeature([
       {name: 'Student', schema: StudentSchema },
       {name: 'User', schema: UserSchema },
-      {name: 'AcadamicSchema', schema: AcadamicSchema },
+      {name: 'Acadamics', schema: AcadamicSchema },
       {name: 'Class', schema: ClassSchema },
       {name: 'Subject', schema: SubjectSchema },
       {name: 'Staff', schema: StaffSchema },
-      {name: 'Fee', schema: FeeSchema }
+      {name: 'Fee', schema: FeeSchema },
+      {name: 'Role', schema: RoleSchema },
+      {name: 'StudentFees', schema: StudentFeesSchema }
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -61,6 +68,9 @@ import { FeeService } from './services/fee.service';
     StaffService,
     UploadService,
     FeeService,
+    RoleService,
+    AcadamicService,
+    StudentFeesService,
     AuthService, 
     {
       provide: APP_GUARD,

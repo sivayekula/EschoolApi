@@ -1,14 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { Tenant } from './tenant.schema';
-import { Role } from './role.schema';
 import * as bcrypt from 'bcrypt';
 
 @Schema({ timestamps: true })
 export class Student  extends mongoose.Document {
-  
-  @Prop({ type: String, required: true, unique: true })
-  admissionNumber: string;
+
+  @Prop({ type: String, required: true })
+  profilePic : string;
 
   @Prop({ type: String, required: true })
   firstName: string;
@@ -17,7 +15,7 @@ export class Student  extends mongoose.Document {
   lastName: string;
 
   @Prop({ type: Date, required: true })
-  dob: Date;
+  DOB: Date;
 
   @Prop({ type: String, required: true, enum: ['male', 'female', 'other'] })
   gender: string;
@@ -38,59 +36,41 @@ export class Student  extends mongoose.Document {
   bloodGroup: string;
 
   @Prop({ type: String, required: true, unique: true })
-  aadharNo: string;
-
-  @Prop({ type: String, required: true })
-  pic : string;
+  aadharNumber: string;
 
   @Prop({ type: String, required: true })
   aadharPic : string;
-
   @Prop({
     type: {
-      fatherName: { type: String, required: true },
-      fatherOccupation: { type: String, required: true },
-      fatherMobile: { type: String, required: true },
-      fatherEmail: { type: String, required: true },
-      motherName: { type: String, required: true },
-      motherOccupation: { type: String, required: true },
-      motherMobile: { type: String, required: true },
-      motherEmail: { type: String, required: true },
+      name: { type: String, required: true },
+      occupation: { type: String, required: true },
+      mobileNumber: { type: String, required: true },
+      email: { type: String, required: true },
     },
     required: true
   })
-  parentDetails: {
-    fatherName: string;
-    fatherOccupation: string;
-    fatherMobile: string;
-    fatherEmail: string;
-    motherName: string;
-    motherOccupation: string;
-    motherMobile: string;
-    motherEmail: string;
-  };
+  fatherDetails: {
+    name: string;
+    occupation: string;
+    mobileNumber: string;
+    email: string;
+  }
 
   @Prop({
-    type: { 
-      area : { type: String, required: true },
-      city : { type: String, required: true },
-      state : { type: String, required: true },
-      pincode : { type: String, required: true },
+    type: {   
+      name: { type: String, required: true },
+      occupation: { type: String, required: true },
+      mobileNumber: { type: String, required: true },
+      email: { type: String, required: true },
     },
     required: true
   })
-  perminantAddress: {
-    area: string;
-    city: string;
-    state: string;
-    pincode: string;
+  motherDetails: {
+    name: string;
+    occupation: string;
+    mobileNumber: string;
+    email: string;
   };
-
-  @Prop({ type: String, required: true })
-  addressProof: string;
-
-  @Prop({ type: Boolean, required: true })
-  isPerminantAddressSameAsPresentAddress: boolean;
 
   @Prop({
     type: {
@@ -107,32 +87,54 @@ export class Student  extends mongoose.Document {
     state: string;
     pincode: string;
   };
+
+  @Prop({
+    type: { 
+      area : { type: String, required: true },
+      city : { type: String, required: true },
+      state : { type: String, required: true },
+      pincode : { type: String, required: true },
+    },
+    required: true
+  })
+  permanentAddress: {
+    area: string;
+    city: string;
+    state: string;
+    pincode: string;
+  };
+
+  @Prop({ type: Boolean, required: true })
+  isSameAsPresent: boolean;
+
+  @Prop({ type: String, required: true })
+  parentIdProof: string;
   
+  @Prop({ type: String, required: true, unique: true })
+  admissionNumber: string;
+
   @Prop({ type: Date, required: true })
   admissionDate: Date;
 
-  @Prop({ type: Boolean, required: true })
+  @Prop({ type: Boolean, required: false })
   isDisabled: boolean;
-
-  @Prop({ type: String })
-  identityMark: string;
 
   @Prop({
     type: [{
-      acadamicYear: { type: String, required: true },
-      class: { type: String, required: true },
-      schoolName: { type: String, required: true },
-      obtainMarks: { type: Number, required: true },
-      documentProof: { type: String, required: true }, // study certificate or transfer certificate or any other proof
+      schoolName: { type: String, required: false },
+      yearOfStudy: { type: String, required: false },
+      totalMarks: { type: Number, required: false },
+      classStudied: { type: String, required: false },
+      studyProof: { type: String, required: false }, // study certificate or transfer certificate or any other proof
     }],
     default: [],
   })
-  prevSchoolDetails: Array<{
-    acadamicYear: string;
-    class: string;
+  previousSchool: Array<{
     schoolName: string;
-    obtainMarks: number;
-    documentProof: string;
+    yearOfStudy: string;
+    totalMarks: number;
+    classStudied: number;
+    studyProof: string;
   }>;
 
   @Prop({ type: String, required: true })
@@ -143,7 +145,7 @@ export class Student  extends mongoose.Document {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "role", required: true })
   role: mongoose.Schema.Types.ObjectId
-
+ 
   @Prop({ type: String })
   metaInfo: string
 
