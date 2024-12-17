@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsArray, IsNotEmpty, IsString } from "class-validator";
 
 class TimeTable {
   @IsString()
@@ -59,8 +59,8 @@ export class ExamDto {
   @IsNotEmpty()
   readonly endDate: Date;
 
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  readonly timeTable: TimeTable;
+  readonly timeTable: TimeTable[];
 
 }

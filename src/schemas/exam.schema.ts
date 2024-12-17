@@ -50,8 +50,8 @@ export class Exam {
   @Prop({ type: Date, required: true })
   endDate: Date
 
-  @Prop({ type: TimeTable, required: true })
-  timeTable: TimeTable
+  @Prop({ type: [TimeTable], required: true })
+  timeTable: TimeTable[]
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: mongoose.Schema.Types.ObjectId
