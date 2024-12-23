@@ -34,6 +34,9 @@ import { ExamController } from './controllers/exam.controller';
 import { ExamService } from './services/exam.service';
 import { SubjectController } from './controllers/subject.controller';
 import { SubjectService } from './services/subject.service';
+import { TimeTableSchema } from './schemas/timetable.schema';
+import { TimetableController } from './controllers/timetable.controller';
+import { TimetableService } from './services/timetable.service';
 
 
 @Module({
@@ -52,6 +55,7 @@ import { SubjectService } from './services/subject.service';
       {name: 'Role', schema: RoleSchema },
       {name: 'StudentFees', schema: StudentFeesSchema },
       {name: 'Exams', schema: ExamSchema },
+      {name: 'Timetable', schema: TimeTableSchema },
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -68,7 +72,8 @@ import { SubjectService } from './services/subject.service';
     UploadController,
     FeeController,
     ExamController,
-    SubjectController
+    SubjectController,
+    TimetableController
   ],
   providers: [ 
     StudentService, 
@@ -81,6 +86,7 @@ import { SubjectService } from './services/subject.service';
     StudentFeesService,
     ExamService,
     SubjectService,
+    TimetableService,
     AuthService, 
     {
       provide: APP_GUARD,
