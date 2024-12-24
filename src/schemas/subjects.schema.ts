@@ -8,6 +8,9 @@ export class Subject extends mongoose.Document {
   @Prop({ type: String, required: true, unique: true })
   name: string;
 
+  @Prop({ type: Boolean, required: true, default: true })
+  isDefault: boolean;
+
   @Prop({ type: String, required: true, default: 'active' })
   status: string;
 
