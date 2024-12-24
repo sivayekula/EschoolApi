@@ -11,6 +11,9 @@ export class Subject extends mongoose.Document {
   @Prop({ type: Boolean, required: true, default: true })
   isDefault: boolean;
 
+  @Prop({ type: String, required: true, enum: ['theory', 'lab', 'extraCurricular'], default: 'theory' })
+  category: string;
+
   @Prop({ type: String, required: true, default: 'active' })
   status: string;
 
