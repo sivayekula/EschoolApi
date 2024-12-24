@@ -7,12 +7,12 @@ export class TimeTable {
   @Prop({ type: String, required: true })
   board: string;
   @Prop({ type: String, required: true })
-  classCategory: string;
+  category: string;
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   class: mongoose.Schema.Types.ObjectId;
   @Prop({ type: String, required: true })
   section: string;
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
   teacher: mongoose.Schema.Types.ObjectId;
   @Prop({ type: [String], required: true })
   theorySubjects: string[];
