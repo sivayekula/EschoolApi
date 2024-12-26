@@ -20,9 +20,9 @@ export class StudentService {
     }
   }
 
-  async getStudent(): Promise<IStudent[]> {
+  async getStudent(tenantId): Promise<IStudent[]> {
     try {
-      return await this.studentModel.find();
+      return await this.studentModel.find({ tenant: tenantId, status: 'active' });
     } catch (error) {
       throw error;
     }

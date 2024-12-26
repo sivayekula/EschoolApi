@@ -10,8 +10,8 @@ export class StaffService {
     @InjectModel('Staff') private staffModel: Model<IStaff>
   ){}
 
-  async getStaff(): Promise<IStaff[]> {
-    return this.staffModel.find().exec();
+  async getStaff(tenantId): Promise<IStaff[]> {
+    return this.staffModel.find({ tenant: tenantId, status: 'active' });
   }
 
   async saveStaff(staff: CreateStaffDto): Promise<IStaff> {

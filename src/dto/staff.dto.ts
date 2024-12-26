@@ -1,4 +1,23 @@
-import { IsDate, IsEmail, IsMobilePhone, IsNotEmpty, IsString } from "class-validator";
+import { IsBoolean, IsDate, IsEmail, IsMobilePhone, IsNotEmpty, IsNotEmptyObject, IsNumber, IsOptional, IsString } from "class-validator";
+
+
+class Address {
+  @IsString()
+  @IsNotEmpty()
+  readonly area: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly city: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly state: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly pincode: string;
+}
 
 export class CreateStaffDto {
   @IsString()
@@ -9,29 +28,17 @@ export class CreateStaffDto {
   @IsNotEmpty()
   readonly lastName: string;
 
+  @IsString()
+  @IsNotEmpty()
+  readonly empId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly DOJ: Date;
+
   @IsEmail()
   @IsNotEmpty()
   readonly workEmail: string;
-
-  @IsMobilePhone()
-  @IsNotEmpty()
-  readonly mobileNumber: string;
-
-  @IsString()
-  @IsNotEmpty()
-  readonly role: string;
-
-  @IsDate()
-  @IsNotEmpty()
-  readonly DOB: Date;
-
-  @IsString()
-  @IsNotEmpty()
-  readonly gender: string;
-
-  @IsString()
-  @IsNotEmpty()
-  readonly doj: Date;
 
   @IsString()
   @IsNotEmpty()
@@ -39,34 +46,59 @@ export class CreateStaffDto {
 
   @IsString()
   @IsNotEmpty()
-  readonly presentAddress: string;
+  readonly subjects: string;
+
+  @IsNotEmptyObject()
+  readonly profilePic: object;
 
   @IsString()
   @IsNotEmpty()
-  readonly profilePic: string;
+  readonly DOB: Date;
 
   @IsString()
   @IsNotEmpty()
-  readonly aadharPic: string;
+  readonly email: string;
+
+  @IsMobilePhone()
+  @IsOptional()
+  readonly mobileNumber: string;
 
   @IsString()
   @IsNotEmpty()
-  readonly panPic: string;
+  readonly guardian: string;
 
   @IsString()
   @IsNotEmpty()
-  readonly bankDetails: string;
+  readonly gender: string;
+
+  @IsNotEmptyObject()
+  readonly presentAddress: Address;
+
+  @IsBoolean()
+  isSameAsPresent: boolean;
+  
+  @IsNotEmptyObject()
+  readonly permanentAddress: Address;
 
   @IsString()
   @IsNotEmpty()
-  readonly salary: string;
+  readonly aadharNumber: string;
 
   @IsString()
   @IsNotEmpty()
-  readonly fatherName: string;
+  readonly panNumber: string;
 
-  @IsString()
+  @IsNotEmptyObject()
+  readonly aadharPic: object;
+
+  @IsNotEmptyObject()
+  readonly panCardPic: object;
+
+  @IsNotEmptyObject()
+  readonly bankDetails: object;
+
+  @IsNumber()
   @IsNotEmpty()
-  readonly personalEmail: string;
+  readonly amount: string;
 
 }

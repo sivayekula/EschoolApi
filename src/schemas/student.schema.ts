@@ -3,10 +3,10 @@ import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
 
 @Schema({ timestamps: true })
-export class Student  extends mongoose.Document {
+export class Student extends mongoose.Document {
 
-  @Prop({ type: String, required: true })
-  profilePic : string;
+  @Prop({ type: Object, required: true })
+  profilePic : object;
 
   @Prop({ type: String, required: true })
   firstName: string;
@@ -38,8 +38,8 @@ export class Student  extends mongoose.Document {
   @Prop({ type: String, required: true, unique: true })
   aadharNumber: string;
 
-  @Prop({ type: String, required: true })
-  aadharPic : string;
+  @Prop({ type: Object, required: true })
+  aadharPic : object;
   @Prop({
     type: {
       name: { type: String, required: true },
@@ -107,8 +107,8 @@ export class Student  extends mongoose.Document {
   @Prop({ type: Boolean, required: true })
   isSameAsPresent: boolean;
 
-  @Prop({ type: String, required: true })
-  parentIdProof: string;
+  @Prop({ type: Object, required: true })
+  parentIdProof: object;
   
   @Prop({ type: String, required: true, unique: true })
   admissionNumber: string;
@@ -125,7 +125,7 @@ export class Student  extends mongoose.Document {
       yearOfStudy: { type: String, required: false },
       totalMarks: { type: Number, required: false },
       classStudied: { type: String, required: false },
-      studyProof: { type: String, required: false }, // study certificate or transfer certificate or any other proof
+      studyProof: { type: Object, required: false }, // study certificate or transfer certificate or any other proof
     }],
     default: [],
   })
@@ -134,7 +134,7 @@ export class Student  extends mongoose.Document {
     yearOfStudy: string;
     totalMarks: number;
     classStudied: number;
-    studyProof: string;
+    studyProof: object;
   }>;
 
   @Prop({ type: String, required: true })

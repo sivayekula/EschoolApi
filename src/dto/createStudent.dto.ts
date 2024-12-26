@@ -65,8 +65,8 @@ class PreviousSchool {
   @IsString()
   readonly classStudied: string;
 
-  @IsString()
-  readonly studyProof: string;
+  @IsNotEmptyObject()
+  readonly studyProof: object;
 }
 
 class FeesData {
@@ -102,9 +102,8 @@ class FeesData {
 
 export class CreateStudentDto {
 
-  @IsString()
-  @IsNotEmpty()
-  readonly profilePic: string;
+  @IsNotEmptyObject()
+  readonly profilePic: object;
 
   @IsString()
   @IsNotEmpty()
@@ -148,9 +147,8 @@ export class CreateStudentDto {
   @IsNotEmpty()
   readonly aadharNumber: string;
 
-  @IsString()
-  @IsNotEmpty()
-  readonly aadharPic: string;
+  @IsNotEmptyObject()
+  readonly aadharPic: object;
 
   @IsNotEmptyObject()
   readonly fatherDetails: ParentDetails;
@@ -168,9 +166,8 @@ export class CreateStudentDto {
   @IsNotEmptyObject()
   readonly permanentAddress: Address;
 
-  @IsString()
-  @IsNotEmpty()
-  readonly parentIdProof: string;
+  @IsNotEmptyObject()
+  readonly parentIdProof: object;
 
   @IsNotEmptyObject()
   readonly acadamicDetails: Acadamic;

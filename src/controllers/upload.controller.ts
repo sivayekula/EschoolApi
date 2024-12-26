@@ -21,7 +21,6 @@ export class UploadController {
   @UseInterceptors(FileInterceptor('file', {storage, fileFilter}))
   async uploadImage(@UploadedFile() file: File) {
     const result = await this.uploadService.uploadFile(file);
-    console.log(result);
     return result // Return the URL from the cloud
   }
 }

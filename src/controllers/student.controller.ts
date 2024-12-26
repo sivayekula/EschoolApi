@@ -53,9 +53,9 @@ export class StudentController {
   }
 
   @Get('')
-  async get(@Res() res) {
+  async get(@Res() res, @Req() req) {
     try {
-      const students = await this.studentService.getStudent()
+      const students = await this.studentService.getStudent(req.user.user.tenant)
       return res.status(HttpStatus.OK).json({ message: 'Students fetched successfully', data: students });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
