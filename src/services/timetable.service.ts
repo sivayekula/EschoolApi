@@ -8,8 +8,12 @@ export class TimetableService {
     @InjectModel('Timetable') private readonly timetableModel
   ) {}
 
-  async getTimetables() {
-    return await this.timetableModel.find();
+  async getTimetables(tenantId: string) {
+    try {
+      return await this.timetableModel.find({ tenant: tenantId, status: 'active' }).populate('class');
+    } catch (error) {
+      throw error;
+    }
   }
 
   async createTimetable(timetable) {

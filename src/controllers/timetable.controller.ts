@@ -19,9 +19,9 @@ export class TimetableController {
   }
 
   @Get('')
-  async getTimetables(@Res() res) {
+  async getTimetables(@Res() res, @Req() req) {
     try {
-      const timetables = await this.timetableService.getTimetables()
+      const timetables = await this.timetableService.getTimetables(req.user.user.tenant)
       return res.status(HttpStatus.OK).json({ message: 'Timetables fetched successfully', data: timetables });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
