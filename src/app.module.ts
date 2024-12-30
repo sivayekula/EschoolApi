@@ -9,7 +9,7 @@ import { LoginController } from './controllers/login.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './common/authGuard';
-import { AcadamicSchema } from './schemas/acadamic.schema';
+import { AcademicSchema } from './schemas/academic.schema';
 import { HealthController } from './controllers/health.controller';
 import { TerminusModule } from '@nestjs/terminus';
 import { Class, ClassSchema } from './schemas/class.schema';
@@ -26,7 +26,7 @@ import { FeeController } from './controllers/fee.controller';
 import { FeeService } from './services/fee.service';
 import { RoleService } from './services/role.service';
 import { RoleSchema } from './schemas/role.schema';
-import { AcadamicService } from './services/acadamic.service';
+import { AcademicService } from './services/academic.service';
 import { StudentFeesService } from './services/studentFees.service';
 import { StudentFeesSchema } from './schemas/studentFees.schema';
 import { ExamSchema } from './schemas/exam.schema';
@@ -37,6 +37,10 @@ import { SubjectService } from './services/subject.service';
 import { TimeTableSchema } from './schemas/timetable.schema';
 import { TimetableController } from './controllers/timetable.controller';
 import { TimetableService } from './services/timetable.service';
+import { AcademicController } from './controllers/adadamic.controller';
+import { TenantSchema } from './schemas/tenant.schema';
+import { TenantController } from './controllers/tenant.controller';
+import { TenantService } from './services/tenant.service';
 
 
 @Module({
@@ -47,7 +51,7 @@ import { TimetableService } from './services/timetable.service';
     MongooseModule.forFeature([
       {name: 'Student', schema: StudentSchema },
       {name: 'User', schema: UserSchema },
-      {name: 'Acadamics', schema: AcadamicSchema },
+      {name: 'Academics', schema: AcademicSchema },
       {name: 'Class', schema: ClassSchema },
       {name: 'Subject', schema: SubjectSchema },
       {name: 'Staff', schema: StaffSchema },
@@ -56,6 +60,7 @@ import { TimetableService } from './services/timetable.service';
       {name: 'StudentFees', schema: StudentFeesSchema },
       {name: 'Exams', schema: ExamSchema },
       {name: 'Timetable', schema: TimeTableSchema },
+      {name: 'Tenant', schema: TenantSchema },
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -73,7 +78,9 @@ import { TimetableService } from './services/timetable.service';
     FeeController,
     ExamController,
     SubjectController,
-    TimetableController
+    TimetableController,
+    AcademicController,
+    TenantController,
   ],
   providers: [ 
     StudentService, 
@@ -82,11 +89,12 @@ import { TimetableService } from './services/timetable.service';
     UploadService,
     FeeService,
     RoleService,
-    AcadamicService,
+    AcademicService,
     StudentFeesService,
     ExamService,
     SubjectService,
     TimetableService,
+    TenantService,
     AuthService, 
     {
       provide: APP_GUARD,

@@ -3,7 +3,7 @@ import { StudentService } from '../services/student.service';
 import { CreateStudentDto } from "src/dto/createStudent.dto";
 import { Public } from "./login.controller";
 import { RoleService } from "src/services/role.service";
-import { AcadamicService } from "src/services/acadamic.service";
+import { AcademicService } from "src/services/academic.service";
 import { FeeService } from "src/services/fee.service";
 import { StudentFeesService } from "src/services/studentFees.service";
 
@@ -13,10 +13,11 @@ export class StudentController {
   constructor(
     private readonly studentService: StudentService,
     private readonly roleService: RoleService,
-    private readonly acadamicService: AcadamicService,
+    private readonly academicService: AcademicService,
     private readonly feeService: FeeService,
     private readonly studentFeesService: StudentFeesService
   ) {}
+
   @Public()
   @Post('')
   async create(@Req() req, @Res() res, @Body() createStudentDto: CreateStudentDto) {
@@ -28,11 +29,11 @@ export class StudentController {
       requestBoy['tenant']= req.user.user.tenant;
       requestBoy['createdBy'] = req.user.user._id;
       const newStudent = await this.studentService.createStudent( requestBoy )
-      await this.acadamicService.createAcadamic({ student: newStudent._id, class: requestBoy.acadamicDetails.class, section: requestBoy.acadamicDetails.section, acadamicYear: requestBoy.acadamicDetails.acadamicYear });
+      await this.academicService.createAcademic({ student: newStudent._id, class: requestBoy.academicDetails.class, section: requestBoy.academicDetails.section, academicYear: requestBoy.academicDetails.academicYear, tenant: req.user.user.tenant });
       const fees = requestBoy.feesData.map(fee => {
         return fee.id
       })
-      let feeData = await this.feeService.getFees(fees);
+      let feeData = await this.feeService.getFees('', fees);
       const studentFees = requestBoy.feesData.map(fee => {
         let indx = feeData.findIndex(f => f._id.toString() === fee.id)
         return {
@@ -53,7 +54,7 @@ export class StudentController {
   }
 
   @Get('')
-  async get(@Res() res, @Req() req) {
+  async getStudents(@Res() res, @Req() req) {
     try {
       const students = await this.studentService.getStudent(req.user.user.tenant)
       return res.status(HttpStatus.OK).json({ message: 'Students fetched successfully', data: students });
@@ -66,6 +67,16 @@ export class StudentController {
   async getById(@Res() res, @Param('id') id: string) {
     try {
       const student = await this.studentService.getStudentById(id)
+      return res.status(HttpStatus.OK).json({ message: 'Student fetched successfully', data: student });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
+  @Get('/details/:id')
+  async getStudent(@Req() req, @Res() res) {
+    try {
+      const student = await this.studentService.getStudentDetails(req.params.id)
       return res.status(HttpStatus.OK).json({ message: 'Student fetched successfully', data: student });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

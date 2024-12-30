@@ -16,11 +16,20 @@ export class FeeService {
     return await this.feeModel.findById(id);
   }
 
-  async getFees(feeIds: string[]) {
-    return await this.feeModel.find({ _id: { $in: feeIds } });
+  async getFees(tenantId?: string, feeIds?: string[]) {
+    let qry = tenantId ? { tenant: tenantId, status: { $ne: 'deleted' } } : { _id: { $in: feeIds } }
+    return await this.feeModel.find(qry);
   }
 
   async createFee(fees) {
     return await this.feeModel.insertMany(fees);
+  }
+
+  async getFeesByStudent(studentId: string) {
+    try {
+      return await this.feeModel.find({ student: studentId, status: 'active' });
+    } catch (error) {
+      throw error;
+    }
   }
 }

@@ -38,10 +38,10 @@ class ParentDetails {
   readonly email: string;
 }
 
-class Acadamic {
+class Academic {
   @IsString()
   @IsNotEmpty()
-  readonly acadamicYear: string;
+  readonly academicYear: string;
 
   @IsString()
   @IsNotEmpty()
@@ -170,7 +170,7 @@ export class CreateStudentDto {
   readonly parentIdProof: object;
 
   @IsNotEmptyObject()
-  readonly acadamicDetails: Acadamic;
+  readonly academicDetails: Academic;
 
   @IsString()
   @IsNotEmpty()
