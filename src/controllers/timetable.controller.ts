@@ -11,6 +11,8 @@ export class TimetableController {
   @Post('')
   async createTimetable(@Req() req, @Res() res, @Body() body) {
     try {
+      body['createdBy'] = req.user.user._id
+      body['tenant'] = req.user.user.tenant
       const timetable = await this.timetableService.createTimetable(body);
       return res.status(HttpStatus.CREATED).json({ message: 'Timetable created successfully', data: timetable });
     } catch (error) {
