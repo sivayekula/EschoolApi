@@ -7,7 +7,7 @@ export class StudentFees  extends mongoose.Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Student", index: true })
   student: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Fee", index: true })
   fees: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, index: true })

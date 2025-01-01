@@ -12,7 +12,7 @@ import { AuthGuard } from './common/authGuard';
 import { AcademicSchema } from './schemas/academic.schema';
 import { HealthController } from './controllers/health.controller';
 import { TerminusModule } from '@nestjs/terminus';
-import { Class, ClassSchema } from './schemas/class.schema';
+import { ClassSchema } from './schemas/class.schema';
 import { GlobalController } from './controllers/global.controller';
 import { GlobalService } from './services/global.service';
 import { SubjectSchema } from './schemas/subjects.schema';
@@ -42,6 +42,15 @@ import { TenantSchema } from './schemas/tenant.schema';
 import { TenantController } from './controllers/tenant.controller';
 import { TenantService } from './services/tenant.service';
 import { StudentFeesController } from './controllers/studentFees.controller';
+import { AcademicYearSchema } from './schemas/academicYear.schema';
+import { AcademicYearController } from './controllers/academicYear.controller';
+import { AcademicYearService } from './services/academicYear.service';
+import { SectionController } from './controllers/section.controller';
+import { SectionSchema } from './schemas/section.schema';
+import { SectionService } from './services/section.service';
+import { ClassCategorySchema } from './schemas/classCategory.schema';
+import { ClassCategoryController } from './controllers/classCategory.controller';
+import { ClassCategoryService } from './services/classCategory.service';
 
 
 @Module({
@@ -62,6 +71,9 @@ import { StudentFeesController } from './controllers/studentFees.controller';
       {name: 'Exams', schema: ExamSchema },
       {name: 'Timetable', schema: TimeTableSchema },
       {name: 'Tenant', schema: TenantSchema },
+      {name: 'AcademicYear', schema: AcademicYearSchema },
+      {name: 'Section', schema: SectionSchema },
+      {name: 'ClassCategory', schema: ClassCategorySchema },
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -82,7 +94,10 @@ import { StudentFeesController } from './controllers/studentFees.controller';
     TimetableController,
     AcademicController,
     TenantController,
-    StudentFeesController
+    StudentFeesController,
+    AcademicYearController,
+    SectionController,
+    ClassCategoryController
   ],
   providers: [ 
     StudentService, 
@@ -97,6 +112,9 @@ import { StudentFeesController } from './controllers/studentFees.controller';
     SubjectService,
     TimetableService,
     TenantService,
+    AcademicYearService,
+    SectionService,
+    ClassCategoryService,
     AuthService, 
     {
       provide: APP_GUARD,

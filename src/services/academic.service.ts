@@ -14,7 +14,7 @@ export class AcademicService {
 
   async getAcademics(tenantId: string): Promise<any> {
     try {
-      return await this.academicModel.find({ tenant: tenantId, status: 'active' }).populate('class');
+      return await this.academicModel.find({ tenant: tenantId, status: 'active' }).populate('student').populate('class');
     } catch (error) {
       throw error;
     }
