@@ -24,12 +24,4 @@ export class FeeService {
   async createFee(fees) {
     return await this.feeModel.insertMany(fees);
   }
-
-  async getFeesByStudent(studentId: string) {
-    try {
-      return await this.feeModel.find({ student: studentId, status: 'active' });
-    } catch (error) {
-      throw error;
-    }
-  }
 }

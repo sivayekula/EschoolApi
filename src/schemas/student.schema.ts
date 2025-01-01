@@ -120,22 +120,22 @@ export class Student extends mongoose.Document {
   isDisabled: boolean;
 
   @Prop({
-    type: [{
+    type: {
       schoolName: { type: String, required: false },
       yearOfStudy: { type: String, required: false },
       totalMarks: { type: Number, required: false },
       classStudied: { type: String, required: false },
       studyProof: { type: Object, required: false }, // study certificate or transfer certificate or any other proof
-    }],
-    default: [],
+    },
+    default: {},
   })
-  previousSchool: Array<{
+  previousSchool: {
     schoolName: string;
     yearOfStudy: string;
     totalMarks: number;
     classStudied: number;
     studyProof: object;
-  }>;
+  };
 
   @Prop({ type: String, required: true })
   password: string;

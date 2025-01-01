@@ -76,9 +76,13 @@ export class StudentController {
   @Get('/details/:id')
   async getStudent(@Req() req, @Res() res) {
     try {
-      const student = await this.studentService.getStudentDetails(req.params.id)
-      return res.status(HttpStatus.OK).json({ message: 'Student fetched successfully', data: student });
+      const [student, academic, fees] = await Promise.all([this.studentService.getStudentDetails(req.params.id), this.academicService.getAcademicByStudent(req.params.id), this.studentFeesService.getFeesByStudent(req.params.id)]);
+      const data = JSON.parse(JSON.stringify(student))
+      data['academics'] = academic
+      data['fees'] = fees
+      return res.status(HttpStatus.OK).json({ message: 'Student fetched successfully', data: data });
     } catch (error) {
+      console.log(error)
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }
   }

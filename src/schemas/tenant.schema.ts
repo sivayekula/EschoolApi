@@ -17,7 +17,6 @@ export class Tenant extends Document {
     type: {
       area : { type: String, required: true },
       city: { type: String, required: true },
-      district: { type: String, required: true },
       state: { type: String, required: true },
       pincode: { type: String, required: true }
     }, 
@@ -26,7 +25,6 @@ export class Tenant extends Document {
   address: {
     area : string,
     city: string,
-    district: string,
     state: string,
     pincode: string
   };

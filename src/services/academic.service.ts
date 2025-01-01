@@ -22,7 +22,7 @@ export class AcademicService {
 
   async getAcademicByStudent(studentId: string): Promise<any> {
     try {
-      return await this.academicModel.findone({ student: studentId, status: 'active' }).populate('class');
+      return await this.academicModel.findOne({ student: studentId, status: 'active' }).populate('class');
     } catch (error) {
       throw error;
     }

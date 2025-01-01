@@ -41,6 +41,7 @@ import { AcademicController } from './controllers/adadamic.controller';
 import { TenantSchema } from './schemas/tenant.schema';
 import { TenantController } from './controllers/tenant.controller';
 import { TenantService } from './services/tenant.service';
+import { StudentFeesController } from './controllers/studentFees.controller';
 
 
 @Module({
@@ -81,6 +82,7 @@ import { TenantService } from './services/tenant.service';
     TimetableController,
     AcademicController,
     TenantController,
+    StudentFeesController
   ],
   providers: [ 
     StudentService, 
