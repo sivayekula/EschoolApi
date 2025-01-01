@@ -4,13 +4,13 @@ import * as mongoose from 'mongoose';
 
 @Schema({ timestamps: true })
 export class StudentFees  extends mongoose.Document {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "student", index: true })
   student: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   fees: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, index: true })
   tenant: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: String, required: true })

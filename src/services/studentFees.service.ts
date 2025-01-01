@@ -20,4 +20,12 @@ export class StudentFeesService {
     }
   }
 
+  async getAllFees(tenantId: string) {
+    try {
+      return await this.studentFeesModel.find({ tenant: tenantId, status: 'active' }).populate('student');
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }
