@@ -22,7 +22,7 @@ export class StudentFeesService {
 
   async getAllFees(tenantId: string) {
     try {
-      return await this.studentFeesModel.find({ tenant: tenantId, status: 'active' }).populate('student');
+      return await this.studentFeesModel.find({ tenant: tenantId, status: 'active' }).populate('student', 'firstName lastName profilePic admissionNo').populate('fee');
     } catch (error) {
       throw error;
     }
