@@ -3,7 +3,7 @@ import { SectionService } from "src/services/section.service";
 
 
 
-@Controller('section')
+@Controller('sections')
 export class SectionController {
   constructor(
     private readonly sectionService: SectionService
@@ -24,6 +24,15 @@ export class SectionController {
     try {
       const section = await this.sectionService.getSection(req.params.id);
       return res.status(HttpStatus.OK).json({ message: 'Section fetched successfully', data: section });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+  @Get('')
+  async getSections(@Res() res) {
+    try {
+      const sections = await this.sectionService.getSections();
+      return res.status(HttpStatus.OK).json({ message: 'Sections fetched successfully', data: sections });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }

@@ -32,7 +32,7 @@ export class AuthService {
       if(!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
       const { password, ...result } = user.toJSON();
       let token = this.jwtService.sign({user: result});
-      return {...result, ...{token}}
+      return token
     }
   }
 

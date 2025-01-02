@@ -19,6 +19,9 @@ export class StudentFees  extends mongoose.Document {
   @Prop({ type: Date, required: true })
   dueDate: Date;
 
+  @Prop({ type: Number, required: true, default: 0 })
+  paidAmount: number;
+
   @Prop({ type: Date, required: false })
   paidDate: Date;
 

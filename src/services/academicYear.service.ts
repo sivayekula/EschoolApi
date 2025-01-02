@@ -9,7 +9,7 @@ export class AcademicYearService {
   ) {}
 
   async getAcademicYear() {
-    return await this.academicYearModel.find({ status: 'active' });
+    return await this.academicYearModel.findOne({ status: 'active' });
   }
 
   async createAcademicYear(academicYear) {

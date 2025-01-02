@@ -23,4 +23,12 @@ export class SectionService {
       throw error;
     }
   }
+
+  async getSections() {
+    try {
+      return await this.sectionModel.find();
+    } catch (error) {
+      throw error;
+    }
+  }
 }
