@@ -38,7 +38,7 @@ export class FeeController {
   @Get('')
   async getFees(@Req() req, @Res() res) {
     try {
-      const fees = await this.feeService.getFees(req.user.user.tenant, );
+      const fees = await this.feeService.getFees(req.user.user.tenant);
       res.status(HttpStatus.OK).json({ message: 'Fees fetched successfully', data: fees });
     } catch (error) {
       return { message: error.message };
