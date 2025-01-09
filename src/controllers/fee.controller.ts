@@ -16,16 +16,13 @@ export class FeeController {
       const classes = body.fees.filter((fee) => fee.checked === true)
       const fees = classes.map((fee) => {
         return {
-          class: new mongoose.Types.ObjectId(fee._id),
+          class: fee._id,
           academicYear: body.academicYear,
           feeGroup: body.feeGroup,
           name: body.feeTitle,
-          feeApplicable: body.feeApplicable,
-          feeInstallment: body.feeDuration,
-          dueDates: body.dueDates.map((date) => new Date(date.dueDate)),
           amount: fee.amount,
           disCount: body.discount*1,
-          tenant: new mongoose.Types.ObjectId(req.user.user.tenant)
+          tenant: req.user.user.tenant
         }
       })
       const fee = await this.feeService.createFee(fees);

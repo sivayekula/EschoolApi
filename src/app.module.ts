@@ -51,6 +51,9 @@ import { SectionService } from './services/section.service';
 import { ClassCategorySchema } from './schemas/classCategory.schema';
 import { ClassCategoryController } from './controllers/classCategory.controller';
 import { ClassCategoryService } from './services/classCategory.service';
+import { FeeGroupSchema } from './schemas/feeGroup.schema';
+import { FeeGroupController } from './controllers/feeGroup.controller';
+import { FeeGroupService } from './services/feeGroup.service';
 
 
 @Module({
@@ -74,6 +77,7 @@ import { ClassCategoryService } from './services/classCategory.service';
       {name: 'AcademicYear', schema: AcademicYearSchema },
       {name: 'Section', schema: SectionSchema },
       {name: 'ClassCategory', schema: ClassCategorySchema },
+      {name: 'FeeGroup', schema: FeeGroupSchema }
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -97,7 +101,8 @@ import { ClassCategoryService } from './services/classCategory.service';
     StudentFeesController,
     AcademicYearController,
     SectionController,
-    ClassCategoryController
+    ClassCategoryController,
+    FeeGroupController
   ],
   providers: [ 
     StudentService, 
@@ -115,6 +120,7 @@ import { ClassCategoryService } from './services/classCategory.service';
     AcademicYearService,
     SectionService,
     ClassCategoryService,
+    FeeGroupService,
     AuthService, 
     {
       provide: APP_GUARD,

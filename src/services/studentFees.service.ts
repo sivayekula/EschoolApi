@@ -28,4 +28,12 @@ export class StudentFeesService {
     }
   }
 
+  async collectFees(feesId: string) {
+    try {
+      return await this.studentFeesModel.findById(feesId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }
