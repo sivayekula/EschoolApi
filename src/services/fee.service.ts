@@ -22,6 +22,10 @@ export class FeeService {
   }
 
   async createFee(fees) {
-    return await this.feeModel.insertMany(fees);
+    try {
+      return await this.feeModel.insertMany(fees);
+    } catch (error) {
+      throw error;
+    }
   }
 }

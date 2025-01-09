@@ -14,17 +14,27 @@ export class FeeController {
   async createFee(@Body() body, @Req() req, @Res() res) {
     try {
       const classes = body.fees.filter((fee) => fee.checked === true)
-      const fees = classes.map((fee) => {
-        return {
-          class: fee._id,
+      let fees = []
+      if (classes.length === 0) {
+        fees = [{
           academicYear: body.academicYear,
           feeGroup: body.feeGroup,
           name: body.feeTitle,
-          amount: fee.amount,
-          disCount: body.discount*1,
+          amount: body.feeAmount || 0,
           tenant: req.user.user.tenant
-        }
-      })
+        }]
+      } else {  
+        fees = classes.map((fee) => {
+          return {
+            class: fee._id,
+            academicYear: body.academicYear,
+            feeGroup: body.feeGroup,
+            name: body.feeTitle,
+            amount: fee.amount,
+            tenant: req.user.user.tenant
+          }
+        })
+      }
       const fee = await this.feeService.createFee(fees);
       return res.status(HttpStatus.CREATED).json({ message: 'Fees created successfully', data: fee });
     } catch (error) {
