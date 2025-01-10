@@ -10,6 +10,9 @@ export class Staff extends mongoose.Document {
   @Prop({ type: String, required: true})
   lastName: string;
 
+  @Prop({ type: String, required: true, enum: ['teaching', 'non-teaching'], default: 'teaching'})
+  staffType: string;
+
   @Prop({ type: String, required: true})
   empId: string;
 
