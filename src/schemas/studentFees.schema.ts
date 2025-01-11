@@ -14,25 +14,19 @@ export class StudentFees  extends mongoose.Document {
   tenant: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: String, required: true })
-  feeInstallment: string;
+  feeType: string;
 
   @Prop({ type: Date, required: true })
   dueDate: Date;
 
   @Prop({ type: Number, required: true, default: 0 })
-  paidAmount: number;
-
-  @Prop({ type: Date, required: false })
-  paidDate: Date;
-
-  @Prop({ type: String, required: false })
-  paymentMode: string;
-
-  @Prop({ type: String, required: false })
-  paymentId: string;
+  discount: number;
 
   @Prop({ type: Number, required: true })
-  instalmentAmount: number;
+  paybalAmount: number;
+
+  @Prop({ type: Number, required: true, default: 0 })
+  paidAmount: number;
 
   @Prop({ type: Number, required: true })
   amount: number;

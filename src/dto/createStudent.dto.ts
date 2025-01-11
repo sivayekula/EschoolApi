@@ -1,4 +1,6 @@
-import { IsArray, IsBoolean, IsEmail, IsEmpty, IsEnum, IsNotEmpty, IsNotEmptyObject, IsNumber, IsOptional, IsString, MinLength } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsBoolean, IsDateString, IsEmail, IsEmpty, IsEnum, IsNotEmpty, IsNotEmptyObject, IsNumber, IsObject, IsOptional, IsString, MinLength, ValidateIf, ValidateNested } from "class-validator";
+import { ImageDto } from "./image.dto";
 
 
 class Address {
@@ -95,15 +97,21 @@ class FeesData {
   @IsNotEmpty()
   readonly duration: string;
 
+  @IsDateString()
+  @IsNotEmpty()
+  readonly dueDate: Date;
+
   @IsNumber()
   @IsNotEmpty()
   readonly installmentAmount: string;
 }
 
 export class CreateStudentDto {
-
-  @IsNotEmptyObject()
-  readonly profilePic: object;
+  @ValidateIf((obj) =>obj.profilePic !== null)
+  @IsOptional()
+  @ValidateNested()
+  @Type(()=> ImageDto)
+  readonly profilePic?: ImageDto | null;
 
   @IsString()
   @IsNotEmpty()
@@ -125,35 +133,41 @@ export class CreateStudentDto {
   readonly gender: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly nationality: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly religion: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly cast: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly subCast: string;
 
   @IsString()
+  @IsOptional()
   readonly bloodGroup: string;
 
   @IsString()
   @IsNotEmpty()
   readonly aadharNumber: string;
 
-  @IsNotEmptyObject()
-  readonly aadharPic: object;
+  @ValidateIf((obj) =>obj.aadharPic !== null)
+  @IsOptional()
+  @ValidateNested()
+  @Type(()=> ImageDto)
+  readonly aadharPic?: ImageDto | null;
 
-  @IsNotEmptyObject()
+  @IsObject()
+  @IsOptional()
   readonly fatherDetails: ParentDetails;
 
-  @IsNotEmptyObject()
+  @IsObject()
+  @IsOptional()
   readonly motherDetails: ParentDetails;
 
   @IsNotEmptyObject()
@@ -166,8 +180,11 @@ export class CreateStudentDto {
   @IsNotEmptyObject()
   readonly permanentAddress: Address;
 
-  @IsNotEmptyObject()
-  readonly parentIdProof: object;
+  @ValidateIf((obj) =>obj.parentIdProof !== null)
+  @IsOptional()
+  @ValidateNested()
+  @Type(()=> ImageDto)
+  readonly parentIdProof?: ImageDto | null;
 
   @IsNotEmptyObject()
   readonly academicDetails: Academic;
@@ -180,6 +197,7 @@ export class CreateStudentDto {
   @IsNotEmpty()
   readonly admissionDate: Date;
 
+  @IsOptional()
   readonly previousSchool: PreviousSchool;
 
   @IsBoolean()

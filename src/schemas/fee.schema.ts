@@ -7,8 +7,10 @@ export class Fee {
   class: mongoose.Schema.Types.ObjectId;
   @Prop({ type: String, required: true })
   academicYear: string;
-  @Prop({ type: String, required: true })
-  feeGroup: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "FeeGroup" })
+  feeGroup: mongoose.Schema.Types.ObjectId;
+  @Prop({ type: Boolean, required: true, default: false })
+  isGlobal: boolean;
   @Prop({ type: String, required: true })
   name: string;
   @Prop({ type: Number, required: true })

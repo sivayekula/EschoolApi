@@ -8,8 +8,12 @@ export class FeeService {
   ) {}
 
   async getFee(classId?: string) {
-    const qry = classId ? { class: classId } : {};
-    return await this.feeModel.find(qry).populate('class');
+    try {
+      const qry = classId ? {$or:[{ class: classId}, {isGlobal: true}]} : {};
+      return await this.feeModel.find(qry).populate('class');
+    } catch (error) {
+      throw error;
+    }
   }
 
   async getFeeById(id: string) {

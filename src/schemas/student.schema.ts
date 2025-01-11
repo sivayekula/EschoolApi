@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 @Schema({ timestamps: true })
 export class Student extends mongoose.Document {
 
-  @Prop({ type: Object, required: true })
+  @Prop({ type: Object, required: false })
   profilePic : object;
 
   @Prop({ type: String, required: true })
@@ -20,32 +20,32 @@ export class Student extends mongoose.Document {
   @Prop({ type: String, required: true, enum: ['male', 'female', 'other'] })
   gender: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: false })
   nationality: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: false })
   religion: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: false })
   cast: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: false })
   subCast: string;
 
-  @Prop({ type: String })
+  @Prop({ type: String, required: false })
   bloodGroup: string;
 
   @Prop({ type: String, required: true, unique: true })
   aadharNumber: string;
 
-  @Prop({ type: Object, required: true })
+  @Prop({ type: Object, required: false })
   aadharPic : object;
   @Prop({
     type: {
       name: { type: String, required: true },
-      occupation: { type: String, required: true },
+      occupation: { type: String, required: false },
       mobileNumber: { type: String, required: true },
-      email: { type: String, required: true },
+      email: { type: String, required: false },
     },
     required: true
   })
@@ -58,12 +58,12 @@ export class Student extends mongoose.Document {
 
   @Prop({
     type: {   
-      name: { type: String, required: true },
-      occupation: { type: String, required: true },
-      mobileNumber: { type: String, required: true },
-      email: { type: String, required: true },
+      name: { type: String, required: false },
+      occupation: { type: String, required: false },
+      mobileNumber: { type: String, required: false },
+      email: { type: String, required: false },
     },
-    required: true
+    required: false
   })
   motherDetails: {
     name: string;
@@ -107,7 +107,7 @@ export class Student extends mongoose.Document {
   @Prop({ type: Boolean, required: true })
   isSameAsPresent: boolean;
 
-  @Prop({ type: Object, required: true })
+  @Prop({ type: Object, required: false })
   parentIdProof: object;
   
   @Prop({ type: String, required: true, unique: true })

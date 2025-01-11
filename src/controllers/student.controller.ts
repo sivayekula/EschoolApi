@@ -23,7 +23,8 @@ export class StudentController {
   async create(@Req() req, @Res() res, @Body() createStudentDto: CreateStudentDto) {
     try {
       const getRoleData = await this.roleService.getRole('student');
-      const requestBoy = { ...createStudentDto }
+      const requestBoy = JSON.parse(JSON.stringify(createStudentDto))
+      console.log('requestBoy', requestBoy)
       requestBoy['password'] = createStudentDto.firstName.replace(/\s+/g, '').slice(0, 4) + new Date(createStudentDto.DOB).getFullYear();
       requestBoy['role'] = getRoleData._id;
       requestBoy['tenant']= req.user.user.tenant;
@@ -33,22 +34,26 @@ export class StudentController {
       const fees = requestBoy.feesData.map(fee => {
         return fee.id
       })
+      console.log('fees', fees)
       let feeData = await this.feeService.getFees('', fees);
+      console.log('feeData', feeData)
       const studentFees = requestBoy.feesData.map(fee => {
         let indx = feeData.findIndex(f => f._id.toString() === fee.id)
         return {
           student: newStudent._id,
           fees: fee.id,
           tenant: req.user.user.tenant,
-          feeInstallment: fee.duration,
-          dueDate: feeData[indx].dueDates[0],
-          instalmentAmount: fee.installmentAmount,
+          feeType: fee.duration,
+          dueDate: fee.dueDate,
+          discount: fee.discount,
+          paybalAmount: fee.installmentAmount,
           amount : fee.totalFee
         }
       })
       await this.studentFeesService.createFees(studentFees)
       return res.status(HttpStatus.CREATED).json({ message: 'Student created successfully', data: newStudent });
     } catch (error) {
+      console.log(error)
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }
   }

@@ -10,11 +10,11 @@ export class Academic extends mongoose.Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Class' })
   class: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ type: String, required: true })
-  section: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  section: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ type: String, required: true })
-  academicYear: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  academicYear: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Tenant' })
   tenant: mongoose.Schema.Types.ObjectId;

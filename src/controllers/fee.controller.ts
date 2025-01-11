@@ -20,6 +20,7 @@ export class FeeController {
           academicYear: body.academicYear,
           feeGroup: body.feeGroup,
           name: body.feeTitle,
+          isGlobal: true,
           amount: body.feeAmount || 0,
           tenant: req.user.user.tenant
         }]
