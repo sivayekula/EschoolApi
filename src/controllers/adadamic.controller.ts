@@ -11,7 +11,7 @@ export class AcademicController {
   @Get('')
   async getAcademics(@Req() req, @Res() res) {
     try {
-      const academics = await this.academicService.getAcademics(req.user.user.tenant);
+      const academics = await this.academicService.getAcademics(req.user.tenant);
       return res.status(HttpStatus.OK).json({ message: 'Academics fetched successfully', data: academics });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

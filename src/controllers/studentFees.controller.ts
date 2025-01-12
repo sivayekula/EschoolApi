@@ -21,7 +21,7 @@ export class StudentFeesController {
   @Get('')
   async getAllFees(@Req() req, @Res() res) {
     try {
-      const fees = await this.studentFeesService.getAllFees(req.user.user.tenant);
+      const fees = await this.studentFeesService.getAllFees(req.user.tenant);
       return res.status(HttpStatus.OK).json({ message: 'Fees fetched successfully', data: fees });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

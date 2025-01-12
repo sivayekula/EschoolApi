@@ -12,8 +12,8 @@ export class ExamController {
   async createExam(@Req() req, @Body() body: ExamDto, @Res() res) {
     try {
       const requestBody = JSON.parse(JSON.stringify(body))
-      requestBody['tenant'] = req.user.user.tenant
-      requestBody['createdBy'] = req.user.user._id
+      requestBody['tenant'] = req.user.tenant
+      requestBody['createdBy'] = req.user._id
       const exam = await this.examService.createExam(requestBody);
       res.status(HttpStatus.CREATED).json({ message: 'Exam created successfully', data: exam });
     } catch (error) {

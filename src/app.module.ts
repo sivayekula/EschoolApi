@@ -57,6 +57,10 @@ import { FeeGroupService } from './services/feeGroup.service';
 import { HolidaysSchema } from './schemas/holidays.schema';
 import { HolidaysController } from './controllers/holidays.controller';
 import { HolidaysService } from './services/holidays.service';
+import { RoleController } from './controllers/role.controller';
+import { PermissionsSchema } from './schemas/permissions.schema';
+import { PermissionController } from './controllers/permission.controller';
+import { PermissionService } from './services/permission.service';
 
 
 @Module({
@@ -81,7 +85,8 @@ import { HolidaysService } from './services/holidays.service';
       {name: 'Section', schema: SectionSchema },
       {name: 'ClassCategory', schema: ClassCategorySchema },
       {name: 'FeeGroup', schema: FeeGroupSchema },
-      {name: 'Holidays', schema: HolidaysSchema }
+      {name: 'Holidays', schema: HolidaysSchema },
+      {name: 'Permission', schema: PermissionsSchema }
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -107,7 +112,9 @@ import { HolidaysService } from './services/holidays.service';
     SectionController,
     ClassCategoryController,
     FeeGroupController,
-    HolidaysController
+    HolidaysController,
+    RoleController,
+    PermissionController
   ],
   providers: [ 
     StudentService, 
@@ -127,6 +134,7 @@ import { HolidaysService } from './services/holidays.service';
     ClassCategoryService,
     FeeGroupService,
     HolidaysService,
+    PermissionService,
     AuthService, 
     {
       provide: APP_GUARD,

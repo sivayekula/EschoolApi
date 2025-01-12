@@ -4,7 +4,7 @@ import { Document } from 'mongoose';
 @Schema({ timestamps: true })
 export class Role extends Document {
 
-  @Prop({ type: String })
+  @Prop({ type: String, required: false })
   tenantId: string;
 
   @Prop({ type: String, required: true, unique: true, index: true })

@@ -4,12 +4,10 @@ import { Model } from 'mongoose';
 import { User } from 'src/schemas/user.schema';
 import { Student } from 'src/schemas/student.schema';
 import * as bcrypt from 'bcrypt';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly jwtService: JwtService,
     @InjectModel('User') private readonly userModel: Model<User>,
     @InjectModel('Student') private readonly studentModel: Model<Student>
   ) {}
@@ -25,14 +23,13 @@ export class AuthService {
     } else if (userType === 'staff') {
       
     } else {
-      let user = await this.userModel.findOne({ $or: [{ email }, { mobileNumber }] });
-      if(!user) throw new UnauthorizedException('Invalid credentials');
+      let user = await this.userModel.findOne({ $or: [{ email }, { mobileNumber }] }).populate('role');
+      if(!user) throw new UnauthorizedException('Invalid credentials'); 
       if(user.status !== 'active') throw new Error('We are unable to process with your details. Please contact to admin')
       let isPasswordValid= await bcrypt.compare(pass, user.password)
       if(!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
       const { password, ...result } = user.toJSON();
-      let token = this.jwtService.sign({user: result});
-      return token
+      return result;
     }
   }
 

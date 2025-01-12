@@ -24,25 +24,17 @@ export class StudentController {
     try {
       const getRoleData = await this.roleService.getRole('student');
       const requestBoy = JSON.parse(JSON.stringify(createStudentDto))
-      console.log('requestBoy', requestBoy)
       requestBoy['password'] = createStudentDto.firstName.replace(/\s+/g, '').slice(0, 4) + new Date(createStudentDto.DOB).getFullYear();
       requestBoy['role'] = getRoleData._id;
-      requestBoy['tenant']= req.user.user.tenant;
-      requestBoy['createdBy'] = req.user.user._id;
+      requestBoy['tenant']= req.user.tenant;
+      requestBoy['createdBy'] = req.user._id;
       const newStudent = await this.studentService.createStudent( requestBoy )
-      await this.academicService.createAcademic({ student: newStudent._id, class: requestBoy.academicDetails.class, section: requestBoy.academicDetails.section, academicYear: requestBoy.academicDetails.academicYear, tenant: req.user.user.tenant });
-      const fees = requestBoy.feesData.map(fee => {
-        return fee.id
-      })
-      console.log('fees', fees)
-      let feeData = await this.feeService.getFees('', fees);
-      console.log('feeData', feeData)
+      await this.academicService.createAcademic({ student: newStudent._id, class: requestBoy.academicDetails.class, section: requestBoy.academicDetails.section, academicYear: requestBoy.academicDetails.academicYear, tenant: req.user.tenant }); 
       const studentFees = requestBoy.feesData.map(fee => {
-        let indx = feeData.findIndex(f => f._id.toString() === fee.id)
         return {
           student: newStudent._id,
           fees: fee.id,
-          tenant: req.user.user.tenant,
+          tenant: req.user.tenant,
           feeType: fee.duration,
           dueDate: fee.dueDate,
           discount: fee.discount,
@@ -61,7 +53,7 @@ export class StudentController {
   @Get('')
   async getStudents(@Res() res, @Req() req) {
     try {
-      const students = await this.studentService.getStudent(req.user.user.tenant)
+      const students = await this.studentService.getStudent(req.user.tenant);
       return res.status(HttpStatus.OK).json({ message: 'Students fetched successfully', data: students });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
