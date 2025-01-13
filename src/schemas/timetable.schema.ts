@@ -1,5 +1,4 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { arn } from "aws-sdk/clients/finspace";
 import * as mongoose from "mongoose";
 
 
@@ -9,12 +8,12 @@ export class TimeTable {
   board: string;
   @Prop({ type: String, required: true })
   category: string;
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Class' })
   class: mongoose.Schema.Types.ObjectId;
-  @Prop({ type: String, required: true })
-  section: string;
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
-  teacher: mongoose.Schema.Types.ObjectId;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Section' })
+  section: mongoose.Schema.Types.ObjectId;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Staff' })
+  classTeacher: mongoose.Schema.Types.ObjectId;
   @Prop({ type: Array, required: true })
   theorySubjects: any;
   @Prop({ type: Array, required: false })

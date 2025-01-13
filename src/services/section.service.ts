@@ -24,9 +24,9 @@ export class SectionService {
     }
   }
 
-  async getSections() {
+  async getSections(tenantId?: string) {
     try {
-      return await this.sectionModel.find();
+      return await this.sectionModel.find({tenant: tenantId,  status: 'active' });
     } catch (error) {
       throw error;
     }

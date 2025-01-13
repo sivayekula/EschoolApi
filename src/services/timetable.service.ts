@@ -10,7 +10,7 @@ export class TimetableService {
 
   async getTimetables(tenantId: string) {
     try {
-      return await this.timetableModel.find({ tenant: tenantId, status: 'active' }).populate('class');
+      return await this.timetableModel.find({ tenant: tenantId, status: 'active' }).populate('class').populate('section').populate('classTeacher');
     } catch (error) {
       throw error;
     }

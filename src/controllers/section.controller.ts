@@ -12,7 +12,9 @@ export class SectionController {
   @Post('')
   async createSection(@Req() req, @Res() res, @Body() body) {
     try {
-      const section = await this.sectionService.createSection(body);
+      const requestBody = JSON.parse(JSON.stringify(body))
+      requestBody['tenant'] = req.user.tenant
+      const section = await this.sectionService.createSection(requestBody);
       return res.status(HttpStatus.OK).json({ message: 'Section created successfully', data: section });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
@@ -29,9 +31,9 @@ export class SectionController {
     }
   }
   @Get('')
-  async getSections(@Res() res) {
+  async getSections(@Req() req, @Res() res) {
     try {
-      const sections = await this.sectionService.getSections();
+      const sections = await this.sectionService.getSections(req.user.tenant);
       return res.status(HttpStatus.OK).json({ message: 'Sections fetched successfully', data: sections });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
