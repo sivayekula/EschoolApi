@@ -10,7 +10,7 @@ export class AttendanceService {
 
   async createAttendance(attendance) {
     try {
-      return await this.attendanceModel.create(attendance);
+      return await this.attendanceModel.insertMany(attendance);
     } catch (error) {
       throw error;
     }

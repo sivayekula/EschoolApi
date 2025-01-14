@@ -22,7 +22,6 @@ export class AttendanceController {
   async createAttendance(@Req() req, @Body() body, @Res() res) {
     try {
       const data = JSON.parse(JSON.stringify(body))
-      data['createdBy'] = req.user._id
       const reqData = data.attendance.forEach(element => {
         return {
           userId: element._id,
