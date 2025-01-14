@@ -19,14 +19,14 @@ export class Attendance {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
   section: mongoose.Schema.Types.ObjectId
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
   academicYear: mongoose.Schema.Types.ObjectId
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   tenant: mongoose.Schema.Types.ObjectId
 
   @Prop({ type: String, required: true, enum: ['present', 'absent', 'leave', 'halfday'] })
-  attendance: string
+  attendanceStatus: string
 
   @Prop({ type: String, required: true, default: 'active' })
   status: string
