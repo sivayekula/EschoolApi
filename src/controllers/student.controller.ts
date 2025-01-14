@@ -60,7 +60,17 @@ export class StudentController {
     }
   }
 
-  @Get('/:id')
+  @Get('attendance')
+  async getAttendance(@Req() req, @Res() res) {
+    try {
+      const attendance = await this.studentService.getAttendance(req.user.tenant);
+      return res.status(HttpStatus.OK).json({ message: 'Attendance fetched successfully', data: attendance });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
+  @Get(':id')
   async getById(@Res() res, @Param('id') id: string) {
     try {
       const student = await this.studentService.getStudentById(id)
@@ -70,7 +80,7 @@ export class StudentController {
     }
   }
 
-  @Get('/details/:id')
+  @Get('details/:id')
   async getStudent(@Req() req, @Res() res) {
     try {
       const [student, academic, fees] = await Promise.all([this.studentService.getStudentDetails(req.params.id), this.academicService.getAcademicByStudent(req.params.id), this.studentFeesService.getFeesByStudent(req.params.id)]);
@@ -83,4 +93,5 @@ export class StudentController {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }
   }
+
 }

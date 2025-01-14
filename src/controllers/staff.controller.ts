@@ -24,6 +24,16 @@ export class StaffController {
     }
   }
 
+  @Get('attendance')
+  async getAttendance(@Req() req, @Res() res) {
+    try {
+      const attendance = await this.staffService.getAttendance(req.user.tenant);
+      return res.status(HttpStatus.OK).json({ message: 'Attendance fetched successfully', data: attendance });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
   @Get('')
   async getStaff(@Req() req, @Res() res): Promise<IStaff[]> {
     try {

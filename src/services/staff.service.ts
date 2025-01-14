@@ -18,4 +18,40 @@ export class StaffService {
     return this.staffModel.create(staff);
   }
 
+  async getAttendance(tenantId: string) {
+    try {
+      const result = await this.staffModel.aggregate([
+        // {
+        //   $match: { tenant: tenantId }, // Replace `classFilter` with the desired class value
+        // },
+        {
+          $lookup: {
+            from: 'attendances', // The name of the `attendance` collection
+            localField: '_id', // Field in `students` collection
+            foreignField: 'userId', // Field in `attendance` collection
+            as: 'attendance', // Alias for the joined data
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            firstName: 1,
+            lastName: 1,
+            profilePic: 1,
+            attendance: {
+              $map: {
+                input: '$attendance', // Process attendance array
+                as: 'record',
+                in: { date: '$$record.date', attendanceStatus: '$$record.attendanceStatus' },
+              },
+            },
+          },
+        },
+      ]);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }
