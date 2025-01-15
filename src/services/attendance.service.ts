@@ -16,16 +16,9 @@ export class AttendanceService {
     }
   }
 
-  async getAttendances(type: string, tenantId: string, academicYear: string) {
+  async updateAttendances(studentId: string, date: string, attendanceStatus: string) {
     try {
-      const qry = {
-        tenant: tenantId,
-        userType: type
-      }
-      if (academicYear) {
-        qry['academicYear'] = academicYear;
-      }
-      return await this.attendanceModel.find(qry).populate('userId');
+      return await this.attendanceModel.updateOne({ userId: studentId, date: date }, { $set: { attendanceStatus: attendanceStatus } });
     } catch (error) {
       throw error;
     }

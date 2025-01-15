@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, Post, Put, Req, Res } from "@nestjs/common";
 import { AttendanceService } from "src/services/attendance.service";
 
 
@@ -8,10 +8,10 @@ export class AttendanceController {
     private readonly attendanceService: AttendanceService
   ) {}
 
-  @Get()
-  async getAttendances(@Req() req, @Res() res) {
+  @Put('')
+  async updateAttendance(@Req() req, @Res() res) {
     try {
-      const attendance = await this.attendanceService.getAttendances(req.user.userType, req.user.tenant, req.user.academicYear);
+      const attendance = await this.attendanceService.updateAttendances(req.body.userId, req.body.date, req.body.attendanceStatus);
       return res.status(200).json(attendance);
     } catch (error) {
       return res.status(400).json(error);
