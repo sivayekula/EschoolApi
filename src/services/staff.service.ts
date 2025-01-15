@@ -38,6 +38,7 @@ export class StaffService {
             firstName: 1,
             lastName: 1,
             profilePic: 1,
+            staffType: 1,
             attendance: {
               $map: {
                 input: '$attendance', // Process attendance array
