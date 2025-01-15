@@ -34,6 +34,8 @@ export class AttendanceController {
           tenant: req.user.tenant
         }
       })
+      console.log("reqData", reqData);
+      
       const attendance = await this.attendanceService.createAttendance(reqData);
       return res.status(200).json(attendance);
     } catch (error) {
