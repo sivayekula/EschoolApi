@@ -22,7 +22,7 @@ export class AttendanceController {
   async createAttendance(@Req() req, @Body() body, @Res() res) {
     try {
       const data = JSON.parse(JSON.stringify(body))
-      const reqData = data.attendance.forEach(element => {
+      const reqData = data.attendance.map(element => {
         return {
           userId: element._id,
           userType: data.userType,
