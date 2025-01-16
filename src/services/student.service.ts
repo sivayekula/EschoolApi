@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
-import { first, last } from 'rxjs';
+import { Model } from 'mongoose';
 import { IStudent } from 'src/interfaces/student.interface';
 
 @Injectable()
@@ -63,11 +62,47 @@ export class StudentService {
           },
         },
         {
+          $lookup: {
+            from: 'academics', // The name of the `class` collection
+            localField: '_id', // Field in `students` collection
+            foreignField: 'student', // Field in `class` collection
+            as: 'academics', // Alias for the joined data
+          }
+        },
+        {
+          $unwind: {
+            path: '$academics',
+            preserveNullAndEmptyArrays: true, // In case some students don't have academic data
+          },
+        },
+        {
+          $lookup: {
+            from: 'classes', // The name of the `classes` collection
+            localField: 'academics.class', // Field in `academics` collection
+            foreignField: '_id', // Field in `classes` collection
+            as: 'classDetails', // Alias for the joined data
+          },
+        },
+        {
+          $lookup: {
+            from: 'sections', // The name of the `sections` collection
+            localField: 'academics.section', // Field in `academics` collection
+            foreignField: '_id', // Field in `sections` collection
+            as: 'sectionDetails', // Alias for the joined data
+          },
+        },
+        {
           $project: {
             _id: 1,
             firstName: 1,
             lastName: 1,
             profilePic: 1,
+            academics: {
+              classId: '$academics.classId',
+              sectionId: '$academics.sectionId',
+              classDetails: { $arrayElemAt: ['$classDetails', 0] }, // Include class details
+              sectionDetails: { $arrayElemAt: ['$sectionDetails', 0] }, // Include section details
+            },
             attendance: {
               $map: {
                 input: '$attendance', // Process attendance array

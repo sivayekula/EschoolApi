@@ -10,7 +10,7 @@ export class Academic extends mongoose.Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Class' })
   class: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Section' })
   section: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
