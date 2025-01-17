@@ -3,7 +3,7 @@ import * as mongoose from "mongoose";
 
 
 class TimeTable {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Subject" })
   subject: mongoose.Schema.Types.ObjectId
 
   @Prop({type: Date, required: true})
@@ -35,14 +35,14 @@ export class Exam {
   @Prop({ type: String, required: true })
   board: string
 
-  @Prop({ type: String, required: true })
-  classCategory: string
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "ClassCategory" })
+  classCategory: mongoose.Schema.Types.ObjectId
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Class" })
   class: mongoose.Schema.Types.ObjectId
 
-  @Prop({type: String, required: true})
-  section: string
+  @Prop({type: mongoose.Schema.Types.ObjectId, required: true, ref: "Section"})
+  section: mongoose.Schema.Types.ObjectId
 
   @Prop({ type: Date, required: true })
   startDate: Date

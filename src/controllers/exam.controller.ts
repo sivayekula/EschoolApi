@@ -22,9 +22,9 @@ export class ExamController {
   }
 
   @Get()
-  async getExams(@Res() res) {
+  async getExams(@Req() req, @Res() res) {
     try {
-      const exams = await this.examService.getExams()
+      const exams = await this.examService.getExams(req.user.tenant);
       return res.status(HttpStatus.OK).json({ message: 'Exams fetched successfully', data: exams });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

@@ -9,11 +9,19 @@ export class ExamService {
   ) {}
 
   async createExam(exam) {
-    return await this.examModel.create(exam);
+    try {
+      return await this.examModel.create(exam);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async getExams() {
-    return await this.examModel.find();
+  async getExams(tenantId: string) {
+    try {
+      return await this.examModel.find({tenant: tenantId, status: 'active'}).populate('class').populate('section').populate('classCategory');
+    } catch (error) {
+      throw error;
+    }
   }
 
   async getExam(name) {
