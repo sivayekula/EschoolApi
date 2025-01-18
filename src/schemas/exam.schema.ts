@@ -53,6 +53,9 @@ export class Exam {
   @Prop({ type: [TimeTable], required: true })
   timeTable: TimeTable[]
 
+  @Prop({ type: String, required: true, enum: ['not started', 'in progress', 'pending', 'cancelled', 'completed'], default: 'not started' })
+  examStatus: string
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: mongoose.Schema.Types.ObjectId
 

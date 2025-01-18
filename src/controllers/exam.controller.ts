@@ -25,6 +25,9 @@ export class ExamController {
   async getExams(@Req() req, @Res() res) {
     try {
       const exams = await this.examService.getExams(req.user.tenant);
+      exams.forEach((exam) => {
+        exam['passPercentage'] = 0
+      })
       return res.status(HttpStatus.OK).json({ message: 'Exams fetched successfully', data: exams });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
