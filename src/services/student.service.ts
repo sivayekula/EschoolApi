@@ -16,6 +16,15 @@ export class StudentService {
     }
   }
 
+  async createStudentBulk(createStudentDto) {
+    try {
+      let students = await this.studentModel.insertMany(createStudentDto);
+      return students;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getStudent(tenantId): Promise<IStudent[]> {
     try {
       return await this.studentModel.find({

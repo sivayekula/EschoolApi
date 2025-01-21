@@ -22,7 +22,7 @@ export class FeeService {
 
   async getFees(tenantId?: string, feeIds?: string[]) {
     let qry = tenantId ? { tenant: tenantId, status: { $ne: 'deleted' } } : { _id: { $in: feeIds } }
-    return await this.feeModel.find(qry);
+    return await this.feeModel.find(qry).populate('class').populate('academicYear').populate('feeGroup');
   }
 
   async createFee(fees) {

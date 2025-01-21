@@ -11,7 +11,7 @@ export class StaffService {
   ){}
 
   async getStaff(tenantId): Promise<IStaff[]> {
-    return this.staffModel.find({ tenant: tenantId, status: 'active' });
+    return this.staffModel.find({ tenant: tenantId, status: 'active' }).populate('subjects');
   }
 
   async saveStaff(staff: CreateStaffDto): Promise<IStaff> {

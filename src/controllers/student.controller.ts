@@ -50,6 +50,16 @@ export class StudentController {
     }
   }
 
+  @Post('bulk')
+  async createBulk(@Req() req, @Res() res, @Body() createStudentDto: CreateStudentDto[]) {
+    try {
+      const students = await this.studentService.createStudentBulk(createStudentDto);
+      return res.status(HttpStatus.CREATED).json({ message: 'Students created successfully', data: students });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
   @Get('')
   async getStudents(@Res() res, @Req() req) {
     try {

@@ -5,8 +5,8 @@ import * as mongoose from 'mongoose';
 export class Fee {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Class" })
   class: mongoose.Schema.Types.ObjectId;
-  @Prop({ type: String, required: true })
-  academicYear: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "AcademicYear" })
+  academicYear: mongoose.Schema.Types.ObjectId;
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "FeeGroup" })
   feeGroup: mongoose.Schema.Types.ObjectId;
   @Prop({ type: Boolean, required: true, default: false })

@@ -28,7 +28,7 @@ export class Staff extends mongoose.Document {
   @Prop({ type: String, required: true})
   designation: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true})
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Subject" })
   subjects: mongoose.Schema.Types.ObjectId;
   
   @Prop({ type: Object, required: true})
