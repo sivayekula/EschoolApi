@@ -25,6 +25,24 @@ export class StudentService {
     }
   }
 
+  async updateStudent(id: string, updateStudentDto) {
+    try {
+      let student = await this.studentModel.findByIdAndUpdate(id, updateStudentDto, { new: true });
+      return student;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteStudent(id: string) {
+    try {
+      let student = await this.studentModel.findByIdAndDelete(id);
+      return student;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getStudent(tenantId): Promise<IStudent[]> {
     try {
       return await this.studentModel.find({

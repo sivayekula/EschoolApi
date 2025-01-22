@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
 import { StudentService } from '../services/student.service';
 import { CreateStudentDto } from "src/dto/createStudent.dto";
 import { Public } from "./login.controller";
@@ -29,17 +29,20 @@ export class StudentController {
       requestBoy['tenant']= req.user.tenant;
       requestBoy['createdBy'] = req.user._id;
       const newStudent = await this.studentService.createStudent( requestBoy )
-      await this.academicService.createAcademic({ student: newStudent._id, class: requestBoy.academicDetails.class, section: requestBoy.academicDetails.section, academicYear: requestBoy.academicDetails.academicYear, tenant: req.user.tenant }); 
-      const studentFees = requestBoy.feesData.map(fee => {
-        return {
-          student: newStudent._id,
-          fees: fee.id,
-          tenant: req.user.tenant,
-          feeType: fee.duration,
-          dueDate: fee.dueDate,
-          discount: fee.discount,
-          paybalAmount: fee.installmentAmount,
-          amount : fee.totalFee
+      await this.academicService.createAcademic({ student: newStudent._id, class: requestBoy.academics.class, section: requestBoy.academics.section, academicYear: requestBoy.academics.academicYear, tenant: req.user.tenant }); 
+      const studentFees =[]
+       requestBoy.fees.forEach(fee => {
+        if (fee.isChecked === true) {
+          studentFees.push({
+            student: newStudent._id,
+            fees: fee.id,
+            tenant: req.user.tenant,
+            feeType: fee.feeType,
+            dueDate: fee.dueDate,
+            discount: fee.discount,
+            paybalAmount: fee.installmentAmount,
+            amount : fee.totalFee
+          })
         }
       })
       await this.studentFeesService.createFees(studentFees)
@@ -55,6 +58,45 @@ export class StudentController {
     try {
       const students = await this.studentService.createStudentBulk(createStudentDto);
       return res.status(HttpStatus.CREATED).json({ message: 'Students created successfully', data: students });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
+  @Put(':id')
+  async update(@Req() req, @Res() res, @Param('id') id: string, @Body() body) {
+    try {
+      const {fees, academics, ...result} = body
+      delete result.password
+      delete result._id
+      delete result.createdBy
+      delete result.tenant
+      delete result.__v
+      delete result.role
+      delete result.status
+      delete result.updatedAt
+      delete result.createdAt
+      const student = await this.studentService.updateStudent(id, result);
+      await this.academicService.updateAcademic(id, {class: academics.class, section: academics.section, academicYear: academics.academicYear});
+      let studentFees = await this.studentFeesService.getFeesByStudent(id);
+      await this.studentFeesService.deleteFees(studentFees.map(fee => fee._id));
+      const newFees =[]
+       fees.forEach(fee => {
+        if (fee.isChecked === true) {
+          newFees.push({
+            student: id,
+            fees: fee.id,
+            tenant: req.user.tenant,
+            feeType: fee.feeType,
+            dueDate: fee.dueDate,
+            discount: fee.discount,
+            paybalAmount: fee.installmentAmount,
+            amount : fee.totalFee
+          })
+        }
+      })
+      await this.studentFeesService.createFees(newFees)
+      return res.status(HttpStatus.OK).json({ message: 'Student updated successfully', data: student });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }

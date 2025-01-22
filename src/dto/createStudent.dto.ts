@@ -187,7 +187,7 @@ export class CreateStudentDto {
   readonly parentIdProof?: ImageDto | null;
 
   @IsNotEmptyObject()
-  readonly academicDetails: Academic;
+  readonly academics: Academic;
 
   @IsString()
   @IsNotEmpty()
@@ -205,5 +205,5 @@ export class CreateStudentDto {
   readonly isDisabled: boolean;
 
   @IsArray()
-  readonly feesData: FeesData[];
+  readonly fees: FeesData[];
 }

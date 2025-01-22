@@ -12,6 +12,14 @@ export class AcademicYearService {
     return await this.academicYearModel.findOne({ status: 'active' });
   }
 
+  async getAllAcademicYears() {
+    try {
+      return await this.academicYearModel.find();
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createAcademicYear(academicYear) {
     return await this.academicYearModel.create(academicYear);
   }

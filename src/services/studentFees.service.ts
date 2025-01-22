@@ -14,7 +14,15 @@ export class StudentFeesService {
 
   async getFeesByStudent(studentId: string) {
     try {
-      return await this.studentFeesModel.find({ student: studentId, status: 'active' });
+      return await this.studentFeesModel.find({ student: studentId, status: 'active', paymentStatus: 'pending' });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteFees(feesIds: string) {
+    try {
+      return await this.studentFeesModel.deleteMany({ _id: { $in: feesIds } });
     } catch (error) {
       throw error;
     }

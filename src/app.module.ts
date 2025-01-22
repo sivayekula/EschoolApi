@@ -67,6 +67,8 @@ import { AttendanceSchema } from './schemas/attendance.schema';
 import { MarksSchema } from './schemas/marks.schema';
 import { MarksController } from './controllers/marks.controller';
 import { MarksService } from './services/marks.service';
+import { ClassController } from './controllers/class.controller';
+import { ClassService } from './services/class.service';
 
 
 @Module({
@@ -117,6 +119,7 @@ import { MarksService } from './services/marks.service';
     TenantController,
     StudentFeesController,
     AcademicYearController,
+    ClassController,
     SectionController,
     ClassCategoryController,
     FeeGroupController,
@@ -140,6 +143,7 @@ import { MarksService } from './services/marks.service';
     TimetableService,
     TenantService,
     AcademicYearService,
+    ClassService,
     SectionService,
     ClassCategoryService,
     FeeGroupService,

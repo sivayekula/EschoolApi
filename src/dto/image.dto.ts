@@ -2,17 +2,20 @@ import { IsString } from "class-validator";
 
 export class ImageDto {
   @IsString()
-  URL: string;
+  Location: string;
 
   @IsString()
   ETag: string;
 
   @IsString()
-  type: string;
+  name: string;
   
   @IsString()
-  size: string;
+  Bucket: string;
 
   @IsString()
   key: string;
+
+  @IsString()
+  Key: string;
 }

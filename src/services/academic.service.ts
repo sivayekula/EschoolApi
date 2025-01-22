@@ -27,6 +27,14 @@ export class AcademicService {
     }
   }
 
+  async updateAcademic(studentId: string, academic): Promise<any> {
+    try {
+      return await this.academicModel.findOneAndUpdate({ student: studentId, status: 'active' }, academic, { new: true });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getAcademicByStudent(studentId: string): Promise<any> {
     try {
       return await this.academicModel.findOne({ student: studentId, status: 'active' }).populate('class');
