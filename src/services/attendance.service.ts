@@ -34,7 +34,7 @@ export class AttendanceService {
       startOfDay.setHours(0, 0, 0, 0); // Start of the day (00:00:00.000)
       const endOfDay = new Date(date);
       endOfDay.setHours(23, 59, 59, 999);
-      return await this.attendanceModel.updateOne({ userId: studentId, date: { $gte: startOfDay, $lte: endOfDay } }, { $set: { attendanceStatus: attendanceStatus } });
+      return await this.attendanceModel.findOneAndUpdate({ userId: studentId, date: { $gte: startOfDay, $lte: endOfDay } }, { $set: { attendanceStatus: attendanceStatus } });
     } catch (error) {
       throw error;
     }
