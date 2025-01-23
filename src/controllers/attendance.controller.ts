@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Put, Req, Res } from "@nestjs/common";
 import { AttendanceService } from "src/services/attendance.service";
 
 
@@ -12,9 +12,20 @@ export class AttendanceController {
   async updateAttendance(@Req() req, @Res() res) {
     try {
       const attendance = await this.attendanceService.updateAttendances(req.body.userId, req.body.date, req.body.attendanceStatus);
-      return res.status(200).json(attendance);
+      return res.status(HttpStatus.OK).json({message: 'Attendance updated successfully', data: attendance});
     } catch (error) {
-      return res.status(400).json(error);
+      return res.status(HttpStatus.BAD_REQUEST).json({message: error.message});
+    }
+  }
+
+  @Get('')
+  async getAttendance(@Req() req, @Res() res) {
+    try {
+      if(!req.query.date && !req.query.userType)throw new Error('Date and userType is required')
+      const attendance = await this.attendanceService.getAttendance(req.user.tenant, req.query.date, req.query.userType);
+      return res.status(HttpStatus.OK).json({message: 'Attendance fetched successfully', data: attendance});
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({message: error.message});
     }
   }
 
@@ -37,9 +48,9 @@ export class AttendanceController {
       console.log("reqData", reqData);
       
       const attendance = await this.attendanceService.createAttendance(reqData);
-      return res.status(200).json(attendance);
+      return res.status(HttpStatus.CREATED).json({message: 'Attendance created successfully', data: attendance});
     } catch (error) {
-      return res.status(400).json(error);
+      return res.status(HttpStatus.BAD_REQUEST).json({message: error.message});
     }
   }
 }

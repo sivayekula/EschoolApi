@@ -16,6 +16,18 @@ export class AttendanceService {
     }
   }
 
+  async getAttendance(tenantId: string, date: string, userType: string) {
+    try {
+      const startOfDay = new Date(date);
+      startOfDay.setHours(0, 0, 0, 0); // Start of the day (00:00:00.000)
+      const endOfDay = new Date(date);
+      endOfDay.setHours(23, 59, 59, 999);
+      return await this.attendanceModel.find({ tenant: tenantId, userType: userType, date: { $gte: startOfDay, $lte: endOfDay } });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async updateAttendances(studentId: string, date: string, attendanceStatus: string) {
     try {
       const startOfDay = new Date(date);
