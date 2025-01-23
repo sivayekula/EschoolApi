@@ -11,7 +11,7 @@ export class StaffController {
   ){}
 
   @Post('')
-  async saveStaff(@Req() req, @Res() res, @Body() body: CreateStaffDto): Promise<IStaff> {
+  async saveStaff(@Req() req, @Res() res, @Body() body: CreateStaffDto) {
     try {
       const requestBody = JSON.parse(JSON.stringify(body))
       requestBody['password'] = body.firstName.replace(/\s+/g, '').slice(0, 4) + new Date(body.DOB).getFullYear();

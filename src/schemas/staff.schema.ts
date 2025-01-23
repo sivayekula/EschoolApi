@@ -4,10 +4,11 @@ import * as bcrypt from 'bcrypt';
 
 @Schema({ timestamps: true })
 export class Staff extends mongoose.Document {
+
   @Prop({ type: String, required: true})
   firstName: string;
 
-  @Prop({ type: String, required: true})
+  @Prop({ type: String, required: false})
   lastName: string;
 
   @Prop({ type: String, required: true, enum: ['teaching', 'non-teaching'], default: 'teaching'})
@@ -19,7 +20,7 @@ export class Staff extends mongoose.Document {
   @Prop({ type: Date, required: true})
   DOJ: Date;
 
-  @Prop({ type: String, required: true})
+  @Prop({ type: String, required: false})
   workEmail: string;
 
   @Prop({ type: String, required: true})
@@ -28,16 +29,16 @@ export class Staff extends mongoose.Document {
   @Prop({ type: String, required: true})
   designation: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Subject" })
-  subjects: mongoose.Schema.Types.ObjectId;
+  @Prop({ type: Array, required: true})
+  subjects: Array<{value: string, label: string, disabled: boolean}>;
   
-  @Prop({ type: Object, required: true})
+  @Prop({ type: Object, required: false})
   profilePic: object;
   
   @Prop({ type: Date, required: true})
   DOB: Date;
 
-  @Prop({ type: String, required: true})
+  @Prop({ type: String, required: false})
   email: string;
 
   @Prop({ type: String, required: true})
@@ -87,20 +88,26 @@ export class Staff extends mongoose.Document {
   @Prop({ type: String, required: true})
   panNumber: string;
 
-  @Prop({ type: Object, required: true})
+  @Prop({ type: Object, required: false})
   aadharPic: object;
 
-  @Prop({ type: Object, required: true})
+  @Prop({ type: Object, required: false})
   panCardPic: object;
 
-  @Prop({ type: Object, required: true})
-  bankDetails: {
-    accountNumber: string,
-    bankName: string,
-    ifscCode: string,
-    branchName: string,
-    bankPic: string
-  }
+  @Prop({ type: String, required: true})
+  paymentMode: string;
+
+  @Prop({ type: String, required: false})
+  accountNumber: string;
+
+  @Prop({ type: String, required: false})
+  bankName: string;
+
+  @Prop({ type: String, required: false})
+  ifscCode: string;
+
+  @Prop({ type: String, required: false})
+  bankPassbook: string
 
   @Prop({ type: Number, required: true})
   amount: number;

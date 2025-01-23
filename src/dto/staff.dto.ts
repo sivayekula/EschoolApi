@@ -1,4 +1,5 @@
-import { IsBoolean, IsDate, IsEmail, IsMobilePhone, IsNotEmpty, IsNotEmptyObject, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsArray, IsBoolean, IsDate, IsEmail, IsEnum, IsMobilePhone, IsNotEmpty, IsNotEmptyObject, IsNumber, IsOptional, IsString } from "class-validator";
+import { ImageDto } from "./image.dto";
 
 
 class Address {
@@ -19,14 +20,34 @@ class Address {
   readonly pincode: string;
 }
 
+class Subjects {
+  @IsString()
+  @IsOptional()
+  readonly label: string;
+
+  @IsString()
+  @IsOptional()
+  readonly value: string;
+
+  @IsBoolean()
+  @IsOptional()
+  readonly disabled: boolean;
+
+}
+
 export class CreateStaffDto {
   @IsString()
   @IsNotEmpty()
   readonly firstName: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly lastName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsEnum(['teaching', 'non-teaching'])
+  readonly staffType: string;
 
   @IsString()
   @IsNotEmpty()
@@ -37,31 +58,31 @@ export class CreateStaffDto {
   readonly DOJ: Date;
 
   @IsEmail()
-  @IsNotEmpty()
+  @IsOptional()
   readonly workEmail: string;
 
   @IsString()
   @IsNotEmpty()
   readonly designation: string;
 
-  @IsString()
-  @IsNotEmpty()
-  readonly subjects: string;
+  @IsArray()
+  @IsOptional()
+  readonly subjects: Subjects[];
 
-  @IsNotEmptyObject()
-  readonly profilePic: object;
+  @IsOptional()
+  readonly profilePic: ImageDto;
 
   @IsString()
   @IsNotEmpty()
   readonly DOB: Date;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsEmail()
+  @IsOptional()
   readonly email: string;
 
-  @IsMobilePhone()
-  @IsOptional()
-  readonly mobileNumber: string;
+  @IsNumber()
+  @IsNotEmpty()
+  readonly mobileNumber: number;
 
   @IsString()
   @IsNotEmpty()
@@ -88,14 +109,30 @@ export class CreateStaffDto {
   @IsNotEmpty()
   readonly panNumber: string;
 
-  @IsNotEmptyObject()
-  readonly aadharPic: object;
+  @IsOptional()
+  readonly aadharPic: ImageDto;
 
-  @IsNotEmptyObject()
-  readonly panCardPic: object;
+  @IsOptional()
+  readonly panCardPic: ImageDto;
 
-  @IsNotEmptyObject()
-  readonly bankDetails: object;
+  @IsString()
+  @IsNotEmpty()
+  readonly paymentMode: string;
+
+  @IsString()
+  @IsOptional()
+  readonly bankName: string;
+
+  @IsString()
+  @IsOptional()
+  readonly accountNumber: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly ifscCode: string;
+
+  @IsOptional()
+  readonly bankPassbook: ImageDto;
 
   @IsNumber()
   @IsNotEmpty()
