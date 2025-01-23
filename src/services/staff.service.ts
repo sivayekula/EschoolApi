@@ -14,8 +14,20 @@ export class StaffService {
     return this.staffModel.find({ tenant: tenantId, status: 'active' }).populate('subjects');
   }
 
-  async saveStaff(staff: CreateStaffDto): Promise<IStaff> {
-    return this.staffModel.create(staff);
+  async saveStaff(staff: CreateStaffDto) {
+    try {
+      return this.staffModel.create(staff);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async saveStaffBulk(staff: CreateStaffDto[]) {
+    try {
+      return this.staffModel.insertMany(staff);
+    } catch (error) {
+      throw error;
+    }
   }
 
   async getAttendance(tenantId: string) {

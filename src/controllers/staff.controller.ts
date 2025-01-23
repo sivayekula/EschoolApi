@@ -24,6 +24,22 @@ export class StaffController {
     }
   }
 
+  @Post('bulk')
+  async saveStaffBulk(@Req() req, @Res() res, @Body() body: CreateStaffDto[]) {
+    try {
+      const requestBody = JSON.parse(JSON.stringify(body))
+      requestBody.forEach((staff) => {
+        staff['password'] = staff.firstName.replace(/\s+/g, '').slice(0, 4) + new Date(staff.DOB).getFullYear();
+        staff['tenant'] = req.user.tenant
+        staff['createdBy'] = req.user._id
+      })
+      const staff = await this.staffService.saveStaff(requestBody);
+      res.status(HttpStatus.CREATED).json({ message: 'Staff created successfully', data: staff });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
   @Get('attendance')
   async getAttendance(@Req() req, @Res() res) {
     try {

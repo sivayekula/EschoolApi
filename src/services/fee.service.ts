@@ -7,9 +7,9 @@ export class FeeService {
     @Inject('FeeModel') private readonly feeModel
   ) {}
 
-  async getFee(classId?: string) {
+  async getFee(tenantId: string, classId?: string, feeName?: string) {
     try {
-      const qry = classId ? {$or:[{ class: classId}, {isGlobal: true}]} : {};
+      const qry = classId && feeName ? { class: classId, name: feeName, tenant: tenantId } : classId ? {$or:[{ class: classId}, {isGlobal: true}], tenant: tenantId} : {tenant: tenantId};
       return await this.feeModel.find(qry).populate('class');
     } catch (error) {
       throw error;
