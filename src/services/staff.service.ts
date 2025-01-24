@@ -10,8 +10,16 @@ export class StaffService {
     @InjectModel('Staff') private staffModel: Model<IStaff>
   ){}
 
-  async getStaff(tenantId): Promise<IStaff[]> {
+  async getStaff(tenantId){
     return this.staffModel.find({ tenant: tenantId, status: 'active' }).populate('subjects');
+  }
+
+  async getStaffById(id: string){
+    try{
+      return this.staffModel.findById(id).populate('subjects');
+    } catch (error) {
+      throw error;
+    }
   }
 
   async saveStaff(staff: CreateStaffDto) {

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Param, Post, Req, Res } from "@nestjs/common";
 import { CreateStaffDto } from "src/dto/staff.dto";
 import { IStaff } from "src/interfaces/staff.interface";
 import { StaffService } from "src/services/staff.service";
@@ -51,9 +51,19 @@ export class StaffController {
   }
 
   @Get('')
-  async getStaff(@Req() req, @Res() res): Promise<IStaff[]> {
+  async getStaff(@Req() req, @Res() res) {
     try {
       const staff = await this.staffService.getStaff(req.user.tenant);
+      return res.status(HttpStatus.OK).json({ message: 'Staff fetched successfully', data: staff });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
+  @Get(':id')
+  async getStaffById(@Res() res, @Param('id') id: string) {
+    try {
+      const staff = await this.staffService.getStaffById(id);
       return res.status(HttpStatus.OK).json({ message: 'Staff fetched successfully', data: staff });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
