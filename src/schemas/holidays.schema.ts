@@ -24,3 +24,12 @@ export class Holidays {
 
 export const HolidaysSchema = SchemaFactory.createForClass(Holidays);
 
+// Middleware to normalize the date before saving
+HolidaysSchema.pre('save', function (next) {
+  const doc = this;
+  // Normalize the date to midnight (start of the day)
+  doc.startDate = new Date(doc.startDate.setHours(0, 0, 0, 0));
+  doc.endDate = new Date(doc.endDate.setHours(23, 59, 59, 999));
+  next();
+});
+
