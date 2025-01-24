@@ -23,7 +23,7 @@ export class HolidaysService {
       const endOfDay = new Date(endDate);
       endOfDay.setHours(23, 59, 59, 999);
       let qry = id ? { _id: id } : { startDate : { $gte: startOfDay}, endDate : { $lte: endOfDay } };
-      return await this.holidayModel.finOne(qry);
+      return await this.holidayModel.findOne(qry);
     } catch (error) {
       throw error;
     }
