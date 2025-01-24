@@ -128,7 +128,7 @@ export class CreateStaffDto {
   readonly accountNumber: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly ifscCode: string;
 
   @IsOptional()
