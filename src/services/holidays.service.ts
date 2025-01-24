@@ -31,7 +31,7 @@ export class HolidaysService {
 
   async updateHoliday(id: string, holidayObj) {
     try {
-      return await this.holidayModel.findByIdAndUpdate(id, holidayObj);
+      return await this.holidayModel.findByIdAndUpdate({ _id: id}, holidayObj);
     } catch (error) {
       throw error;
     }
