@@ -22,6 +22,22 @@ export class StaffService {
     }
   }
 
+  async updateStaff(id: string, staff){
+    try{
+      return this.staffModel.findByIdAndUpdate({_id: id}, staff);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteStaff(id: string) {
+    try{
+      return this.staffModel.findByIdAndUpdate({_id: id}, { status: 'inactive' });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async saveStaff(staff: CreateStaffDto) {
     try {
       return this.staffModel.create(staff);

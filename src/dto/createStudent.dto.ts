@@ -119,8 +119,8 @@ export class CreateStudentDto {
   readonly firstName: string;
 
   @IsString()
-  @IsNotEmpty()
   @MinLength(3)
+  @IsOptional()
   readonly lastName: string;
 
   @IsString()
