@@ -18,7 +18,7 @@ constructor(
   @Post('')
   async login(@Body() loginObj: LoginDto, @Res() res) {
     try {
-      const user = await this.authService.validateUser(loginObj.email, loginObj.mobileNumber, loginObj.password, loginObj.userType);
+      const user = await this.authService.validateUser(loginObj.loginId, loginObj.password, loginObj.userType);
       let permissions = await this.permissionService.getPermission(user.role, user.tenant);
       const result = {
         ...user,

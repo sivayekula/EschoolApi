@@ -1,17 +1,13 @@
 import { IsEmail, IsNotEmpty, IsString, registerDecorator, ValidationOptions, ValidationArguments, IsOptional } from "class-validator";
 
 export class LoginDto {
-  @IsOptional()
-  @IsString()
-  readonly email?: string;
+  // @IsEmailOrMobile({
+  //   message: 'Either a valid email or mobile number must be provided.',
+  // })
 
-  @IsOptional()
   @IsString()
-  readonly mobileNumber?: string;
-
-  @IsEmailOrMobile({
-    message: 'Either a valid email or mobile number must be provided.',
-  })
+  @IsNotEmpty()
+  readonly loginId: string;
 
   @IsString()
   @IsNotEmpty()
