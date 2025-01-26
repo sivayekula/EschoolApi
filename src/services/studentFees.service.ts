@@ -26,9 +26,17 @@ export class StudentFeesService {
     }
   }
 
-  async deleteFees(feesIds: string) {
+  async deleteFees(feesId: string) {
     try {
-      return await this.studentFeesModel.deleteMany({ _id: { $in: feesIds } });
+      return await this.studentFeesModel.delete({ _id: feesId });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateFees(feesId: string, fees) {
+    try {
+      return await this.studentFeesModel.findOneAndUpdate({ _id: feesId }, fees);
     } catch (error) {
       throw error;
     }

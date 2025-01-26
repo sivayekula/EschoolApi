@@ -149,23 +149,24 @@ export class StudentController {
         section: academics.section,
         academicYear: academics.academicYear,
       });
-      let studentFees = await this.studentFeesService.getFeesByStudent(id);
-      await this.studentFeesService.deleteFees(
-        studentFees.map((fee) => fee._id),
-      );
+      let studentFee = await this.studentFeesService.getFeesByStudent(id);
       const newFees = getFees(fees);
-      if (newFees.length > 0) {
-        const studentFees = {
+      if (studentFee) {
+        await this.studentFeesService.updateFees(studentFee._id, {
+          feeList: newFees
+        });
+      } else {
+        await this.studentFeesService.createFees({
           student: id,
           tenant: req.user.tenant,
           feeList: newFees
-        }
-        await this.studentFeesService.createFees(studentFees);
+        });
       }
       return res
         .status(HttpStatus.OK)
         .json({ message: 'Student updated successfully', data: student });
     } catch (error) {
+      console.log(error);
       return res
         .status(HttpStatus.BAD_REQUEST)
         .json({ message: error.message });
