@@ -1,38 +1,44 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 
-
-@Schema({ timestamps: true })
-export class StudentFees  extends mongoose.Document {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Student", index: true })
-  student: mongoose.Schema.Types.ObjectId;
+export class FeeList  extends mongoose.Document{
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Fee", index: true })
-  fees: mongoose.Schema.Types.ObjectId;
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, index: true })
-  tenant: mongoose.Schema.Types.ObjectId;
+  fee: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: String, required: true })
-  feeType: string;
+  duration: string; // installment or one time
 
-  @Prop({ type: Date, required: true })
+  @Prop({ type: Date, required: false })
   dueDate: Date;
 
   @Prop({ type: Number, required: true, default: 0 })
   discount: number;
 
   @Prop({ type: Number, required: true })
-  paybalAmount: number;
+  paybalAmount: number; // to be paid afeter discount
 
   @Prop({ type: Number, required: true, default: 0 })
   paidAmount: number;
 
-  @Prop({ type: Number, required: true })
-  amount: number;
+  @Prop({ type: String, required: true, default: 'pending', enum: ['pending', 'overdue', 'paid'] })
+  paymentStatus: string
 
-  @Prop({ type: String, required: true, default: 'pending' })
-  paymentStatus: string;
+}
+
+@Schema({ timestamps: true })
+export class StudentFees  extends mongoose.Document {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Student", index: true })
+  student: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: [FeeList], required: true })
+  feeList: FeeList[]
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, index: true })
+  tenant: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: String, required: true, default: 'pending', enum: ['pending', 'overdue', 'paid'] })
+  paymentStatus: string
 
   @Prop({ type: String, required: true, default: 'active' })
   status: string;

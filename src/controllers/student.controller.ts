@@ -12,11 +12,26 @@ import {
 } from '@nestjs/common';
 import { StudentService } from '../services/student.service';
 import { CreateStudentDto } from 'src/dto/createStudent.dto';
-import { Public } from './login.controller';
 import { RoleService } from 'src/services/role.service';
 import { AcademicService } from 'src/services/academic.service';
 import { FeeService } from 'src/services/fee.service';
 import { StudentFeesService } from 'src/services/studentFees.service';
+
+function getFees(fees) {
+  const newFees = [];
+  for (let fee of fees) {
+    if (fee.isChecked === true) {
+      newFees.push({
+        fee: fee.id,
+        duration: fee.feeType,
+        dueDate: fee.dueDate,
+        discount: fee.discount,
+        paybalAmount: fee.installmentAmount
+      });
+    }
+  }
+  return newFees;
+}
 
 @Controller('student')
 export class StudentController {
@@ -28,7 +43,6 @@ export class StudentController {
     private readonly studentFeesService: StudentFeesService,
   ) {}
 
-  @Public()
   @Post('')
   async create(
     @Req() req,
@@ -52,22 +66,15 @@ export class StudentController {
         academicYear: requestBoy.academics.academicYear,
         tenant: req.user.tenant,
       });
-      const studentFees = [];
-      requestBoy.fees.forEach((fee) => {
-        if (fee.isChecked === true) {
-          studentFees.push({
-            student: newStudent._id,
-            fees: fee.id,
-            tenant: req.user.tenant,
-            feeType: fee.feeType,
-            dueDate: fee.dueDate,
-            discount: fee.discount,
-            paybalAmount: fee.installmentAmount,
-            amount: fee.totalFee,
-          });
+      const fees = getFees(requestBoy.fees);
+      if (fees.length > 0) {
+        const studentFees = {
+          student: newStudent._id,
+          tenant: req.user.tenant,
+          feeList: fees
         }
-      });
-      await this.studentFeesService.createFees(studentFees);
+        await this.studentFeesService.createFees(studentFees);
+      }
       return res
         .status(HttpStatus.CREATED)
         .json({ message: 'Student created successfully', data: newStudent });
@@ -103,20 +110,15 @@ export class StudentController {
         tenant: req.user.tenant,
       });
       const feeData = await this.feeService.getFee(req.user.tenant, student.academics.class, 'tution');
-      const studentFees = [];
-      feeData.forEach((fee) => {
-          studentFees.push({
-            student: newStudent._id,
-            fees: feeData._id,
-            tenant: req.user.tenant,
-            feeType: 'oneTime',
-            dueDate: feeData.dueDate || new Date(),
-            discount: feeData.discount || 0,
-            paybalAmount: feeData.amount,
-            amount: feeData.amount,
-          });
-      });
-      await this.studentFeesService.createFees(studentFees);
+      const fees = getFees(feeData);
+      if (fees.length === 0) {
+        const studentFees = {
+          student: newStudent._id,
+          tenant: req.user.tenant,
+          feeList: fees
+        }
+        await this.studentFeesService.createFees(studentFees);
+      }
     }
       return res
         .status(HttpStatus.CREATED)
@@ -151,22 +153,15 @@ export class StudentController {
       await this.studentFeesService.deleteFees(
         studentFees.map((fee) => fee._id),
       );
-      const newFees = [];
-      fees.forEach((fee) => {
-        if (fee.isChecked === true) {
-          newFees.push({
-            student: id,
-            fees: fee.id,
-            tenant: req.user.tenant,
-            feeType: fee.feeType,
-            dueDate: fee.dueDate,
-            discount: fee.discount,
-            paybalAmount: fee.installmentAmount,
-            amount: fee.totalFee,
-          });
+      const newFees = getFees(fees);
+      if (newFees.length > 0) {
+        const studentFees = {
+          student: id,
+          tenant: req.user.tenant,
+          feeList: newFees
         }
-      });
-      await this.studentFeesService.createFees(newFees);
+        await this.studentFeesService.createFees(studentFees);
+      }
       return res
         .status(HttpStatus.OK)
         .json({ message: 'Student updated successfully', data: student });
