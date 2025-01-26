@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
+import path from "path";
 
 @Injectable()
 export class MarksService {
@@ -17,7 +18,7 @@ export class MarksService {
 
     async getMarks(examId: string) {
         try {
-            return await this.marksModel.find({exam: examId}).populate('student').populate('class').populate('section').populate('academicYear').populate('exam');
+            return await this.marksModel.findOne({exam: examId}).populate('academicYear').populate({path: 'exam', populate: [{path: 'section'}, {path: 'class'}, {path: 'classCategory'}]}).populate({path: 'marksDetails.student', select: 'firstName lastName profilePic admissionNumber', model: 'Student'});
         } catch (error) {
             throw error;
         }

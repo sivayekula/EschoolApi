@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -71,7 +72,6 @@ export class StudentController {
         .status(HttpStatus.CREATED)
         .json({ message: 'Student created successfully', data: newStudent });
     } catch (error) {
-      console.log(error);
       return res
         .status(HttpStatus.BAD_REQUEST)
         .json({ message: error.message });
@@ -236,10 +236,19 @@ export class StudentController {
         .status(HttpStatus.OK)
         .json({ message: 'Student fetched successfully', data: data });
     } catch (error) {
-      console.log(error);
       return res
         .status(HttpStatus.BAD_REQUEST)
         .json({ message: error.message });
+    }
+  }
+
+  @Delete(':id')
+  async delete(@Res() res, @Param('id') id: string) {
+    try {
+      await this.studentService.deleteStudent(id);
+      return res.status(HttpStatus.OK).json({ message: 'Student deleted successfully' });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }
   }
 }

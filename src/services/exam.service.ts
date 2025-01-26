@@ -27,4 +27,20 @@ export class ExamService {
   async getExam(name) {
     return await this.examModel.findById({name: name});
   }
+
+  async updateExam(id, exam) {
+    try {
+      return await this.examModel.findByIdAndUpdate({_id: id}, exam);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteExam(id) {
+    try {
+      return await this.examModel.findByIdAndUpdate({_id: id}, { status: 'inactive' });
+    } catch (error) {
+      throw error;
+    }
+  } 
 }

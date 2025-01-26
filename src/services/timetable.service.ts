@@ -16,7 +16,35 @@ export class TimetableService {
     }
   }
 
+  async getTimetable(id: string) {
+    try {
+      return await this.timetableModel.findById(id).populate('class').populate('section').populate('classTeacher').populate('category');
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createTimetable(timetable) {
-    return await this.timetableModel.create(timetable);
+    try {
+      return await this.timetableModel.create(timetable);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateTimetable(id: string, timetable) {
+    try {
+      return await this.timetableModel.findByIdAndUpdate({_id: id}, timetable);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteTimetable(id: string) {
+    try {
+      return await this.timetableModel.findByIdAndUpdate({_id: id}, { status: 'inactive' });
+    } catch (error) {
+      throw error;
+    }
   }
 }
