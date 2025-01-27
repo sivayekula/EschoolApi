@@ -25,8 +25,10 @@ function getFees(fees) {
         fee: fee.id,
         duration: fee.feeType,
         dueDate: fee.dueDate,
+        paidAmount: 0,
         discount: fee.discount,
-        paybalAmount: fee.installmentAmount
+        paybalAmount: fee.installmentAmount,
+        paymentStatus: 'pending'
       });
     }
   }
