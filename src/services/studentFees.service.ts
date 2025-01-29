@@ -1,8 +1,6 @@
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { model } from 'mongoose';
-import path from 'path';
 
 @Injectable()
 export class StudentFeesService {
@@ -20,7 +18,8 @@ export class StudentFeesService {
 
   async getFeesByStudent(studentId: string) {
     try {
-      return await this.studentFeesModel.findOne({ student: studentId, status: 'active', paymentStatus: 'pending' }).populate({path: 'feeList.fee', model: 'Fee'});
+      let qry = { student: studentId, status: 'active' }
+      return await this.studentFeesModel.findOne(qry).populate({path: 'feeList.fee', model: 'Fee'});
     } catch (error) {
       throw error;
     }

@@ -19,7 +19,7 @@ export class TenantService {
 
   async getTenant(tenantId) {
     try {
-      return await this.tenantModel.findById(tenantId);
+      return await this.tenantModel.findById({_id:tenantId});
     } catch (error) {
       throw error;
     }

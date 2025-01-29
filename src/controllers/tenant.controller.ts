@@ -19,6 +19,16 @@ export class TenantController {
   }
 
   @Get('')
+  async getTenant(@Req() req, @Res() res) {
+    try {
+      const tenant = await this.tenantService.getTenant(req.user.tenant);
+      return res.status(HttpStatus.OK).json({ message: 'Tenant fetched successfully', data: tenant });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
+  @Get('list')
   async getTenants(@Res() res) {
     try {
       const tenants = await this.tenantService.getTenants();

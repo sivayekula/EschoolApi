@@ -1,18 +1,21 @@
 import { Body, Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/common";
+import { AcademicService } from "src/services/academic.service";
 import { StudentFeesService } from "src/services/studentFees.service";
 
 
 @Controller('studentFees')
 export class StudentFeesController {
   constructor(
-    private readonly studentFeesService: StudentFeesService
+    private readonly studentFeesService: StudentFeesService,
+    private readonly academicService: AcademicService
   ) {}
 
   @Get(':id')
   async getFeesByStudent(@Req() req, @Res() res) {
     try {
       const fees = await this.studentFeesService.getFeesByStudent(req.params.id);
-      return res.status(HttpStatus.OK).json({ message: 'Fees fetched successfully', data: fees });
+      const academicDetails = await this.academicService.getAcademicByStudent(req.params.id);
+      return res.status(HttpStatus.OK).json({ message: 'Fees fetched successfully', data: {fees: fees, academic: academicDetails} });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }
