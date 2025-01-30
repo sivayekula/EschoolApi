@@ -69,6 +69,8 @@ import { MarksController } from './controllers/marks.controller';
 import { MarksService } from './services/marks.service';
 import { ClassController } from './controllers/class.controller';
 import { ClassService } from './services/class.service';
+import { TransactionSchema } from './schemas/transactions.schema';
+import { TransactionsService } from './services/transactions.service';
 
 
 @Module({
@@ -97,6 +99,7 @@ import { ClassService } from './services/class.service';
       {name: 'Permission', schema: PermissionsSchema },
       {name: 'Attendance', schema: AttendanceSchema },
       {name: 'Marks', schema: MarksSchema },
+      {name: 'Transaction', schema: TransactionSchema }
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -151,6 +154,7 @@ import { ClassService } from './services/class.service';
     PermissionService,
     AttendanceService,
     MarksService,
+    TransactionsService,
     AuthService, 
     {
       provide: APP_GUARD,
