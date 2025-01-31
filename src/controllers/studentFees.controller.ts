@@ -37,7 +37,6 @@ export class StudentFeesController {
   async collectFees(@Req() req, @Res() res) {
     try {
       const studentFees = await this.studentFeesService.getFeesByStudent(req.body.studentId);
-      console.log("studentFees", studentFees);
       const studentNewFees= [];
       const transactions = [];
       for(let fee of req.body.fees) {
@@ -82,8 +81,8 @@ export class StudentFeesController {
         amount: transactions.reduce((acc, curr) => acc + curr.amount, 0),
         proof: req.body.transactionProof
       }
-      await this.studentFeesService.updateFees(studentFees._id, studentFees);
       const transaction = await this.transactionService.createTransaction(transactionObj);
+      await this.studentFeesService.updateFees(studentFees._id, studentFees);
       return res.status(HttpStatus.OK).json({ message: 'Fees collected successfully', data: transaction});
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
