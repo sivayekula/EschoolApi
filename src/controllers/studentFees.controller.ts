@@ -40,7 +40,8 @@ export class StudentFeesController {
       const studentNewFees= [];
       const transactions = [];
       for(let fee of req.body.fees) {
-        const studentFee = studentFees.feeList.findIndex((item) => item.fee.toString() === fee._id.toString());
+        const studentFee = studentFees.feeList.findIndex((item) => {
+          return item.fee._id.toString() === fee._id.toString()});
         if (fee.paymentAmount*1 > 0) {
           transactions.push({
             amount: fee.paymentAmount,
@@ -48,7 +49,7 @@ export class StudentFeesController {
           })
         }
         if (studentFee !== -1) {
-          let paidTill= fee.paymentAmount*1 > 0 ? fee.paidAmount + studentFees.feeList[studentFee].paidAmount : fee.paidAmount
+          let paidTill= (fee.paymentAmount*1) + studentFees.feeList[studentFee].paidAmount
           studentNewFees.push({
             ...fee,
             dueDate: fee.dueDate,
@@ -61,10 +62,10 @@ export class StudentFeesController {
             fee: fee._id,
             duration: fee.duration,
             dueDate: fee.dueDate,
-            paidAmount: fee.paymentAmount,
-            pendingAmount: fee.totalAmount,
-            totalAmount: fee.totalAmount,
-            paymentStatus: 'pending'
+            paidAmount: fee.paidAmount*1,
+            pendingAmount: fee.pendingAmount*1,
+            paybalAmount: fee.paybalAmount*1,
+            paymentStatus: fee.paybalAmount === fee.paymentAmount ? 'paid' : 'pending'
           });
         }
       }
