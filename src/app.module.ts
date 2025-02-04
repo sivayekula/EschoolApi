@@ -74,6 +74,7 @@ import { TransactionsService } from './services/transactions.service';
 import { DesignationSchema } from './schemas/designation.schema';
 import { DesignationController } from './controllers/designation.controller';
 import { DesignationService } from './services/designation.service';
+import { TransactionsController } from './controllers/transactions.controller';
 
 
 @Module({
@@ -135,6 +136,7 @@ import { DesignationService } from './services/designation.service';
     PermissionController,
     AttendanceController,
     MarksController,
+    TransactionsController,
     DesignationController
   ],
   providers: [ 

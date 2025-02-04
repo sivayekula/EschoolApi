@@ -18,7 +18,7 @@ export class TransactionsService {
 
   async getTransactions(studentId: string) {
     try {
-      return await this.transactionModel.find({ student: studentId });
+      return await this.transactionModel.find({ student: studentId }).populate({path: 'fees.fee', model: 'Fee'});
     } catch (error) {
       return error;
     }

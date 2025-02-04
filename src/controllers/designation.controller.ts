@@ -7,8 +7,18 @@ export class DesignationController {
   constructor(
     private readonly designationService: DesignationService
   ) {}
+
+  @Get('/:id')
+  async getDesignation(@Req() req, @Res() res) {
+    try {
+      let designation = await this.designationService.getDesignation(req.params.id)
+      return res.status(HttpStatus.OK).json({ message: 'Designation fetched successfully', data: designation });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json(error);
+    }
+  }
   
-  @Get(':staffType?')
+  @Get('/type/:staffType?')
   async getDesignations(@Req() req, @Res() res) {
     try {
       let designations = await this.designationService.getDesignations(req.params.staffType)

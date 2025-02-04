@@ -17,7 +17,7 @@ export class Transaction {
   studentFee: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: [FeeList], required: true })
-  feeIds: FeeList[];
+  fees: FeeList[];
 
   @Prop({ type: String, required: false })
   transactionId: string;

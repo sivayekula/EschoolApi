@@ -44,7 +44,7 @@ export class StudentFeesController {
           return item.fee._id.toString() === fee._id.toString()});
         if (fee.paymentAmount*1 > 0) {
           transactions.push({
-            amount: fee.paymentAmount,
+            amount: fee.paymentAmount*1,
             fee: fee._id,
           })
         }
@@ -52,6 +52,7 @@ export class StudentFeesController {
           let paidTill= (fee.paymentAmount*1) + studentFees.feeList[studentFee].paidAmount
           studentNewFees.push({
             ...fee,
+            fee: fee._id,
             dueDate: fee.dueDate,
             paidAmount: paidTill,
             pendingAmount: studentFees.feeList[studentFee].paybalAmount - paidTill,
@@ -74,7 +75,7 @@ export class StudentFeesController {
         student: studentFees.student,
         tenant: req.user.tenant,
         studentFee: studentFees._id,
-        feeIds: transactions,
+        fees: transactions,
         transactionId: req.body.transactionId,
         transactionType: req.body.paymentMode,
         transactionBank: req.body.bank,

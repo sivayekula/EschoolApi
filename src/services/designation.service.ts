@@ -17,6 +17,14 @@ export class DesignationService {
     }
   }
 
+  async getDesignation(id: string) {
+    try {
+      return await this.designationModel.findById({_id: id});
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createDesignation(designation: any) {
     try {
       return this.designationModel.create(designation);
