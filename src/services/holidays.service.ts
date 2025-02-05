@@ -45,4 +45,12 @@ export class HolidaysService {
     }
   }
 
+  async deleteHoliday(id: string) {
+    try {
+      return await this.holidayModel.findByIdAndUpdate({ _id: id}, { status: 'inactive' });
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

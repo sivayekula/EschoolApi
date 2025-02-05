@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import moment from "moment";
 import * as mongoose from "mongoose";
 
 class attendance {
@@ -38,11 +39,3 @@ export class Attendance {
 }
 
 export const AttendanceSchema = SchemaFactory.createForClass(Attendance);
-
-// Middleware to normalize the date before saving
-AttendanceSchema.pre('save', function (next) {
-  const doc = this;
-  // Normalize the date to midnight (start of the day)
-  doc.date = new Date(doc.date.setHours(0, 0, 0, 0));
-  next();
-});

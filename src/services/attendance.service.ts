@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { model } from "mongoose";
+import * as moment from "moment";
 
 
 @Injectable()
@@ -17,13 +17,19 @@ export class AttendanceService {
     }
   }
 
-  async getAttendance(tenantId: string, date: string, userType: string) {
+  async getAttendance(tenantId: string, date?: string, userType?: string, month?: string, year?: string) {
     try {
-      const startOfDay = new Date(date);
-      startOfDay.setHours(0, 0, 0, 0); // Start of the day (00:00:00.000)
-      const endOfDay = new Date(date);
-      endOfDay.setHours(23, 59, 59, 999);
-      return await this.attendanceModel.find({ tenant: tenantId, userType: userType, date: { $gte: startOfDay, $lte: endOfDay } }).populate({path: 'attendance.userId', model: userType === 'student' ? 'Student' : 'Staff'});
+      let startDate;
+      let endDate;
+      if (date) {
+        startDate = moment(date).startOf('day')
+        endDate = moment(date).endOf('day')
+      } else {
+        startDate = moment(`${year}/${month}/01`, 'YYYY/MM/DD')
+        endDate = moment(startDate).clone().endOf('month')
+      }
+      let qry = { tenant: tenantId, userType: userType, date: { $gte: startDate, $lte: endDate } }
+      return await this.attendanceModel.find(qry).populate({path: 'attendance.userId', model: userType === 'student' ? 'Student' : 'Staff'});
     } catch (error) {
       throw error;
     }

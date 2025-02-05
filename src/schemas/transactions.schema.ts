@@ -10,14 +10,17 @@ class FeeList {
 @Schema({ timestamps: true })
 export class Transaction {
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Student", index: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Student", index: true })
   student: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "StudentFees", index: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "StudentFees", index: true })
   studentFee: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ type: [FeeList], required: true })
+  @Prop({ type: [FeeList], required: false })
   fees: FeeList[];
+
+  @Prop({ type: String, required: true, enum: ['credit', 'debit'], default: 'credit' })
+  transactionMode: string;
 
   @Prop({ type: String, required: false })
   transactionId: string;

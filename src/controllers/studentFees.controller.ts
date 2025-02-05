@@ -39,6 +39,8 @@ export class StudentFeesController {
       const studentFees = await this.studentFeesService.getFeesByStudent(req.body.studentId);
       const studentNewFees= [];
       const transactions = [];
+      let totalAmount = 0;
+      let paidAmount = 0;
       for(let fee of req.body.fees) {
         const studentFee = studentFees.feeList.findIndex((item) => {
           return item.fee._id.toString() === fee._id.toString()});
@@ -50,6 +52,8 @@ export class StudentFeesController {
         }
         if (studentFee !== -1) {
           let paidTill= (fee.paymentAmount*1) + studentFees.feeList[studentFee].paidAmount
+          totalAmount += studentFees.feeList[studentFee].paybalAmount*1
+          paidAmount += paidTill*1
           studentNewFees.push({
             ...fee,
             fee: fee._id,
@@ -59,6 +63,8 @@ export class StudentFeesController {
             paymentStatus: paidTill === studentFees.feeList[studentFee].paybalAmount ? 'paid' : 'pending'
           })
         } else {
+          totalAmount += fee.paybalAmount*1
+          paidAmount += fee.paymentAmount*1
           studentNewFees.push({
             fee: fee._id,
             duration: fee.duration,
@@ -71,6 +77,7 @@ export class StudentFeesController {
         }
       }
       studentFees.feeList = studentNewFees;
+      studentFees.paymentStatus = totalAmount === paidAmount ? 'paid' : 'pending';
       const transactionObj = {
         student: studentFees.student,
         tenant: req.user.tenant,

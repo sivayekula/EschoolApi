@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
+import { Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
 import { HolidaysService } from "src/services/holidays.service";
 
 
@@ -48,6 +48,16 @@ export class HolidaysController {
     try {
       const holidays = await this.holidayService.updateHoliday(id, req.body);
       return res.status(HttpStatus.OK).json({ message: 'Holidays updated successfully', data: holidays });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
+  @Delete(':id')
+  async deleteHolidays(@Res() res, @Param('id') id: string) {
+    try {
+      await this.holidayService.deleteHoliday(id);
+      return res.status(HttpStatus.OK).json({ message: 'Holidays deleted successfully' });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }

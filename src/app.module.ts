@@ -75,6 +75,7 @@ import { DesignationSchema } from './schemas/designation.schema';
 import { DesignationController } from './controllers/designation.controller';
 import { DesignationService } from './services/designation.service';
 import { TransactionsController } from './controllers/transactions.controller';
+import * as moment from 'moment';
 
 
 @Module({
@@ -110,7 +111,7 @@ import { TransactionsController } from './controllers/transactions.controller';
       secret: process.env.JWT_SECRET || 'your-secret-key',
       signOptions: { expiresIn: '24h' },
     }),
-    TerminusModule
+    TerminusModule,
   ],
   controllers: [ 
     StudentController, 
@@ -163,7 +164,11 @@ import { TransactionsController } from './controllers/transactions.controller';
     MarksService,
     TransactionsService,
     DesignationService,
-    AuthService, 
+    {
+      provide: 'MomentWrapper',
+      useValue: moment
+    },
+    AuthService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
