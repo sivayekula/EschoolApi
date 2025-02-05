@@ -42,4 +42,12 @@ export class AcademicService {
       throw error;
     }
   }
+
+  async deleteAcademic(studentId: string) {
+    try {
+      return await this.academicModel.findOneAndUpdate({ student: studentId, status: 'active' }, { status: 'inactive' });
+    } catch (error) {
+      throw error;
+    }
+  }
 }

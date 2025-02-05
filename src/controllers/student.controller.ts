@@ -244,6 +244,7 @@ export class StudentController {
   async delete(@Res() res, @Param('id') id: string) {
     try {
       await this.studentService.deleteStudent(id);
+      await this.academicService.deleteAcademic(id);
       return res.status(HttpStatus.OK).json({ message: 'Student deleted successfully' });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
