@@ -9,9 +9,11 @@ export class BreakTimeController {
   ) {}
 
   @Post('')
-  async createBreakTime(@Body() breakTime, @Res() res) {
+  async createBreakTime(@Req() req, @Body() breakTime, @Res() res) {
     try {
-      const newBreakTime = await this.breakTimeService.createBreakTime(breakTime);
+      let body = JSON.parse(JSON.stringify(breakTime));
+      body['tenant'] = req.user.tenant
+      const newBreakTime = await this.breakTimeService.createBreakTime(body);
       return res.status(HttpStatus.CREATED).json({ message: 'Break time created successfully', data: newBreakTime });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
