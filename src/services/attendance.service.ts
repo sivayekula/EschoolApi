@@ -17,18 +17,32 @@ export class AttendanceService {
     }
   }
 
-  async getAttendance(tenantId: string, date?: string, userType?: string, month?: string, year?: string) {
+  async getAttendance(tenantId: string, date?: string, userType?: string, month?: string, year?: string, classId?: string, sectionId?: string) {
     try {
       let startDate;
       let endDate;
+      let qry = { tenant: tenantId, userType: userType, status: 'active' }
       if (date) {
         startDate = moment(date).startOf('day')
         endDate = moment(date).endOf('day')
+        qry['date'] = { $gte: startDate, $lte: endDate }
+        if (classId) {
+          qry['class'] = classId;
+        }
+        if (sectionId) {
+          qry['section'] = sectionId;
+        }
       } else {
         startDate = moment(`${year}/${month}/01`, 'YYYY/MM/DD')
         endDate = moment(startDate).clone().endOf('month')
+        qry['date'] = { $gte: startDate, $lte: endDate }
+        if (classId) {
+          qry['class'] = classId;
+        }
+        if (sectionId) {
+          qry['section'] = sectionId;
+        }
       }
-      let qry = { tenant: tenantId, userType: userType, date: { $gte: startDate, $lte: endDate } }
       return await this.attendanceModel.find(qry).populate({path: 'attendance.userId', model: userType === 'student' ? 'Student' : 'Staff'});
     } catch (error) {
       throw error;
