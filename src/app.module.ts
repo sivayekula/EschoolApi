@@ -76,6 +76,9 @@ import { DesignationController } from './controllers/designation.controller';
 import { DesignationService } from './services/designation.service';
 import { TransactionsController } from './controllers/transactions.controller';
 import * as moment from 'moment';
+import { BreakTimeSchema } from './schemas/breakTime.schema';
+import { BreakTimeController } from './controllers/breakTime.controller';
+import { BreakTimeService } from './services/breakTime.service';
 
 
 @Module({
@@ -105,7 +108,8 @@ import * as moment from 'moment';
       {name: 'Attendance', schema: AttendanceSchema },
       {name: 'Marks', schema: MarksSchema },
       {name: 'Transaction', schema: TransactionSchema },
-      {name: 'Designation', schema: DesignationSchema }
+      {name: 'Designation', schema: DesignationSchema },
+      {name: 'BreakTime', schema: BreakTimeSchema},
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -138,7 +142,8 @@ import * as moment from 'moment';
     AttendanceController,
     MarksController,
     TransactionsController,
-    DesignationController
+    DesignationController,
+    BreakTimeController,
   ],
   providers: [ 
     StudentService, 
@@ -163,6 +168,7 @@ import * as moment from 'moment';
     AttendanceService,
     MarksService,
     TransactionsService,
+    BreakTimeService,
     DesignationService,
     {
       provide: 'MomentWrapper',

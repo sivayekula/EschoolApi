@@ -1,4 +1,4 @@
-import { Prop, Schema } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as mongoose from 'mongoose';
 
 
@@ -15,3 +15,5 @@ export class BreakTime {
   @Prop({ type: String, required: true, default: 'active' })
   status: string;
 }
+
+export const BreakTimeSchema = SchemaFactory.createForClass(BreakTime);
