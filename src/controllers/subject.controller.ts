@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpStatus, Post, Put, Req, Res } from "@nestjs/common";
 import { SubjectService } from "src/services/subject.service";
 
 @Controller('subject')
@@ -25,6 +25,29 @@ export class SubjectController {
     try {
       const subjects = await this.subjectService.getSubjects()
       return res.status(HttpStatus.OK).json({ message: 'Subjects fetched successfully', data: subjects });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
+  @Put(':id')
+  async updateSubject(@Req() req, @Res() res) {
+    try {
+      if(!req.body.name) {
+        return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Subject name is required' });
+      }
+      const subject = await this.subjectService.updateSubject(req.params.id, req.body)
+      return res.status(HttpStatus.OK).json({ message: 'Subject updated successfully', data: subject });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
+  @Delete(':id')
+  async deleteSubject(@Req() req, @Res() res) {
+    try {
+      await this.subjectService.deleteSubject(req.params.id)
+      return res.status(HttpStatus.OK).json({ message: 'Subject deleted successfully' });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }
