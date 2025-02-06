@@ -18,7 +18,7 @@ export class SubjectService {
 
   async getSubjects() {
     try {
-      return await this.subjectModel.find();
+      return await this.subjectModel.find({status: 'active'});
     } catch (error) {
       throw error;
     }
