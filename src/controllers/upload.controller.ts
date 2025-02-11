@@ -19,7 +19,7 @@ export class UploadController {
   @Public()
   @Post('')
   @UseInterceptors(FileInterceptor('file', {storage, fileFilter}))
-  async uploadImage(@UploadedFile() file: File) {
+  async uploadImage(@UploadedFile() file: any) {
     const result = await this.uploadService.uploadFile(file);
     return result // Return the URL from the cloud
   }
