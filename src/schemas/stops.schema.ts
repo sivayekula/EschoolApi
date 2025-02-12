@@ -8,6 +8,8 @@ export class Stop {
   route: mongoose.Schema.Types.ObjectId
   @Prop({ type: String, required: true })
   name: string
+  @Prop({ type: Number, required: true })
+  amount: number
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   tenant: mongoose.Schema.Types.ObjectId
   @Prop({ type: String, required: true, default: 'active' })

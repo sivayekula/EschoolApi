@@ -1,5 +1,3 @@
-import * as fs from "fs";
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import * as AWS from "aws-sdk";
 import { Injectable } from "@nestjs/common";
 import { File } from 'multer';
