@@ -85,6 +85,9 @@ import { StopsService } from './services/stops.service';
 import { RouteService } from './services/route.service';
 import { RouteController } from './controllers/route.controller';
 import { RouteSchema } from './schemas/route.schema';
+import { BranchSchema } from './schemas/branch.schema';
+import { BranchController } from './controllers/branch.controller';
+import { BranchService } from './services/branch.service';
 
 
 @Module({
@@ -118,6 +121,7 @@ import { RouteSchema } from './schemas/route.schema';
       {name: 'BreakTime', schema: BreakTimeSchema},
       {name: 'Route', schema: RouteSchema},
       {name: 'Stop', schema: StopSchema},
+      {name: 'Branch', schema: BranchSchema},
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -154,6 +158,7 @@ import { RouteSchema } from './schemas/route.schema';
     BreakTimeController,
     RouteController,
     StopsController,
+    BranchController,
   ],
   providers: [ 
     StudentService, 
@@ -181,6 +186,7 @@ import { RouteSchema } from './schemas/route.schema';
     BreakTimeService,
     RouteService,
     StopsService,
+    BranchService,
     DesignationService,
     {
       provide: 'MomentWrapper',

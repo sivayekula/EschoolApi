@@ -11,8 +11,8 @@ export class Staff extends mongoose.Document {
   @Prop({ type: String, required: false})
   lastName: string;
 
-  @Prop({ type: String, required: true, enum: ['teaching', 'non-teaching'], default: 'teaching'})
-  staffType: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Department"})
+  department: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: String, required: true})
   empId: string;
@@ -26,8 +26,8 @@ export class Staff extends mongoose.Document {
   @Prop({ type: String, required: true})
   mobileNumber: string;
 
-  @Prop({ type: String, required: true})
-  designation: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Designation"})
+  designation: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: Array, required: true})
   subjects: Array<{value: string, label: string, disabled: boolean}>;
@@ -114,6 +114,9 @@ export class Staff extends mongoose.Document {
 
   @Prop({ type: String, required: true})
   password: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Branch" })
+  branch: mongoose.Schema.Types.ObjectId
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true})
   tenant: mongoose.Schema.Types.ObjectId
