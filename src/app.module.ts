@@ -83,7 +83,7 @@ import { BreakTimeService } from './services/breakTime.service';
 
 @Module({
   imports: [ 
-    MongooseModule.forRoot('mongodb+srv://sivayekula:wCEg7WKN8fPyIUXY@cluster0.dicgf6g.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+    MongooseModule.forRoot('mongodb+srv://sivayekula:wCEg7WKN8fPyIUXY@cluster0.wyjtxzo.mongodb.net/test?retryWrites=true&writeConcern=majority', {
       maxPoolSize: 50,
     }),
     MongooseModule.forFeature([
