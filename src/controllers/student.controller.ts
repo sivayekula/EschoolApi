@@ -168,7 +168,6 @@ export class StudentController {
         .status(HttpStatus.OK)
         .json({ message: 'Student updated successfully', data: student });
     } catch (error) {
-      console.log(error);
       return res
         .status(HttpStatus.BAD_REQUEST)
         .json({ message: error.message });

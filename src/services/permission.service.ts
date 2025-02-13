@@ -23,7 +23,7 @@ export class PermissionService {
     }
   }
 
-  async getPermission(roleId: string, tenantId: string) {
+  async getPermission(roleId: string, tenantId?: string) {
     try {
       return await this.permissionModel.findOne({role: roleId, tenant: tenantId, status: 'active'});
     } catch (error) {

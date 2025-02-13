@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    const excludedRoutes = ['/api/login', '/api/health', '/api/upload']; // Add routes you want to exclude
+    const excludedRoutes = ['/api/login', '/api/health']; // Add routes you want to exclude
     const { url } = request;
     // Allow excluded routes without authentication
     if (excludedRoutes.includes(url)) {
@@ -30,7 +30,6 @@ export class AuthGuard implements CanActivate {
       request.user = decoded; // Attach decoded token to the request
       return true;
     } catch (err) {
-      console.log(err);
       return false;
     }
   }

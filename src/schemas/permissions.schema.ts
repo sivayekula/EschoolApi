@@ -21,8 +21,8 @@ export class Permissions {
     }[]
   }[]
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Tenant" })
-  tenant: mongoose.Schema.Types.ObjectId
+  @Prop({ type: String, ref: "Tenant", required: true })
+  tenant: string
 
   @Prop({ type: String, required: true, default: 'active' })
   status: string

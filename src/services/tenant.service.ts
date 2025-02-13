@@ -19,6 +19,9 @@ export class TenantService {
 
   async getTenant(tenantId) {
     try {
+      if(tenantId == 'global'){
+        return {}
+      }
       return await this.tenantModel.findById({_id:tenantId});
     } catch (error) {
       throw error;
@@ -27,7 +30,7 @@ export class TenantService {
 
   async getTenants() {
     try {
-      return await this.tenantModel.find();
+      return await this.tenantModel.find({status: 'active'});
     } catch (error) {
       throw error;
     }
