@@ -11,9 +11,9 @@ export class AuthService {
 
   async validateUser(loginId: string, userType: string) {
     if (userType === 'student') {
-      return await this.studentModel.findOne({'fatherDetails.mobileNumber': loginId });
+      return await this.studentModel.findOne({'fatherDetails.mobileNumber': loginId }).lean().populate('role');
     } else if (userType === 'staff') {
-      return await this.staffModel.findOne({$or: [{ email : loginId }, { mobileNumber: loginId }] });
+      return await this.staffModel.findOne({$or: [{ email : loginId }, { mobileNumber: loginId }] }).lean().populate('role');
     } else {
       return await this.userModel.findOne({ $or: [{ email: loginId }, { mobileNumber: loginId }] }).lean().populate('role');
     }
