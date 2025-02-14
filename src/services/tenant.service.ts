@@ -17,6 +17,14 @@ export class TenantService {
     }
   }
 
+  async getTenantByLoginId(loginId) {
+    try {
+      return await this.tenantModel.findOne({$or:[{email:loginId}, {mobileNumber:loginId}], status: 'active'});
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getTenant(tenantId) {
     try {
       if(tenantId == 'global'){

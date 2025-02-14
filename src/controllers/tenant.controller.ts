@@ -1,38 +1,78 @@
-import { Body, Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/common";
+import { BranchService } from "src/services/branch.service";
+import { RoleService } from "src/services/role.service";
 import { TenantService } from "src/services/tenant.service";
+import { UserService } from "src/services/user.service";
 
 
 @Controller('tenant')
 export class TenantController {
   constructor(
-    private readonly tenantService: TenantService
+    private readonly tenantService: TenantService,
+    private readonly roleService: RoleService,
+    private readonly userService: UserService,
+    private readonly branchService: BranchService
   ) {}
 
-  @Post('')
-  async createTenant(@Req() req, @Res() res, @Body() body) {
+  @Post()
+  async createTenant(@Req() req, @Res() res) {
     try {
-      const tenant = await this.tenantService.createTenant(body);
-      return res.status(HttpStatus.CREATED).json({ message: 'Tenant created successfully', data: tenant });
+      let tenantWithMobile = await this.tenantService.getTenantByLoginId(req.body.mobileNumber);
+      let tenantWithEmail = await this.tenantService.getTenantByLoginId(req.body.email);
+    if(!tenantWithEmail && !tenantWithMobile) {
+      let obj = {email: req.body.email, mobileNumber: req.body.mobileNumber, createdBy: req.user._id}
+      let savedRecord = await this.tenantService.createTenant(obj);
+      if(!savedRecord) throw new Error('Unable to create tenant')
+      const role = await this.roleService.getRole('admin');
+      let branchData = {
+        name: req.body.name,
+        logo: req.body.logo,
+        address: req.body.address,
+        tenant: savedRecord._id,
+        isDefault: true,
+        studentCount: req.body.studentCount,
+        smsCount: req.body.smsCount,
+        whatsappCount: req.body.whatsappCount,
+        portalEnabledStudents: req.body.portalEnabledStudents,
+        portalEnabledStaff: req.body.portalEnabledStaff,
+      }
+      await this.branchService.createBranch(branchData);
+      let adminUser = {
+        firstName: req.body.contactPerson, 
+        email: req.body.email,
+        mobileNumber: req.body.mobileNumber,
+        role: role._id,
+        tenant: savedRecord._id,
+        password: req.body.contactPerson.replace(/\s+/g, '').slice(0, 4).toLowerCase() +
+        req.body.mobileNumber.substr(req.body.mobileNumber.length - 4),
+        address: req.body.address,
+        profilePic: req.body.logo
+      }
+      const user = await this.userService.createUser(adminUser);
+      res.status(200).json({status: 200, message: 'tenant details', data: user})
+    } else {
+      throw new Error('Tenant already existed with this email/mobile')
+    }
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }
   }
 
-  @Get('')
-  async getTenant(@Req() req, @Res() res) {
-    try {
-      const tenant = await this.tenantService.getTenant(req.user.tenant);
-      return res.status(HttpStatus.OK).json({ message: 'Tenant fetched successfully', data: tenant });
-    } catch (error) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
-    }
-  }
-
-  @Get('list')
+  @Get()
   async getTenants(@Res() res) {
     try {
       const tenants = await this.tenantService.getTenants();
       return res.status(HttpStatus.OK).json({ message: 'Tenants fetched successfully', data: tenants });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
+  @Get('/:id')
+  async getTenant(@Req() req, @Res() res) {
+    try {
+      const tenant = await this.tenantService.getTenant(req.user.tenant);
+      return res.status(HttpStatus.OK).json({ message: 'Tenant fetched successfully', data: tenant });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }

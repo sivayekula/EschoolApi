@@ -6,10 +6,10 @@ import { BranchService } from "src/services/branch.service";
 export class BranchController {
   constructor(private readonly branchService: BranchService) {}
 
-  @Get('')
+  @Get()
   async getBranches(@Req() req, @Res() res) {
     try {
-      const branches = await this.branchService.findAll(req.user.tenant);
+      const branches = await this.branchService.findAll(req.user.tenant, req.query.isDefault);
       return res.status(HttpStatus.OK).json({ message: 'Branches fetched successfully', data: branches });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

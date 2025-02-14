@@ -88,6 +88,7 @@ import { RouteSchema } from './schemas/route.schema';
 import { BranchSchema } from './schemas/branch.schema';
 import { BranchController } from './controllers/branch.controller';
 import { BranchService } from './services/branch.service';
+import { UserService } from './services/user.service';
 
 
 @Module({
@@ -161,7 +162,8 @@ import { BranchService } from './services/branch.service';
     BranchController,
   ],
   providers: [ 
-    StudentService, 
+    StudentService,
+    UserService,
     GlobalService,
     StaffService,
     UploadService,

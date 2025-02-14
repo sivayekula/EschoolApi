@@ -136,6 +136,9 @@ export class Student extends mongoose.Document {
     classStudied: number;
     studyProof: object;
   };
+  
+  @Prop({type: Boolean, required: true, default: false})
+  isPortalLoginEnabled: boolean;
 
   @Prop({ type: String, required: true })
   password: string;

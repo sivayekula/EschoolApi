@@ -14,7 +14,7 @@ export class User extends mongoose.Document {
   @Prop({ type: String, required: true })
   firstName: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: false })
   lastName: string;
 
   @Prop({ type: String, required: true, unique: true })
@@ -24,7 +24,6 @@ export class User extends mongoose.Document {
     type: {
       area: { type: String, required: true },
       city: { type: String, required: true },
-      district: { type: String, required: true },
       state: { type: String, required: true },
       pincode: { type: String, required: true }
     },
@@ -33,10 +32,12 @@ export class User extends mongoose.Document {
   address : {
     area: string,
     city: string,
-    district: string,
     state: string,
     pincode: string
   }
+
+  @Prop({type: Object, required: false})
+  profilePic : object
 
   @Prop({ type: String, required: true, default: 'active' })
   status: string;

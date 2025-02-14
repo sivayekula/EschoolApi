@@ -6,9 +6,10 @@ import { InjectModel } from "@nestjs/mongoose";
 export class BranchService {
   constructor(@InjectModel('Branch') private readonly branchModel) {}
 
-  async findAll(tenantId: string) {
+  async findAll(tenantId: string, isDefault?: boolean) {
     try {
-      return await this.branchModel.find({tenant: tenantId, status: 'active'});
+      let qry = isDefault ? {isDefault: true, status: 'active'} : {tenant: tenantId, status: 'active'}
+      return await this.branchModel.find(qry);
     } catch (error) {
       throw error;
     }
