@@ -31,4 +31,28 @@ export class SectionService {
       throw error;
     }
   }
+
+  async updateSection(id: string, section: any) {
+    try {
+      return await this.sectionModel.findByIdAndUpdate(id, section);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteSection(id: string) {
+    try {
+      return await this.sectionModel.findByIdAndUpdate(id, { status: 'inactive' });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteSections(classId: string) {
+    try {
+      return await this.sectionModel.updateMany({ class: classId, status: 'active' }, { status: 'inactive' });
+    } catch (error) {
+      throw error;
+    }
+  }
 }

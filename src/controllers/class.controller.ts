@@ -1,11 +1,13 @@
 import { Controller, Delete, Get, HttpStatus, Post, Put, Req, Res } from "@nestjs/common";
 import { ClassService } from "src/services/class.service";
+import { SectionService } from 'src/services/section.service';
 
 
 @Controller('class')
 export class ClassController {
   constructor(
-    private readonly classService: ClassService
+    private readonly classService: ClassService,
+    private readonly sectionService: SectionService
   ) {}
 
   @Get()
@@ -56,6 +58,7 @@ export class ClassController {
   async deleteClass(@Res() res, @Req() req) {
     try {
       await this.classService.deleteClass(req.params.id);
+      await this.sectionService.deleteSections(req.params.id);
       return res.status(HttpStatus.OK).json({ message: 'Class deleted successfully' });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
