@@ -14,7 +14,7 @@ export class Class extends mongoose.Document {
   @Prop({ type: String, required: true, default: 'active' })
   status: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "tenant", required: false })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "tenant", required: true })
   tenant: Tenant;
   
 }

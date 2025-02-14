@@ -23,7 +23,7 @@ export class Branch {
     state: string,
     pincode: string
   };
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Tenant" })
   tenant: mongoose.Schema.Types.ObjectId
   @Prop({type: Boolean, required: true, default: false})
   isDefault: boolean

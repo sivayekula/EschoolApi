@@ -7,12 +7,14 @@ export class SubjectController {
     private readonly subjectService: SubjectService
   ) {}
   
-  @Post('')
-  async createSubject(@Body() body, @Res() res) {
+  @Post()
+  async createSubject(@Req() req, @Body() body, @Res() res) {
     try {
       if(!body.name) {
         return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Subject name is required' });
       }
+      let requestBody = JSON.parse(JSON.stringify(body))
+      requestBody['tenant'] = req.user.tenant
       const subject = await this.subjectService.createSubject(body)
       return res.status(HttpStatus.CREATED).json({ message: 'Subject created successfully', data: subject });
     } catch (error) {
@@ -20,10 +22,10 @@ export class SubjectController {
     }
   }
 
-  @Get('')
-  async getSubjects(@Res() res) {
+  @Get()
+  async getSubjects(@Req() req, @Res() res) {
     try {
-      const subjects = await this.subjectService.getSubjects()
+      const subjects = await this.subjectService.getSubjects(req.body.tenant)
       return res.status(HttpStatus.OK).json({ message: 'Subjects fetched successfully', data: subjects });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

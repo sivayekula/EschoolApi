@@ -9,7 +9,7 @@ export class BranchService {
   async findAll(tenantId: string, isDefault?: boolean) {
     try {
       let qry = isDefault ? {isDefault: true, status: 'active'} : {tenant: tenantId, status: 'active'}
-      return await this.branchModel.find(qry);
+      return await this.branchModel.find(qry).populate('tenant');
     } catch (error) {
       throw error;
     }
