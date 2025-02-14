@@ -11,7 +11,7 @@ export class StaffService {
   ){}
 
   async getStaff(tenantId){
-    return this.staffModel.find({ tenant: tenantId, status: 'active' }).populate('subjects');
+    return this.staffModel.find({ tenant: tenantId, status: 'active' }).populate('subjects').populate('designation');
   }
 
   async getStaffById(id: string){

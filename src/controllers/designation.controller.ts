@@ -8,17 +8,17 @@ export class DesignationController {
     private readonly designationService: DesignationService
   ) {}
   
-  @Get('type/:staffType?')
+  @Get()
   async getDesignations(@Req() req, @Res() res) {
     try {
-      let designations = await this.designationService.getDesignations(req.params.staffType)
+      let designations = await this.designationService.getDesignations(req.user.tenant, req.query.staffType)
       return res.status(HttpStatus.OK).json({ message: 'Designations fetched successfully', data: designations });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json(error);
     }
   }
 
-  @Get(':id')
+  @Get('/:id')
   async getDesignation(@Req() req, @Res() res) {
     try {
       let designation = await this.designationService.getDesignation(req.params.id)
@@ -31,7 +31,9 @@ export class DesignationController {
   @Post()
   async createDesignation(@Req() req, @Res() res) {
     try {
-      let designation = await this.designationService.createDesignation(req.body)
+      let requestBody = JSON.parse(JSON.stringify(req.body))
+      requestBody['tenant'] = req.user.tenant
+      let designation = await this.designationService.createDesignation(requestBody)
       return res.status(HttpStatus.OK).json({ message: 'Designation created successfully', data: designation });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json(error);

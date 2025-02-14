@@ -20,11 +20,11 @@ constructor(
   @Post('')
   async login(@Body() loginObj: LoginDto, @Res() res) {
     try {
-      const user = await this.authService.validateUser(loginObj.loginId, loginObj.password, loginObj.userType);
+      const user = await this.authService.validateUser(loginObj.loginId, loginObj.userType);
       if(!user) throw new UnauthorizedException('Invalid credentials'); 
-      if(user.status !== 'active') throw new Error('We are unable to process with your details. Please contact to admin')
       let isPasswordValid= await bcrypt.compare(loginObj.password, user.password)
       if(!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
+      if(user.status !== 'active') throw new Error('We are unable to process with your details. Please contact to admin')
       delete user.password
       let result= {}
       let permissions = await this.permissionService.getPermission(user.role._id, user.tenant);

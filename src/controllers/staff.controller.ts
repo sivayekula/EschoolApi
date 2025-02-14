@@ -50,7 +50,7 @@ export class StaffController {
     }
   }
 
-  @Get('')
+  @Get()
   async getStaff(@Req() req, @Res() res) {
     try {
       const staff = await this.staffService.getStaff(req.user.tenant);

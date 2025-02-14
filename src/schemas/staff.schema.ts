@@ -5,14 +5,14 @@ import * as bcrypt from 'bcrypt';
 @Schema({ timestamps: true })
 export class Staff extends mongoose.Document {
 
+  @Prop({ type: String, required: true, enum: ['teaching', 'non-teaching']})
+  staffType: string;
+
   @Prop({ type: String, required: true})
   firstName: string;
 
   @Prop({ type: String, required: false})
   lastName: string;
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Department"})
-  department: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: String, required: true})
   empId: string;
@@ -88,7 +88,7 @@ export class Staff extends mongoose.Document {
   @Prop({ type: String, required: true})
   aadharNumber: string;
 
-  @Prop({ type: String, required: true})
+  @Prop({ type: String, required: false})
   panNumber: string;
 
   @Prop({ type: Object, required: false})

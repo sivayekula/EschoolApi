@@ -106,7 +106,7 @@ export class CreateStaffDto {
   readonly aadharNumber: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly panNumber: string;
 
   @IsOptional()
