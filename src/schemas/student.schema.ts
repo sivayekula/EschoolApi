@@ -146,10 +146,10 @@ export class Student extends mongoose.Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Branch", required: false })
   branch: mongoose.Schema.Types.ObjectId
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "tenant", required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   tenant: mongoose.Schema.Types.ObjectId
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "role", required: true })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Role", required: true })
   role: mongoose.Schema.Types.ObjectId
  
   @Prop({ type: String })
