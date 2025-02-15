@@ -8,9 +8,10 @@ export class ClassCategoryService {
     @InjectModel('ClassCategory') private classCategoryModel
   ) {}
 
-  async getClassCategories(tenantId: string) {
+  async getClassCategories(tenantId?: string) {
     try {
-      return await this.classCategoryModel.find({tenant: tenantId, status: 'active' });
+      let qry = tenantId ? {tenant: tenantId, status: 'active'} : {status: 'active'}
+      return await this.classCategoryModel.find(qry);
     } catch (error) {
       throw error;
     }

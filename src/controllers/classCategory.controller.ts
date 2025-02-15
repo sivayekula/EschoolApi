@@ -11,7 +11,7 @@ export class ClassCategoryController {
   @Get()
   async getClassCategories(@Req() req, @Res() res) {
     try {
-      const classCategories = await this.classCategoryService.getClassCategories(req.user.tenant);
+      const classCategories = await this.classCategoryService.getClassCategories();
       return res.status(HttpStatus.OK).json({ message: 'Class Categories fetched successfully', data: classCategories });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
