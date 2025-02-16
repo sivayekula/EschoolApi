@@ -1,20 +1,32 @@
-import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class RoleService {
-  constructor(
-    @InjectModel('Role') private readonly roleModel
-  ) {}
+  constructor(@InjectModel('Role') private readonly roleModel) {}
 
-  async getRole(roleName: string): Promise<any> {
-    return await this.roleModel.findOne({name: roleName});
+  async getRole(roleName: string) {
+    try {
+      return await this.roleModel.findOne({ name: roleName });
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async getRoles() {
+  async getRoles(tenantId: string) {
     try {
-      return await this.roleModel.find();
+      let query =
+        tenantId && tenantId !== 'global'
+          ? {
+              $or: [{ tenant: tenantId }, { tenant: 'global' }],
+              status: 'active',
+              name: { $ne: 'superadmin' },
+            }
+          : {
+              status: 'active',
+              name: { $ne: 'superadmin' },
+            };
+      return await this.roleModel.find(query);
     } catch (error) {
       throw error;
     }
@@ -26,6 +38,5 @@ export class RoleService {
     } catch (error) {
       throw error;
     }
-  } 
-
+  }
 }

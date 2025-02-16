@@ -8,20 +8,22 @@ export class RoleController {
     private readonly roleService: RoleService
   ) {}
 
-  @Get('')
-  async getRoles(@Res() res) {
+  @Get()
+  async getRoles(@Req() req, @Res() res) {
     try {
-      const roles = await this.roleService.getRoles();
+      const roles = await this.roleService.getRoles(req.user.tenant);
       return res.status(HttpStatus.OK).json({ message: 'Roles fetched successfully', data: roles });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }
   }
 
-  @Post('')
+  @Post()
   async createRole(@Req() req, @Res() res) {
     try {
-      const role = await this.roleService.createRole(req.body);
+      let requestBody = JSON.parse(JSON.stringify(req.body))
+      requestBody['tenant'] = req.user.tenant
+      const role = await this.roleService.createRole(requestBody);
       return res.status(HttpStatus.OK).json({ message: 'Role created successfully', data: role });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

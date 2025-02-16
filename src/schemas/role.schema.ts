@@ -5,7 +5,7 @@ import { Document } from 'mongoose';
 export class Role extends Document {
 
   @Prop({ type: String, required: false })
-  tenantId: string;
+  tenant: string;
 
   @Prop({ type: String, required: true, unique: true, index: true })
   name: string;

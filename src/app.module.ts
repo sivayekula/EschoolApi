@@ -89,6 +89,8 @@ import { BranchSchema } from './schemas/branch.schema';
 import { BranchController } from './controllers/branch.controller';
 import { BranchService } from './services/branch.service';
 import { UserService } from './services/user.service';
+import { SmsController } from './controllers/sms.controller';
+import { SmsService } from './services/sms.service';
 
 
 @Module({
@@ -160,6 +162,7 @@ import { UserService } from './services/user.service';
     RouteController,
     StopsController,
     BranchController,
+    SmsController,
   ],
   providers: [ 
     StudentService,
@@ -189,6 +192,7 @@ import { UserService } from './services/user.service';
     RouteService,
     StopsService,
     BranchService,
+    SmsService,
     DesignationService,
     {
       provide: 'MomentWrapper',

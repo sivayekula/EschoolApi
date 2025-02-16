@@ -74,6 +74,14 @@ export class StudentService {
     }
   }
 
+  async getStudentCount(tenantId: string) {
+    try {
+      return await this.studentModel.countDocuments({ tenant: tenantId, status: 'active' });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getAttendance(tenantId: string) {
     try {
       const result = await this.studentModel.aggregate([
