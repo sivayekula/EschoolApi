@@ -91,6 +91,14 @@ import { BranchService } from './services/branch.service';
 import { UserService } from './services/user.service';
 import { SmsController } from './controllers/sms.controller';
 import { SmsService } from './services/sms.service';
+import { WhatsAppController } from './controllers/whatsApp.controller';
+import { WhatsAppService } from './services/whatsApp.service';
+import { FeeSubCategorySchema } from './schemas/feeSubCategory';
+import { FeeCategorySchema } from './schemas/feeCategory.schema';
+import { FeeSubCategoryController } from './controllers/feeSubCategory.controller';
+import { FeeSubCategoryService } from './services/feeSubCategory.service';
+import { FeeCategoryService } from './services/feeCategory.service';
+import { FeeCategoryController } from './controllers/feeCategory.controller';
 
 
 @Module({
@@ -125,6 +133,8 @@ import { SmsService } from './services/sms.service';
       {name: 'Route', schema: RouteSchema},
       {name: 'Stop', schema: StopSchema},
       {name: 'Branch', schema: BranchSchema},
+      {name: 'FeeCategory', schema: FeeCategorySchema},
+      {name: 'FeeSubCategory', schema: FeeSubCategorySchema},
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -163,6 +173,9 @@ import { SmsService } from './services/sms.service';
     StopsController,
     BranchController,
     SmsController,
+    WhatsAppController,
+    FeeCategoryController,
+    FeeSubCategoryController,
   ],
   providers: [ 
     StudentService,
@@ -193,6 +206,9 @@ import { SmsService } from './services/sms.service';
     StopsService,
     BranchService,
     SmsService,
+    WhatsAppService,
+    FeeCategoryService,
+    FeeSubCategoryService,
     DesignationService,
     {
       provide: 'MomentWrapper',

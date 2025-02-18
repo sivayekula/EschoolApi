@@ -3,15 +3,18 @@ import * as mongoose from "mongoose";
 
 
 @Schema({timestamps: true})
-export class FeeCategory {
+export class FeeSubCategory {
     @Prop({type: String, required: true})
     name: string;
 
     @Prop({type: String, required: true, default: 'active'})
     status: string;
 
-    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Tenant', required: true})
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'FeeCategory', required: true})
+    category: mongoose.Schema.Types.ObjectId;
+
+    @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
     tenant: mongoose.Schema.Types.ObjectId;
 }
 
-export const FeeCategorySchema = SchemaFactory.createForClass(FeeCategory);
+export const FeeSubCategorySchema = SchemaFactory.createForClass(FeeSubCategory);

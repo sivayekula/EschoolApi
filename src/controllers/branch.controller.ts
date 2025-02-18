@@ -16,7 +16,7 @@ export class BranchController {
     }
   }
 
-  @Post('')
+  @Post()
   async createBranch(@Req() req, @Res() res) {
     try {
       const body = JSON.parse(JSON.stringify(req.body))
