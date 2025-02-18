@@ -4,6 +4,10 @@ import * as mongoose from "mongoose";
 
 @Schema({timestamps: true})
 export class FeeCategory {
+
+    @Prop({type: String, required: true, enum: ['credit', 'debit']})
+    transactionType: string;
+
     @Prop({type: String, required: true})
     name: string;
 
