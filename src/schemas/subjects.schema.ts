@@ -5,11 +5,8 @@ import { Tenant } from './tenant.schema';
 @Schema({ timestamps: true })
 export class Subject extends mongoose.Document {
 
-  @Prop({ type: String, required: true, unique: true })
+  @Prop({ type: String, required: true })
   name: string;
-
-  @Prop({ type: Boolean, required: true, default: false })
-  isDefault: boolean;
 
   @Prop({ type: String, required: true, enum: ['theory', 'lab', 'extraCurricular'], default: 'theory' })
   category: string;
@@ -23,3 +20,8 @@ export class Subject extends mongoose.Document {
 }
 
 export const SubjectSchema = SchemaFactory.createForClass(Subject);
+
+SubjectSchema.index(
+  { name: 1, tenant: 1 },
+  { unique: true, partialFilterExpression: { status: "active" } }
+);

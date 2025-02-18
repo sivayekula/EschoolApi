@@ -18,3 +18,8 @@ export class Section {
 }
 
 export const SectionSchema = SchemaFactory.createForClass(Section);
+
+SectionSchema.index(
+  { section: 1, tenant: 1 },
+  { unique: true, partialFilterExpression: { status: "active" } }
+);

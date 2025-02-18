@@ -18,3 +18,8 @@ export class Designation {
 }
 
 export const DesignationSchema = SchemaFactory.createForClass(Designation)
+
+DesignationSchema.index(
+  { name: 1, tenant: 1 },
+  { unique: true, partialFilterExpression: { status: "active" } }
+)
