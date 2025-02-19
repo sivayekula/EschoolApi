@@ -1,4 +1,4 @@
-import { Controller, HttpStatus, Req, Res } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Req, Res } from "@nestjs/common";
 import { StaffService } from "src/services/staff.service";
 import { StudentService } from "src/services/student.service";
 import { TransactionsService } from "src/services/transactions.service";
@@ -12,6 +12,7 @@ export class DashboardController {
     private readonly transactionService: TransactionsService,   
   ) {}
 
+  @Get()
   async getDashboard(@Req() req, @Res() res) {
     try {
       const studentCount = await this.studentService.getStudentCount(req.user.tenant);
@@ -27,7 +28,7 @@ export class DashboardController {
           totalCollectedFee += fee.amount;
         }
       });
-      return res.status(HttpStatus.OK).json({ data: {studentCount, staffCount, totalCollectedFee} });
+      return res.status(HttpStatus.OK).json({ data: {studentCount, staffCount, totalCollectedFee, totalExpense} });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }

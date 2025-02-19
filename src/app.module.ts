@@ -99,6 +99,7 @@ import { FeeSubCategoryController } from './controllers/feeSubCategory.controlle
 import { FeeSubCategoryService } from './services/feeSubCategory.service';
 import { FeeCategoryService } from './services/feeCategory.service';
 import { FeeCategoryController } from './controllers/feeCategory.controller';
+import { DashboardController } from './controllers/dashboard.controller';
 
 
 @Module({
@@ -176,6 +177,7 @@ import { FeeCategoryController } from './controllers/feeCategory.controller';
     WhatsAppController,
     FeeCategoryController,
     FeeSubCategoryController,
+    DashboardController,
   ],
   providers: [ 
     StudentService,
