@@ -27,7 +27,7 @@ export class MarksController {
         private readonly examService: ExamService
     ){}
 
-    @Get('')
+    @Get()
     async getMarks(@Query('examId') examId: string, @Res() res) {
         try {
             const marks = await this.marksService.getMarks(examId);
@@ -37,7 +37,7 @@ export class MarksController {
         }
     }
 
-    @Post('')
+    @Post()
     async createMarks(@Req() req, @Res() res) {
         try {
             const requestBody = JSON.parse(JSON.stringify(req.body))

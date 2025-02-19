@@ -18,7 +18,7 @@ export class MarksService {
 
     async getMarks(examId: string) {
         try {
-            return await this.marksModel.findOne({exam: examId}).populate('academicYear').populate({path: 'exam', populate: [{path: 'section'}, {path: 'class'}, {path: 'classCategory'}]}).populate({path: 'marksDetails.student', select: 'firstName lastName profilePic admissionNumber', model: 'Student'});
+            return await this.marksModel.findOne({exam: examId}).populate('academicYear').populate({path: 'exam', populate: [{path: 'section'}, {path: 'class'}, {path: 'classCategory'}]}).populate({path: 'marksDetails.student', select: 'firstName lastName profilePic admissionNumber fatherDetails motherDetails DOB presentAddress', model: 'Student'});
         } catch (error) {
             throw error;
         }
