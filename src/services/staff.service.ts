@@ -54,6 +54,14 @@ export class StaffService {
     }
   }
 
+  async getStaffCount(tenantId: string) {
+    try {
+      return this.staffModel.countDocuments({ tenant: tenantId, status: 'active' });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getAttendance(tenantId: string) {
     try {
       const result = await this.staffModel.aggregate([

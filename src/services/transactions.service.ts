@@ -23,4 +23,13 @@ export class TransactionsService {
       return error;
     }
   }
+
+  async getCollectedFee(tenant: string) {
+    try {
+      return await this.transactionModel.find({tenant});
+    } catch (error) {
+      return error;
+    }
+  }
+
 }
