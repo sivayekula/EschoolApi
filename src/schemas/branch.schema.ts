@@ -8,6 +8,10 @@ export class Branch {
   name: string
   @Prop({type: Object, required: false})
   logo: object
+  @Prop({ type: String, required: true })
+  email: string
+  @Prop({ type: String, required: true })
+  mobileNumber: string
   @Prop({
     type: {
       area : { type: String, required: true },

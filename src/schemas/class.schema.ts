@@ -22,5 +22,5 @@ export const ClassSchema = SchemaFactory.createForClass(Class);
 
 ClassSchema.index(
   { name: 1, tenant: 1 },
-  { unique: true, partialFilterExpression: { status: "active" } }
+  { unique: true }
 );

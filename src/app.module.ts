@@ -100,6 +100,9 @@ import { FeeSubCategoryService } from './services/feeSubCategory.service';
 import { FeeCategoryService } from './services/feeCategory.service';
 import { FeeCategoryController } from './controllers/feeCategory.controller';
 import { DashboardController } from './controllers/dashboard.controller';
+import { SmsTemplateSchema } from './schemas/smsTemplate.schema';
+import { SmsTemplateController } from './controllers/smsTemplate.controller';
+import { SmsTemplateService } from './services/smsTemplate.service';
 
 
 @Module({
@@ -136,6 +139,7 @@ import { DashboardController } from './controllers/dashboard.controller';
       {name: 'Branch', schema: BranchSchema},
       {name: 'FeeCategory', schema: FeeCategorySchema},
       {name: 'FeeSubCategory', schema: FeeSubCategorySchema},
+      {name: 'SmsTemplate', schema: SmsTemplateSchema},
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -178,6 +182,7 @@ import { DashboardController } from './controllers/dashboard.controller';
     FeeCategoryController,
     FeeSubCategoryController,
     DashboardController,
+    SmsTemplateController,
   ],
   providers: [ 
     StudentService,
@@ -211,6 +216,7 @@ import { DashboardController } from './controllers/dashboard.controller';
     WhatsAppService,
     FeeCategoryService,
     FeeSubCategoryService,
+    SmsTemplateService,
     DesignationService,
     {
       provide: 'MomentWrapper',

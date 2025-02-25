@@ -28,6 +28,8 @@ export class TenantController {
         name: req.body.name,
         logo: req.body.logo,
         address: req.body.address,
+        email: req.body.email,
+        mobileNumber: req.body.mobileNumber,
         tenant: savedRecord._id,
         isDefault: true,
         studentCount: req.body.studentCount,
