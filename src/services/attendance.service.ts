@@ -51,12 +51,13 @@ export class AttendanceService {
 
   async updateAttendances(id: string, userId: string, attendanceStatus: string) {
     try {
-      const attendanceRes = await this.attendanceModel.findOne({ _id: id});
-      if (!attendanceRes)  throw new Error('Attendance not found');
+      const res = await this.attendanceModel.findOne({ _id: id});
+      if (!res)  throw new Error('Attendance not found');
+      let attendanceRes = JSON.parse(JSON.stringify(res));
       let userIndex = attendanceRes.attendance.findIndex((element: any) => element.userId.toString() === userId)
       if (userIndex === -1) throw new Error('User not found');
-      let data = attendanceRes.attendance[userIndex].attendanceStatus = attendanceStatus;
-      return await this.attendanceModel.findOneAndUpdate({ _id: id}, { $set: { attendance: data } });
+      attendanceRes.attendance[userIndex].attendanceStatus = attendanceStatus;
+      return await this.attendanceModel.findOneAndUpdate({ _id: id}, { $set: { attendance: attendanceRes.attendance } });
     } catch (error) {
       throw error;
     }
