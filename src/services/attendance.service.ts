@@ -49,18 +49,14 @@ export class AttendanceService {
     }
   }
 
-  async updateAttendances(id: string, userId: string, date: string, attendanceStatus: string) {
+  async updateAttendances(id: string, userId: string, attendanceStatus: string) {
     try {
-      const startOfDay = new Date(date);
-      startOfDay.setHours(0, 0, 0, 0); // Start of the day (00:00:00.000)
-      const endOfDay = new Date(date);
-      endOfDay.setHours(23, 59, 59, 999);
-      const attendanceRes = await this.attendanceModel.findOne({ _id: id, date: { $gte: startOfDay, $lte: endOfDay } });
+      const attendanceRes = await this.attendanceModel.findOne({ _id: id});
       if (!attendanceRes)  throw new Error('Attendance not found');
       let userIndex = attendanceRes.attendance.findIndex((element: any) => element.userId.toString() === userId)
       if (userIndex === -1) throw new Error('User not found');
       let data = attendanceRes.attendance[userIndex].attendanceStatus = attendanceStatus;
-      return await this.attendanceModel.findOneAndUpdate({ _id: id, date: { $gte: startOfDay, $lte: endOfDay } }, { $set: { attendance: data } });
+      return await this.attendanceModel.findOneAndUpdate({ _id: id}, { $set: { attendance: data } });
     } catch (error) {
       throw error;
     }

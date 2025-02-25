@@ -11,7 +11,7 @@ export class AttendanceController {
   @Put()
   async updateAttendance(@Req() req, @Res() res) {
     try {
-      const attendance = await this.attendanceService.updateAttendances(req.body.id, req.body.userId, req.body.date, req.body.attendanceStatus);
+      const attendance = await this.attendanceService.updateAttendances(req.body.id, req.body.userId, req.body.attendanceStatus);
       return res.status(HttpStatus.OK).json({message: 'Attendance updated successfully', data: attendance});
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({message: error.message});
