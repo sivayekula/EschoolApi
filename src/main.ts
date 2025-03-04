@@ -2,9 +2,14 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as bodyParser from 'body-parser';
+import * as fs from 'fs';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const httpsOptions = {
+    key: fs.readFileSync('/etc/letsencrypt/live/api.digiakshara.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/api.digiakshara.com/fullchain.pem'),
+  };
+  const app = await NestFactory.create(AppModule, { httpsOptions });
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
@@ -19,6 +24,6 @@ async function bootstrap() {
     credentials: true,
   });
   app.setGlobalPrefix('api/');
-  await app.listen(process.env.PORT || 8001);
+  await app.listen(process.env.PORT || 443);
 }
 bootstrap();
