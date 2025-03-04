@@ -24,6 +24,6 @@ async function bootstrap() {
     credentials: true,
   });
   app.setGlobalPrefix('api/');
-  await app.listen(process.env.PORT || 443);
+  await app.listen(process.env.PORT || 8000);
 }
 bootstrap();
