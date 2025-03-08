@@ -60,7 +60,7 @@ export class StudentFeesController {
             dueDate: fee.dueDate,
             paidAmount: paidTill,
             pendingAmount: studentFees.feeList[studentFee].paybalAmount - paidTill,
-            paymentStatus: paidTill === studentFees.feeList[studentFee].paybalAmount ? 'paid' : 'pending'
+            paymentStatus: fee.paymentAmount*1>0? paidTill === studentFees.feeList[studentFee].paybalAmount ? 'paid' : 'partially-paid' :  studentFees.feeList[studentFee].paymentStatus
           })
         } else {
           totalAmount += fee.paybalAmount*1
@@ -72,13 +72,15 @@ export class StudentFeesController {
             paidAmount: fee.paidAmount*1,
             pendingAmount: fee.pendingAmount*1,
             paybalAmount: fee.paybalAmount*1,
-            paymentStatus: fee.paybalAmount === fee.paymentAmount ? 'paid' : 'pending'
+            paymentStatus: fee.paymentAmount*1>0?fee.paybalAmount === fee.paymentAmount ? 'paid' :"partially-paid" :'pending'
           });
         }
       }
       studentFees.feeList = studentNewFees;
       studentFees.paymentStatus = totalAmount === paidAmount ? 'paid' : 'pending';
       const transactionObj = {
+        academicYear: req.headers['x-academic-year'] || req.user.academicYear,
+        transactionNo: `txn-${Date.now()}`,
         student: studentFees.student,
         tenant: req.user.tenant,
         studentFee: studentFees._id,

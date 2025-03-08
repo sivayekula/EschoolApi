@@ -35,9 +35,10 @@ export class AcademicService {
     }
   }
 
-  async getAcademicByStudent(studentId: string) {
+  async getAcademicByStudent(studentId: string, academicYear?: string): Promise<any> {
+    const qry = academicYear ? { student: studentId, academicYear: academicYear, status: 'active' } : { student: studentId, status: 'active' };
     try {
-      return await this.academicModel.findOne({ student: studentId, status: 'active' }).populate('class').populate('section').populate('academicYear').populate('student');
+      return await this.academicModel.findOne(qry).populate('class').populate('section').populate('academicYear').populate('student');
     } catch (error) {
       throw error;
     }

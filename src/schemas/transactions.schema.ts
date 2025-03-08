@@ -10,8 +10,14 @@ class FeeList {
 @Schema({ timestamps: true })
 export class Transaction {
 
+  @Prop({ type: String, required: true })
+  transactionNo: string;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Student", index: true })
   student: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "AcademicYear", index: true })
+  academicYear: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "StudentFees", index: true })
   studentFee: mongoose.Schema.Types.ObjectId;

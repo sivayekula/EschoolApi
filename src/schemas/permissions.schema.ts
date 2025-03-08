@@ -8,6 +8,9 @@ export class Permissions {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Role" })
   role: mongoose.Schema.Types.ObjectId
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Designation' })
+  designation: mongoose.Schema.Types.ObjectId
+
   @Prop({ type: Array, required: true })
   permissions: {
     name: string,

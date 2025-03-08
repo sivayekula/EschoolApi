@@ -1,11 +1,13 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
+import { AcademicService } from "./academic.service";
 
 
 @Injectable()
 export class TransactionsService {
   constructor(
     @InjectModel('Transaction') private readonly transactionModel,
+    private readonly academicService: AcademicService
   ) {}
 
   async createTransaction(transaction) {
@@ -16,9 +18,19 @@ export class TransactionsService {
     }
   }
 
-  async getTransactions(studentId: string) {
+  async getTransactions(tenantId: string, studentId?: string) {
     try {
-      return await this.transactionModel.find({ student: studentId }).populate({path: 'fees.fee', model: 'Fee'});
+      let query = { tenant: tenantId };
+      if (studentId) {
+        query['student'] = studentId;
+      }
+      let transactionList= [];
+      let transactions = await this.transactionModel.find(query).populate({path: 'fees.fee', model: 'Fee'}).exec();
+      for (let transaction of transactions) {
+        let academic = await this.academicService.getAcademicByStudent(transaction.student._id, transaction.academicYear);
+        transactionList.push({transaction , academic});
+      }
+      return transactionList;
     } catch (error) {
       return error;
     }

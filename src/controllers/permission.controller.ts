@@ -8,17 +8,20 @@ export class PermissionController {
     private readonly permissionService: PermissionService
   ) {}
 
-  @Get('/:id/:tenant?')
-    async getPermission(@Req() req, @Res() res, @Param('id') id: string) {
+  @Get()
+    async getPermission(@Req() req, @Res() res) {
     try {
-      const permission = await this.permissionService.getPermission(id, req.params.tenant || req.user.tenant);
+      let tenant = req.query.tenant || req.user.tenant
+      let role = req.query.role
+      let designation = req.query.designation
+      const permission = await this.permissionService.getPermission(role, tenant, designation);
       return res.status(HttpStatus.OK).json({ message: 'Permission fetched successfully', data: permission });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }
   }
 
-  @Post('')
+  @Post()
   async createPermission(@Req() req, @Res() res, @Body() body) {
     try {
       const requestBody = JSON.parse(JSON.stringify(body))
