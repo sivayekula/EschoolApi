@@ -25,6 +25,7 @@ export class PermissionController {
   async createPermission(@Req() req, @Res() res, @Body() body) {
     try {
       const requestBody = JSON.parse(JSON.stringify(body))
+      requestBody['designation'] = requestBody.designation || null
       requestBody['tenant'] = requestBody.tenant || req.user.tenant
       const permission = await this.permissionService.createPermission(requestBody);
       return res.status(HttpStatus.OK).json({ message: 'Permission created successfully', data: permission });
