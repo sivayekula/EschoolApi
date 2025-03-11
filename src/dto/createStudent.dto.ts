@@ -190,6 +190,10 @@ export class CreateStudentDto {
   readonly academics: Academic;
 
   @IsString()
+  @IsOptional()
+  readonly busRoute: string;
+
+  @IsString()
   @IsNotEmpty()
   readonly admissionNumber: string;
   

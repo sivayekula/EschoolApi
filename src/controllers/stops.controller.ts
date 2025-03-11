@@ -6,7 +6,7 @@ import { StopsService } from "src/services/stops.service";
 export class StopsController {
   constructor(private readonly stopsService: StopsService) {}
 
-  @Post('')
+  @Post()
   async createStop(@Req() req, @Res() res) {
     try {
       const body = JSON.parse(JSON.stringify(req.body))
@@ -18,7 +18,7 @@ export class StopsController {
     }
   }
 
-  @Get('')
+  @Get()
   async getStops(@Req() req, @Res() res) {
     try {
       const stops = await this.stopsService.findAll(req.user.tenant);

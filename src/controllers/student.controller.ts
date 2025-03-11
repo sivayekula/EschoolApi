@@ -45,7 +45,7 @@ export class StudentController {
     private readonly studentFeesService: StudentFeesService,
   ) {}
 
-  @Post('')
+  @Post()
   async create(
     @Req() req,
     @Res() res,
@@ -152,16 +152,24 @@ export class StudentController {
         academicYear: academics.academicYear,
       });
       let studentFee = await this.studentFeesService.getFeesByStudent(id);
-      const newFees = getFees(fees);
+      const allSelectedFees = getFees(fees);
       if (studentFee) {
+        let updatedFees = allSelectedFees.map((item) => {
+          let index = studentFee.feeList.findIndex((fee) => item.fee.toString() === fee.fee._id.toString())
+          if (index !== -1) {
+            return studentFee.feeList[index]
+          } else {
+            return item
+          }
+        })
         await this.studentFeesService.updateFees(studentFee._id, {
-          feeList: newFees
+          feeList: updatedFees
         });
       } else {
         await this.studentFeesService.createFees({
           student: id,
           tenant: req.user.tenant,
-          feeList: newFees
+          feeList: allSelectedFees
         });
       }
       return res
@@ -174,7 +182,7 @@ export class StudentController {
     }
   }
 
-  @Get('')
+  @Get()
   async getStudents(@Res() res, @Req() req) {
     try {
       const students = await this.studentService.getStudent(req.user.tenant);

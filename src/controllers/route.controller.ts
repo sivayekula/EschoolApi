@@ -5,7 +5,7 @@ import { RouteService } from "../services/route.service";
 export class RouteController {
   constructor(private readonly routeService: RouteService){}
 
-  @Post('')
+  @Post()
   async createRoute(@Req() req, @Res() res) {
     try {
       const body = JSON.parse(JSON.stringify(req.body))
@@ -17,7 +17,7 @@ export class RouteController {
     }
   }
 
-  @Get('')
+  @Get()
   async getRoutes(@Req() req, @Res() res) {
     try {
       const routes = await this.routeService.getRoutes(req.user.tenant);

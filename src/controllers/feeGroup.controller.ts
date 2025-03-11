@@ -7,7 +7,7 @@ export class FeeGroupController {
     private readonly feeGroupService: FeeGroupService
   ) {}
 
-  @Get('')
+  @Get()
   async getFeeGroups(@Req() req, @Res() res) {
     try {
       const feeGroups = await this.feeGroupService.getFeeGroups();
@@ -17,7 +17,7 @@ export class FeeGroupController {
     }
   }
 
-  @Post('')
+  @Post()
   async createFeeGroup(@Req() req, @Res() res) {
     try {
       const feeGroup = await this.feeGroupService.createFeeGroup(req.body);
