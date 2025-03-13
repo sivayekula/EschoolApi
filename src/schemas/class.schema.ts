@@ -4,9 +4,6 @@ import * as mongoose from 'mongoose';
 @Schema({ timestamps: true })
 export class Class extends mongoose.Document {
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "ClassCategory", index: true })
-  classCategory: mongoose.Schema.Types.ObjectId;
-
   @Prop({ type: String, required: true})
   name: string;
 

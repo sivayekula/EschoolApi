@@ -4,10 +4,8 @@ import * as mongoose from "mongoose";
 
 @Schema({ timestamps: true })
 export class TimeTable {
-  @Prop({ type: String, required: true })
-  board: string;
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'ClassCategory' })
-  category: mongoose.Schema.Types.ObjectId;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Board' })
+  board: mongoose.Schema.Types.ObjectId;
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Class' })
   class: mongoose.Schema.Types.ObjectId;
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Section' })

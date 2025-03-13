@@ -23,7 +23,7 @@ export class StudentFeesController {
     }
   }
 
-  @Get('')
+  @Get()
   async getAllFees(@Req() req, @Res() res) {
     try {
       const fees = await this.studentFeesService.getAllFees(req.user.tenant);
@@ -33,7 +33,7 @@ export class StudentFeesController {
     }
   }
 
-  @Post('')
+  @Post()
   async collectFees(@Req() req, @Res() res) {
     try {
       const studentFees = await this.studentFeesService.getFeesByStudent(req.body.studentId);

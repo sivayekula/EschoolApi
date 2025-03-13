@@ -103,6 +103,12 @@ import { DashboardController } from './controllers/dashboard.controller';
 import { SmsTemplateSchema } from './schemas/smsTemplate.schema';
 import { SmsTemplateController } from './controllers/smsTemplate.controller';
 import { SmsTemplateService } from './services/smsTemplate.service';
+import { BankAccountsController } from './controllers/bankAccounts.controller';
+import { BankAccountService } from './services/bankAccount.service';
+import { BankAccountsSchema } from './schemas/bankAccounts.schema';
+import { BoardSchema } from './schemas/board.schema';
+import { BoardsController } from './controllers/boards.controller';
+import { BoardService } from './services/board.service';
 
 
 @Module({
@@ -140,6 +146,8 @@ import { SmsTemplateService } from './services/smsTemplate.service';
       {name: 'FeeCategory', schema: FeeCategorySchema},
       {name: 'FeeSubCategory', schema: FeeSubCategorySchema},
       {name: 'SmsTemplate', schema: SmsTemplateSchema},
+      {name: 'BankAccounts', schema: BankAccountsSchema},
+      {name: 'Board', schema: BoardSchema},
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -183,6 +191,8 @@ import { SmsTemplateService } from './services/smsTemplate.service';
     FeeSubCategoryController,
     DashboardController,
     SmsTemplateController,
+    BankAccountsController,
+    BoardsController
   ],
   providers: [ 
     StudentService,
@@ -217,6 +227,8 @@ import { SmsTemplateService } from './services/smsTemplate.service';
     FeeCategoryService,
     FeeSubCategoryService,
     SmsTemplateService,
+    BankAccountService,
+    BoardService,
     DesignationService,
     {
       provide: 'MomentWrapper',

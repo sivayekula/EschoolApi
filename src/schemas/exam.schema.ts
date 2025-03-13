@@ -32,11 +32,8 @@ export class Exam {
   @Prop({ type: String, required: true })
   name: string
 
-  @Prop({ type: String, required: true })
-  board: string
-
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "ClassCategory" })
-  classCategory: mongoose.Schema.Types.ObjectId
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Board" })
+  board: mongoose.Schema.Types.ObjectId
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Class" })
   class: mongoose.Schema.Types.ObjectId

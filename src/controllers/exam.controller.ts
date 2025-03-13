@@ -8,7 +8,7 @@ export class ExamController {
     private readonly examService: ExamService
   ) {}
 
-  @Post('')
+  @Post()
   async createExam(@Req() req, @Body() body: ExamDto, @Res() res) {
     try {
       const requestBody = JSON.parse(JSON.stringify(body))
@@ -21,7 +21,7 @@ export class ExamController {
     }
   }
 
-  @Get('')
+  @Get()
   async getExams(@Req() req, @Res() res) {
     try {
       const exams = await this.examService.getExams(req.user.tenant);

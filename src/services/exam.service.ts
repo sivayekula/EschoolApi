@@ -18,7 +18,7 @@ export class ExamService {
 
   async getExams(tenantId: string) {
     try {
-      return await this.examModel.find({tenant: tenantId, status: 'active'}).populate('class').populate('section').populate('classCategory');
+      return await this.examModel.find({tenant: tenantId, status: 'active'}).populate('class').populate('section').populate('board');
     } catch (error) {
       throw error;
     }

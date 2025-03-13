@@ -41,10 +41,6 @@ export class ExamDto {
 
   @IsString()
   @IsNotEmpty()
-  readonly classCategory: string;
-
-  @IsString()
-  @IsNotEmpty()
   readonly class: string;
 
   @IsString()

@@ -8,7 +8,7 @@ export class TimetableController {
     private readonly timetableService: TimetableService
   ) {}
 
-  @Post('')
+  @Post()
   async createTimetable(@Req() req, @Res() res, @Body() body) {
     try {
       body['createdBy'] = req.user._id
@@ -20,7 +20,7 @@ export class TimetableController {
     }
   }
 
-  @Get('')
+  @Get()
   async getTimetables(@Res() res, @Req() req) {
     try {
       const timetables = await this.timetableService.getTimetables(req.user.tenant);
