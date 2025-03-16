@@ -42,6 +42,8 @@ lerna-debug.log*
 .env.production.local
 .env.local
 
+school-management-450616-8b0ba4cfd14c.json
+
 # temp directory
 .temp
 .tmp
