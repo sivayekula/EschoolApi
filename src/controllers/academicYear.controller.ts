@@ -8,7 +8,7 @@ export class AcademicYearController {
     private readonly academicYearService: AcademicYearService
   ) {}
 
-  @Get('')
+  @Get()
   async getAcademicYear(@Req() req, @Res() res) {
     try {
       const academicYear = await this.academicYearService.getAcademicYear();
@@ -28,7 +28,7 @@ export class AcademicYearController {
     }
   }
 
-  @Post('')
+  @Post()
   async createAcademicYear(@Req() req, @Res() res) {
     try {
       const academicYear = await this.academicYearService.createAcademicYear(req.body);

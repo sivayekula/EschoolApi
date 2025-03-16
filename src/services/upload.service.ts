@@ -1,29 +1,38 @@
-import * as AWS from "aws-sdk";
+import { Storage } from '@google-cloud/storage';
+import * as path from 'path';
 import { Injectable } from "@nestjs/common";
+import * as fs from 'fs';
 import { File } from 'multer';
 
 @Injectable()
 export class UploadService {
-  private s3: AWS.S3;
-  constructor() {
-    this.s3 = new AWS.S3({
-      accessKeyId: process.env.ACCESS_KEY || "c2Qpn_OA2ScWC6LAM10ml2ZzEIR_aDfQvSj9rOo_",
-      secretAccessKey: process.env.SECRET_KEY || "6mx6LJ-SAvF-jZo5UKBnZ3FU3TIv6kVOEzzVU6_L",
-      region: process.env.REGION || "ap-southeast-2",
-      endpoint: process.env.ENDPOINT || "https://mos.ap-southeast-2.sufybkt.com",
-    });
-  }
+  private storage = new Storage({
+    keyFilename: path.join(__dirname, '../../school-management-450616-8b0ba4cfd14c.json'), // Your service account key
+  });
+  private bucketName = 'eschool-images';
+  private filePath = 'images/';
   async uploadFile(file: File): Promise<any> {
     try {
       if (!file) throw new Error("No file provided");
-      const params = {
-        Bucket: process.env.BUCKET_NAME || "stu-images",
-        Key: `${Date.now()}.${file.mimetype.split("/")[1]}`,
-        Body: file.buffer,
-        ContentType: file.mimetype,
-        ACL: 'public-read',
-      };
-      return await this.s3.upload(params).promise();
+      const bucket = this.storage.bucket(this.bucketName);
+      const blob = bucket.file(`${this.filePath}${Date.now()}.${file.mimetype.split("/")[1]}`);
+      const blobStream = blob.createWriteStream({
+        resumable: false,
+        contentType: file.mimetype,
+      });
+  
+      let url = await new Promise((resolve, reject) => {
+        blobStream.on('finish', async () => {
+          const publicUrl = `https://storage.googleapis.com/${this.bucketName}/${blob.name}`;
+          resolve(publicUrl);
+        });
+  
+        blobStream.on('error', (err) => reject(err));
+        blobStream.end(file.buffer);
+      });
+
+      return {Location: url, name: file.originalname}
+    
     } catch (error) {
       throw new Error(error.message || "File upload failed");
     }

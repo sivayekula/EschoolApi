@@ -5,17 +5,5 @@ export class ImageDto {
   Location: string;
 
   @IsString()
-  ETag: string;
-
-  @IsString()
   name: string;
-  
-  @IsString()
-  Bucket: string;
-
-  @IsString()
-  key: string;
-
-  @IsString()
-  Key: string;
 }

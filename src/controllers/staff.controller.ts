@@ -10,7 +10,7 @@ export class StaffController {
     private readonly staffService: StaffService
   ){}
 
-  @Post('')
+  @Post()
   async saveStaff(@Req() req, @Res() res, @Body() body: CreateStaffDto) {
     try {
       const requestBody = JSON.parse(JSON.stringify(body))

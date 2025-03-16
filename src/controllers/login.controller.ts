@@ -17,7 +17,7 @@ constructor(
   private readonly permissionService: PermissionService
 ){}
   @Public()
-  @Post('')
+  @Post()
   async login(@Body() loginObj: LoginDto, @Res() res) {
     try {
       const user = await this.authService.validateUser(loginObj.loginId, loginObj.userType);

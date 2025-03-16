@@ -109,6 +109,11 @@ import { BankAccountsSchema } from './schemas/bankAccounts.schema';
 import { BoardSchema } from './schemas/board.schema';
 import { BoardsController } from './controllers/boards.controller';
 import { BoardService } from './services/board.service';
+import { ContactUsController } from './controllers/cotactUs.controller';
+import { ContactUsService } from './services/contactUs.service';
+import { TemplateNamesController } from './controllers/templateNames.controller';
+import { TemplateNamesService } from './services/templateNames.service';
+import { TemplateNamesSchema } from './schemas/templateNames.schema';
 
 
 @Module({
@@ -148,6 +153,7 @@ import { BoardService } from './services/board.service';
       {name: 'SmsTemplate', schema: SmsTemplateSchema},
       {name: 'BankAccounts', schema: BankAccountsSchema},
       {name: 'Board', schema: BoardSchema},
+      {name: 'TemplateNames', schema: TemplateNamesSchema},
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -192,7 +198,9 @@ import { BoardService } from './services/board.service';
     DashboardController,
     SmsTemplateController,
     BankAccountsController,
-    BoardsController
+    BoardsController,
+    ContactUsController,
+    TemplateNamesController,
   ],
   providers: [ 
     StudentService,
@@ -229,6 +237,8 @@ import { BoardService } from './services/board.service';
     SmsTemplateService,
     BankAccountService,
     BoardService,
+    ContactUsService,
+    TemplateNamesService,
     DesignationService,
     {
       provide: 'MomentWrapper',

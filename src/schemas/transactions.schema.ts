@@ -10,6 +10,9 @@ class FeeList {
 @Schema({ timestamps: true })
 export class Transaction {
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "TemplateNames" })
+  receiptLabel: mongoose.Schema.Types.ObjectId;
+
   @Prop({ type: String, required: true })
   transactionNo: string;
 

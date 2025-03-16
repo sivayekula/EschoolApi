@@ -8,7 +8,7 @@ export class HolidaysController {
     private readonly holidayService: HolidaysService
   ) {}
 
-  @Get('')
+  @Get()
   async getHolidays(@Req() req, @Res() res) {
     try {
       const holidays = await this.holidayService.getHolidays(req.user.tenant);
@@ -28,7 +28,7 @@ export class HolidaysController {
     }
   }
 
-  @Post('')
+  @Post()
   async createHolidays(@Req() req, @Res() res) {
     const data = JSON.parse(JSON.stringify(req.body))
     data['createdBy'] = req.user._id

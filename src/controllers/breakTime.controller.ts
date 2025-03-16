@@ -8,7 +8,7 @@ export class BreakTimeController {
     private readonly breakTimeService: BreakTimeService
   ) {}
 
-  @Post('')
+  @Post()
   async createBreakTime(@Req() req, @Body() breakTime, @Res() res) {
     try {
       let body = JSON.parse(JSON.stringify(breakTime));
@@ -30,7 +30,7 @@ export class BreakTimeController {
     }
   }
 
-  @Get('')
+  @Get()
   async getBreakTimes(@Req() req, @Res() res) {
     try {
       const breakTimes = await this.breakTimeService.getBreakTimes(req.user.tenant);

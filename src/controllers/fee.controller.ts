@@ -1,5 +1,4 @@
 import { Body, Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/common";
-import mongoose from "mongoose";
 import { FeeService } from "src/services/fee.service";
 
 
@@ -10,7 +9,7 @@ export class FeeController {
     private readonly feeService: FeeService
   ) {}
 
-  @Post('')
+  @Post()
   async createFee(@Body() body, @Req() req, @Res() res) {
     try {
       const classes = body.fees.filter((fee) => fee.checked === true)
@@ -43,7 +42,7 @@ export class FeeController {
     }
   }
 
-  @Get('')
+  @Get()
   async getFees(@Req() req, @Res() res) {
     try {
       const fees = await this.feeService.getFees(req.user.tenant);
