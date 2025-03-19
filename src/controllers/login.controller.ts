@@ -26,9 +26,10 @@ constructor(
       if(!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
       if(user.status !== 'active') throw new Error('We are unable to process with your details. Please contact to admin')
       if(loginObj.userType === 'student' && user.isPortalLoginEnabled === false) throw new Error('We are unable to process with your details. Please contact to admin')
+      if(loginObj.userType === 'staff' && user.isPortalLoginEnabled === false) throw new Error('We are unable to process with your details. Please contact to admin')
       delete user.password
       let result= {}
-      let permissions = await this.permissionService.getPermission(user.role._id, user.tenant);
+      let permissions = await this.permissionService.getPermission( user?.tenant, user?.role?._id, user?.designation);
       result = {
         ...user,
         permissions

@@ -14,7 +14,7 @@ export class PermissionController {
       let tenant = req.query.tenant || req.user.tenant
       let role = req.query.role
       let designation = req.query.designation
-      const permission = await this.permissionService.getPermission(role, tenant, designation);
+      const permission = await this.permissionService.getPermission(tenant, role, designation);
       return res.status(HttpStatus.OK).json({ message: 'Permission fetched successfully', data: permission });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

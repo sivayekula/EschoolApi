@@ -23,12 +23,9 @@ export class PermissionService {
     }
   }
 
-  async getPermission(roleId: string, tenantId: string, designation?: string) {
+  async getPermission(tenantId: string, roleId?: string, designation?: string) {
     try {
-      let query = {role: roleId, tenant: tenantId, status: 'active'};
-      if (designation) {
-        query['designation'] = designation;
-      }
+      let query = designation ? {tenant: tenantId, designation: designation, status: 'active'} : {role: roleId, tenant: tenantId, status: 'active'};
       return await this.permissionModel.findOne(query);
     } catch (error) {
       throw error;

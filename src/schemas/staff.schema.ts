@@ -29,6 +29,9 @@ export class Staff extends mongoose.Document {
   @Prop({type: Boolean, required: true, default: false})
   isPortalLoginEnabled: boolean;
 
+  @Prop({type: mongoose.Schema.Types.ObjectId, required: true, ref: "Role"})
+  role: mongoose.Schema.Types.ObjectId;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Designation"})
   designation: mongoose.Schema.Types.ObjectId;
 

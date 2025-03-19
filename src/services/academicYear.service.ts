@@ -8,8 +8,9 @@ export class AcademicYearService {
     @InjectModel('AcademicYear') private readonly academicYearModel
   ) {}
 
-  async getAcademicYear() {
-    return await this.academicYearModel.findOne({ status: 'active' });
+  async getAcademicYear(id?: string) {
+    let qry = id ? { _id: id } : { status: 'active' }
+    return await this.academicYearModel.findOne(qry);
   }
 
   async getAllAcademicYears() {
@@ -21,6 +22,18 @@ export class AcademicYearService {
   }
 
   async createAcademicYear(academicYear) {
-    return await this.academicYearModel.create(academicYear);
+    try {
+      return await this.academicYearModel.create(academicYear);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteAcademicYear(id: string) {
+    try {
+      return await this.academicYearModel.findOneAndDelete({ _id: id });
+    } catch (error) {
+      throw error;
+    }
   }
 }

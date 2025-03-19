@@ -1,19 +1,22 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
 import { CreateStaffDto } from "src/dto/staff.dto";
-import { IStaff } from "src/interfaces/staff.interface";
+import { RoleService } from "src/services/role.service";
 import { StaffService } from "src/services/staff.service";
 
 @Controller('staff')
 export class StaffController {
 
   constructor(
-    private readonly staffService: StaffService
+    private readonly staffService: StaffService,
+    private readonly roleService: RoleService
   ){}
 
   @Post()
   async saveStaff(@Req() req, @Res() res, @Body() body: CreateStaffDto) {
     try {
+      const getRoleData = await this.roleService.getRole('staff');
       const requestBody = JSON.parse(JSON.stringify(body))
+      requestBody['role'] = getRoleData._id;
       requestBody['password'] = body.firstName.replace(/\s+/g, '').slice(0, 4) + new Date(body.DOB).getFullYear();
       requestBody['tenant'] = req.user.tenant
       requestBody['createdBy'] = req.user._id

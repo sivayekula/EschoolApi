@@ -23,4 +23,12 @@ export class BoardService {
       throw error;
     }
   }
+
+  async delete(id: string) {
+    try {
+      return await this.boardModel.findByIdAndUpdate(id, { status: 'inactive' });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
