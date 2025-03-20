@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/common";
+import { Controller, Delete, Get, HttpStatus, Param, Post, Req, Res } from "@nestjs/common";
 import { BoardService } from "src/services/board.service";
 
 
@@ -26,6 +26,16 @@ export class BoardsController {
     try {
       let boards = await this.boardService.getBoards(req.user.tenant);
       return res.status(HttpStatus.OK).json({ message: 'Boards fetched successfully', data: boards });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
+  @Delete(':id')
+  async delete(@Res() res, @Param('id') id: string) {
+    try {
+      await this.boardService.delete(id);
+      return res.status(HttpStatus.OK).json({ message: 'Board deleted successfully' });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }

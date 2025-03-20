@@ -25,7 +25,10 @@ export class TransactionsService {
         query['student'] = studentId;
       }
       let transactionList= [];
-      let transactions = await this.transactionModel.find(query).populate('receiptLabel').populate({path: 'fees.fee', model: 'Fee'}).exec();
+      let transactions = await this.transactionModel.find(query).populate('receiptLabel').populate({path: 'fees.fee', model: 'Fee',populate: {
+        path: "feeGroup", // Populate feeGroupId inside Fee
+        model: "FeeGroup"
+      }}).exec();
       for (let transaction of transactions) {
         let academic = await this.academicService.getAcademicByStudent(transaction.student._id, transaction.academicYear);
         transactionList.push({transaction , academic});
