@@ -28,6 +28,8 @@ export class AuthGuard implements CanActivate {
         secret: process.env.JWT_SECRET || 'your-secret-key',
       });
       request.user = decoded; // Attach decoded token to the request
+      request.user['academicYear'] = request.headers['x-academic-year'];
+      request.user['branch'] = request.headers['x-branch'];
       return true;
     } catch (err) {
       return false;

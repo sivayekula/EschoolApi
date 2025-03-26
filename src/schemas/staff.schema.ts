@@ -121,7 +121,7 @@ export class Staff extends mongoose.Document {
   @Prop({ type: String, required: true})
   password: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Branch" })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Branch" })
   branch: mongoose.Schema.Types.ObjectId
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true})

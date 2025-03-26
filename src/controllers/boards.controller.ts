@@ -1,5 +1,5 @@
 import { Controller, Delete, Get, HttpStatus, Param, Post, Req, Res } from "@nestjs/common";
-import { BoardService } from "src/services/board.service";
+import { BoardService } from "../services/board.service";
 
 
 @Controller('boards')

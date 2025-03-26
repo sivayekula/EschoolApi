@@ -1,5 +1,5 @@
 import { Controller, Delete, Get, HttpStatus, Post, Put, Req, Res } from "@nestjs/common";
-import { ClassCategoryService } from "src/services/classCategory.service";
+import { ClassCategoryService } from "../services/classCategory.service";
 
 
 @Controller('classCategory')

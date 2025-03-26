@@ -1,6 +1,6 @@
 import { Controller, Delete, Get, HttpStatus, Post, Put, Req, Res } from "@nestjs/common";
-import { ClassService } from "src/services/class.service";
-import { SectionService } from 'src/services/section.service';
+import { ClassService } from "../services/class.service";
+import { SectionService } from '../services/section.service';
 
 
 @Controller('class')

@@ -1,5 +1,5 @@
 import { Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/common";
-import { BankAccountService } from "src/services/bankAccount.service";
+import { BankAccountService } from "../services/bankAccount.service";
 
 @Controller('bankAccounts')
 export class BankAccountsController {

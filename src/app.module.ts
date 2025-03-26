@@ -109,7 +109,7 @@ import { BankAccountsSchema } from './schemas/bankAccounts.schema';
 import { BoardSchema } from './schemas/board.schema';
 import { BoardsController } from './controllers/boards.controller';
 import { BoardService } from './services/board.service';
-import { ContactUsController } from './controllers/cotactUs.controller';
+import { ContactUsController } from './controllers/contactUs.controller';
 import { ContactUsService } from './services/contactUs.service';
 import { TemplateNamesController } from './controllers/templateNames.controller';
 import { TemplateNamesService } from './services/templateNames.service';
@@ -118,7 +118,7 @@ import { TemplateNamesSchema } from './schemas/templateNames.schema';
 
 @Module({
   imports: [ 
-    MongooseModule.forRoot('mongodb+srv://sivayekula:LcdXKbcjQOfLdMmR@cluster0.dicgf6g.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+    MongooseModule.forRoot('mongodb://localhost:27017/eschool', {
       maxPoolSize: 50,
     }),
     MongooseModule.forFeature([

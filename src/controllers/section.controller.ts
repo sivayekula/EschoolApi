@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpStatus, Post, Put, Req, Res } from "@nestjs/common";
-import { SectionService } from "src/services/section.service";
+import { SectionService } from "../services/section.service";
 
 
 

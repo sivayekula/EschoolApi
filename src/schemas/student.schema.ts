@@ -5,6 +5,9 @@ import * as bcrypt from 'bcrypt';
 @Schema({ timestamps: true })
 export class Student extends mongoose.Document {
 
+  @Prop({ type: Number, required: true})
+  rollNumber: number;
+
   @Prop({ type: Object, required: false })
   profilePic : object;
 
@@ -143,7 +146,7 @@ export class Student extends mongoose.Document {
   @Prop({ type: String, required: true })
   password: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Branch", required: false })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Branch", required: true })
   branch: mongoose.Schema.Types.ObjectId
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Route", required: false })

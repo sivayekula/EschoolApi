@@ -9,11 +9,15 @@ export class AcademicService {
   ) {}
 
   async createAcademic(academic): Promise<any> {
-    return await this.academicModel.create(academic);
+    try {
+      return await this.academicModel.create(academic);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async getAcademics(tenantId: string, classId?: string, sectionId?: string): Promise<any> {
-    const qry = tenantId ? { tenant: tenantId, status: 'active' } : {};
+  async getAcademics(tenantId: string, branchId: string, classId?: string, sectionId?: string): Promise<any> {
+    const qry = tenantId ? { tenant: tenantId, branch: branchId, status: 'active' } : {};
     if (classId) {
       qry['class'] = classId;
     }
@@ -27,9 +31,18 @@ export class AcademicService {
     }
   }
 
+  async getStudentsByClassAndSection(tenantId: string, classId: string, sectionId: string): Promise<any> {
+    try {
+      return await this.academicModel.countDocuments({ tenant: tenantId, class: classId, section: sectionId, status: 'active' });
+    } catch (error) {
+      throw error;
+    }
+    
+  }
+
   async updateAcademic(studentId: string, academic): Promise<any> {
     try {
-      return await this.academicModel.findOneAndUpdate({ student: studentId, status: 'active' }, academic, { new: true });
+      return await this.academicModel.findOneAndUpdate({ student: studentId, status: 'active' }, academic);
     } catch (error) {
       throw error;
     }

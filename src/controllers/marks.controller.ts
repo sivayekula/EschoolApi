@@ -1,7 +1,6 @@
 import { Controller, Get, HttpStatus, Post, Query, Req, Res } from "@nestjs/common";
-import mongoose, { mongo } from "mongoose";
-import { ExamService } from "src/services/exam.service";
-import { MarksService } from "src/services/marks.service";
+import { ExamService } from "../services/exam.service";
+import { MarksService } from "../services/marks.service";
 
 
 const getPassPercentage = (students) => {

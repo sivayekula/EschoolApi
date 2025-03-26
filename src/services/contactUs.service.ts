@@ -8,34 +8,36 @@ export class ContactUsService {
   private transporter;
   constructor() {
     this.transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",  // Gmail SMTP server
+      port: 465,               // Use port 465 for SSL
+      secure: true,
       auth: {
         user: "siva.yekula@gmail.com",
-        pass: "@Si90327328",
+        pass: "zkbs rlro gfzt qvhe",
       }
     });
   }
 
-  async sendContactEmail(name: string, email: string, message: string, subject: string, imageUrl?: string) {
+  async sendContactEmail(body) {
     const mailOptions: any = {
       from: 'siva.yekula@gmail.com',
-      to: email,
-      subject: subject,
-      text: `${message}`,
+      to: body.email,
+      subject: body.issueSubject + ' - ' + body.issueFacingwith,
+      text: `${body.issueDetails}`,
       attachments: [],
     };
 
     // If an image URL is provided, fetch the image and attach it
-    if (imageUrl) {
+    if (body.imageUrl) {
       try {
-        const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+        const response = await axios.get(body.imageUrl, { responseType: 'arraybuffer' });
         mailOptions.attachments.push({
           filename: 'attachment.jpg', // Adjust filename based on image type
           content: response.data,
           encoding: 'base64',
         });
       } catch (error) {
-        console.error('Error fetching image:', error);
+        console.log('Error fetching image:', error);
       }
     }
 
@@ -43,7 +45,7 @@ export class ContactUsService {
       await this.transporter.sendMail(mailOptions);
       return { success: true, message: 'Email sent successfully' };
     } catch (error) {
-      console.error('Error sending email:', error);
+      console.log('Error sending email:', error);
       return { success: false, message: 'Failed to send email' };
     }
   }

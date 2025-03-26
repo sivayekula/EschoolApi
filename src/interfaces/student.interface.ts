@@ -16,6 +16,7 @@ export interface IStudent extends Document {
   readonly aadharNo: string;
   readonly pic: string;
   readonly aadharPic: string;
+  readonly branch: string;
   readonly address: Address;
   
 }

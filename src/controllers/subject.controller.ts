@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpStatus, Post, Put, Req, Res } from "@nestjs/common";
-import { SubjectService } from "src/services/subject.service";
+import { SubjectService } from "../services/subject.service";
 
 @Controller('subject')
 export class SubjectController {

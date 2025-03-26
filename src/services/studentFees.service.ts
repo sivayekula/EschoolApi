@@ -41,9 +41,9 @@ export class StudentFeesService {
     }
   }
 
-  async getAllFees(tenantId: string) {
+  async getAllFees(tenantId: string, branchId: string) {
     try {
-      return await this.studentFeesModel.find({ tenant: tenantId, status: 'active' }).populate('student').populate({path: 'feeList.fee', model: 'Fee'});
+      return await this.studentFeesModel.find({ tenant: tenantId, branch: branchId, status: 'active' }).populate('student').populate({path: 'feeList.fee', model: 'Fee'});
     } catch (error) {
       throw error;
     }

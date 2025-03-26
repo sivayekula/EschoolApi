@@ -1,7 +1,7 @@
 import { Controller, Get, HttpStatus, Req, Res } from "@nestjs/common";
-import { StaffService } from "src/services/staff.service";
-import { StudentService } from "src/services/student.service";
-import { TransactionsService } from "src/services/transactions.service";
+import { StaffService } from "../services/staff.service";
+import { StudentService } from "../services/student.service";
+import { TransactionsService } from "../services/transactions.service";
 
 
 @Controller('dashboard')

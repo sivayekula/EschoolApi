@@ -11,11 +11,11 @@ import {
   Res,
 } from '@nestjs/common';
 import { StudentService } from '../services/student.service';
-import { CreateStudentDto } from 'src/dto/createStudent.dto';
-import { RoleService } from 'src/services/role.service';
-import { AcademicService } from 'src/services/academic.service';
-import { FeeService } from 'src/services/fee.service';
-import { StudentFeesService } from 'src/services/studentFees.service';
+import { CreateStudentDto } from '../dto/createStudent.dto';
+import { RoleService } from '../services/role.service';
+import { AcademicService } from '../services/academic.service';
+import { FeeService } from '../services/fee.service';
+import { StudentFeesService } from '../services/studentFees.service';
 
 function getFees(fees) {
   const newFees = [];
@@ -54,24 +54,31 @@ export class StudentController {
     try {
       const getRoleData = await this.roleService.getRole('student');
       const requestBoy = JSON.parse(JSON.stringify(createStudentDto));
+      const studentCount = await this.academicService.getStudentsByClassAndSection(req.user.tenant, requestBoy.academics.class, requestBoy.academics.section);
       requestBoy['password'] =
-        createStudentDto.firstName.replace(/\s+/g, '').slice(0, 4) +
+        createStudentDto.firstName.replace(/\s+/g, '').slice(0, 4).toLowerCase() +
         new Date(createStudentDto.DOB).getFullYear();
       requestBoy['role'] = getRoleData._id;
       requestBoy['tenant'] = req.user.tenant;
       requestBoy['createdBy'] = req.user._id;
+      requestBoy['rollNumber'] = studentCount + 1;
+      requestBoy['branch'] = req.user.branch || null;
+      requestBoy['busRoute'] = requestBoy.busRoute ? requestBoy.busRoute : null;
       const newStudent = await this.studentService.createStudent(requestBoy);
-      await this.academicService.createAcademic({
+      const academic = await this.academicService.createAcademic({
         student: newStudent._id,
         class: requestBoy.academics.class,
         section: requestBoy.academics.section,
         academicYear: requestBoy.academics.academicYear,
+        branch: req.user.branch || null,
         tenant: req.user.tenant,
       });
       const fees = getFees(requestBoy.fees);
       if (fees.length > 0) {
         const studentFees = {
           student: newStudent._id,
+          academic: academic._id,
+          branch: req.user.branch || null,
           tenant: req.user.tenant,
           feeList: fees
         }
@@ -185,26 +192,10 @@ export class StudentController {
   @Get()
   async getStudents(@Res() res, @Req() req) {
     try {
-      const students = await this.studentService.getStudent(req.user.tenant);
+      const students = await this.studentService.getStudent(req.user.tenant, req.headers.branch);
       return res
         .status(HttpStatus.OK)
         .json({ message: 'Students fetched successfully', data: students });
-    } catch (error) {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .json({ message: error.message });
-    }
-  }
-
-  @Get('attendance')
-  async getAttendance(@Req() req, @Res() res) {
-    try {
-      const attendance = await this.studentService.getAttendance(
-        req.user.tenant,
-      );
-      return res
-        .status(HttpStatus.OK)
-        .json({ message: 'Attendance fetched successfully', data: attendance });
     } catch (error) {
       return res
         .status(HttpStatus.BAD_REQUEST)

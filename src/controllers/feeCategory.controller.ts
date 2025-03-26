@@ -1,5 +1,5 @@
 import { Controller, Delete, Get, HttpStatus, Post, Put, Req, Res } from "@nestjs/common";
-import { FeeCategoryService } from "src/services/feeCategory.service";
+import { FeeCategoryService } from "../services/feeCategory.service";
 
 
 @Controller('feeCategory')

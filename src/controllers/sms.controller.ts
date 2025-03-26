@@ -1,5 +1,5 @@
 import { Controller, HttpStatus, Post, Req, Res } from "@nestjs/common";
-import { SmsService } from "src/services/sms.service";
+import { SmsService } from "../services/sms.service";
 
 
 @Controller('sms')

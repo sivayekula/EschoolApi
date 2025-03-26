@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/common";
-import { FeeService } from "src/services/fee.service";
+import { FeeService } from "../services/fee.service";
 
 
 @Controller('fee')

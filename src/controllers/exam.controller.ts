@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
-import { ExamDto } from "src/dto/exam.dto";
-import { ExamService } from "src/services/exam.service";
+import { ExamDto } from "../dto/exam.dto";
+import { ExamService } from "../services/exam.service";
 
 @Controller('exam')
 export class ExamController {

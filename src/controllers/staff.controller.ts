@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
-import { CreateStaffDto } from "src/dto/staff.dto";
-import { RoleService } from "src/services/role.service";
-import { StaffService } from "src/services/staff.service";
+import { CreateStaffDto } from "../dto/staff.dto";
+import { RoleService } from "../services/role.service";
+import { StaffService } from "../services/staff.service";
 
 @Controller('staff')
 export class StaffController {
@@ -17,9 +17,10 @@ export class StaffController {
       const getRoleData = await this.roleService.getRole('staff');
       const requestBody = JSON.parse(JSON.stringify(body))
       requestBody['role'] = getRoleData._id;
-      requestBody['password'] = body.firstName.replace(/\s+/g, '').slice(0, 4) + new Date(body.DOB).getFullYear();
-      requestBody['tenant'] = req.user.tenant
-      requestBody['createdBy'] = req.user._id
+      requestBody['password'] = body.firstName.replace(/\s+/g, '').slice(0, 4).toLowerCase() + new Date(body.DOB).getFullYear();
+      requestBody['tenant'] = req.user.tenant;
+      requestBody['branch'] = req.user.branch || null;
+      requestBody['createdBy'] = req.user._id;
       const staff = await this.staffService.saveStaff(requestBody);
       res.status(HttpStatus.CREATED).json({ message: 'Staff created successfully', data: staff });
     } catch (error) {
@@ -38,16 +39,6 @@ export class StaffController {
       })
       const staff = await this.staffService.saveStaff(requestBody);
       res.status(HttpStatus.CREATED).json({ message: 'Staff created successfully', data: staff });
-    } catch (error) {
-      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
-    }
-  }
-
-  @Get('attendance')
-  async getAttendance(@Req() req, @Res() res) {
-    try {
-      const attendance = await this.staffService.getAttendance(req.user.tenant);
-      return res.status(HttpStatus.OK).json({ message: 'Attendance fetched successfully', data: attendance });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }

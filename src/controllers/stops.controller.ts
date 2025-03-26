@@ -1,5 +1,5 @@
 import { Controller, Delete, Get, HttpStatus, Post, Put, Req, Res } from "@nestjs/common";
-import { StopsService } from "src/services/stops.service";
+import { StopsService } from "../services/stops.service";
 
 
 @Controller('stops')

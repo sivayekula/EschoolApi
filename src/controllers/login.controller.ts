@@ -1,11 +1,11 @@
 import { Body, Controller, HttpStatus, Post, Req, Res, SetMetadata, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { LoginDto } from "src/dto/login.dto";
-import { AcademicYearService } from "src/services/academicYear.service";
-import { AuthService } from "src/services/auth.service";
-import { PermissionService } from "src/services/permission.service";
+import { LoginDto } from "../dto/login.dto";
+import { AcademicYearService } from "../services/academicYear.service";
+import { AuthService } from "../services/auth.service";
+import { PermissionService } from "../services/permission.service";
 import * as bcrypt from 'bcrypt';
-import { length } from "class-validator";
+import { BranchService } from '../services/branch.service';
 export const Public = () => SetMetadata('isPublic', true);
 
 @Controller('login')
@@ -14,11 +14,12 @@ constructor(
   private readonly authService: AuthService,
   private readonly academicYearService: AcademicYearService,
   private readonly jwtService: JwtService,
-  private readonly permissionService: PermissionService
+  private readonly permissionService: PermissionService,
+  private readonly branchService: BranchService
 ){}
   @Public()
   @Post()
-  async login(@Body() loginObj: LoginDto, @Res() res) {
+  async login(@Req() req, @Body() loginObj: LoginDto, @Res() res) {
     try {
       const user = await this.authService.validateUser(loginObj.loginId, loginObj.userType);
       if(!user) throw new UnauthorizedException('Invalid credentials'); 
@@ -35,8 +36,9 @@ constructor(
         permissions
       }
       let token = this.jwtService.sign(result);
-      const academicYear = await this.academicYearService.getAcademicYear();
-      return res.status(HttpStatus.OK).json({ token, academicYear });
+      const academicYear = user.role.name !== 'superadmin' ? await this.academicYearService.getAcademicYear(user.tenant) : null;
+      const branch = user.role.name !== 'superadmin' ? user.branch ? [await this.branchService.getBranch(user.branch)] : await this.branchService.findAll(user.tenant, true) : null;
+      return res.status(HttpStatus.OK).json({ token, academicYear, branch: branch[0] });
     } catch (error) {
       return res.status(HttpStatus.UNAUTHORIZED).json({
         message: error.message

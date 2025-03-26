@@ -1,8 +1,10 @@
 import { Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/common";
-import { BranchService } from "src/services/branch.service";
-import { RoleService } from "src/services/role.service";
-import { TenantService } from "src/services/tenant.service";
-import { UserService } from "src/services/user.service";
+import { BranchService } from "../services/branch.service";
+import { RoleService } from "../services/role.service";
+import { TenantService } from "../services/tenant.service";
+import { UserService } from "../services/user.service";
+import * as moment from 'moment';
+import { AcademicYearService } from "../services/academicYear.service";
 
 
 @Controller('tenant')
@@ -11,7 +13,8 @@ export class TenantController {
     private readonly tenantService: TenantService,
     private readonly roleService: RoleService,
     private readonly userService: UserService,
-    private readonly branchService: BranchService
+    private readonly branchService: BranchService,
+    private readonly academicYearService: AcademicYearService
   ) {}
 
   @Post()
@@ -51,6 +54,8 @@ export class TenantController {
         profilePic: req.body.logo
       }
       const user = await this.userService.createUser(adminUser);
+      let year = moment().format('YYYY');
+      await this.academicYearService.createAcademicYear({tenant: savedRecord._id, year: year+'-'+(Number(year)+1), startDate: moment().format(), endDate: moment().add(12, 'months').format(), status: 'active'});
       res.status(200).json({status: 200, message: 'tenant details', data: user})
     } else {
       throw new Error('Tenant already existed with this email/mobile')

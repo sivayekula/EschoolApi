@@ -1,5 +1,5 @@
 import { Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
-import { HolidaysService } from "src/services/holidays.service";
+import { HolidaysService } from "../services/holidays.service";
 
 
 @Controller('holidays')

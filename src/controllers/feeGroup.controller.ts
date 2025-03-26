@@ -1,5 +1,5 @@
 import { Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/common";
-import { FeeGroupService } from "src/services/feeGroup.service";
+import { FeeGroupService } from "../services/feeGroup.service";
 
 @Controller('feeGroup')
 export class FeeGroupController {

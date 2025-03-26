@@ -3,29 +3,54 @@ import { InjectModel } from '@nestjs/mongoose';
 
 @Injectable()
 export class SmsTemplateService {
-    constructor(
-        @InjectModel('SmsTemplate') private readonly smsTemplateModel
-    ) {}
+  constructor(
+    @InjectModel('SmsTemplate') private readonly smsTemplateModel
+  ) {}
     
-    async create(createSmsTemplateDto) {
-        const createdSmsTemplate = new this.smsTemplateModel(createSmsTemplateDto);
-        return createdSmsTemplate.save();
+  async create(createSmsTemplateDto) {
+    try {
+      const createdSmsTemplate = await this.smsTemplateModel.create(createSmsTemplateDto);
+      return createdSmsTemplate;
+    } catch (error) {
+      throw error;
     }
+  }
 
-    async findAll() {
-        return this.smsTemplateModel.find().exec();
+  async findAll() {
+    try {
+      return await this.smsTemplateModel.find();
+    } catch (error) {
+      throw error;
     }
+  }
 
-    async findOne(id: string) {
-        return this.smsTemplateModel.findById(id).exec();
+  async findTemplate(id?: string, name?: string) {
+    try {
+      if (id) {
+        return await this.smsTemplateModel.findById(id);
+      }
+      if (name) {
+        return await this.smsTemplateModel.findOne({name: name, status: 'active'});
+      }
+    } catch (error) {
+      throw error;
     }
+  }
 
-    async update(id: string, updateSmsTemplateDto) {
-        return this.smsTemplateModel.findByIdAndUpdate(id, updateSmsTemplateDto, { new: true }).exec();
+  async update(id: string, updateSmsTemplateDto) {
+    try {
+      return await this.smsTemplateModel.findByIdAndUpdate(id, updateSmsTemplateDto);
+    } catch (error) {
+      throw error;
     }
+  }
 
-    async remove(id: string) {
-        return this.smsTemplateModel.findByIdAndRemove(id).exec();
+  async remove(id: string) {
+    try {
+      return await this.smsTemplateModel.findOneAndUpdate({ _id: id}, { status: 'inactive' });
+    } catch (error) {
+      throw error;
     }
+  }
     
 }

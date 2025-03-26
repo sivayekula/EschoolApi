@@ -1,5 +1,5 @@
-import { Controller, Get, HttpStatus, Param, Req, Res } from "@nestjs/common";
-import { TransactionsService } from "src/services/transactions.service";
+import { Controller, Get, HttpStatus, Req, Res } from "@nestjs/common";
+import { TransactionsService } from "../services/transactions.service";
 
 @Controller('transactions')
 export class TransactionsController {

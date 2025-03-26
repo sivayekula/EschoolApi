@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
-import { TimetableService } from "src/services/timetable.service";
+import { TimetableService } from "../services/timetable.service";
 
 
 @Controller('timetable')

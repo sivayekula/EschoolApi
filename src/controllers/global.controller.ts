@@ -1,5 +1,5 @@
 import { Body, Controller, Get, HttpStatus, Post, Res } from "@nestjs/common";
-import { GlobalService } from "src/services/global.service";
+import { GlobalService } from "../services/global.service";
 
 @Controller('')
 export class GlobalController {

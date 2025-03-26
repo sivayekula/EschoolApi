@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
-import { BreakTimeService } from "src/services/breakTime.service";
+import { BreakTimeService } from "../services/breakTime.service";
 
 
 @Controller('breakTime')

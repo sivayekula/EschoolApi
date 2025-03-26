@@ -1,5 +1,5 @@
 import { Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
-import { BranchService } from "src/services/branch.service";
+import { BranchService } from "../services/branch.service";
 
 
 @Controller('branch')

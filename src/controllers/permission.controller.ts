@@ -1,5 +1,5 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Req, Res } from "@nestjs/common";
-import { PermissionService } from "src/services/permission.service";
+import { Body, Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/common";
+import { PermissionService } from "../services/permission.service";
 
 
 @Controller('permissions')
