@@ -16,9 +16,9 @@ export class BoardService {
     }
   }
 
-  async getBoards(tenantId: string) {
+  async getBoards(tenantId: string, branchId: string) {
     try {
-      return await this.boardModel.find({tenant: tenantId, status: 'active'});
+      return await this.boardModel.find({tenant: tenantId, branch: branchId, status: 'active'});
     } catch (error) {
       throw error;
     }

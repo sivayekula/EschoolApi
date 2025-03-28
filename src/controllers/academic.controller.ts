@@ -11,7 +11,7 @@ export class AcademicController {
   @Get(':classId?/:sectionId?')
   async getAcademics(@Req() req, @Res() res) {
     try {
-      const academics = await this.academicService.getAcademics(req.user.tenant, req.user.branch, req.params.classId, req.params.sectionId);
+      const academics = await this.academicService.getAcademics(req.user.tenant, req.user.branch, req.user.academicYear, req.params.classId, req.params.sectionId);
       return res.status(HttpStatus.OK).json({ message: 'Academics fetched successfully', data: academics });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

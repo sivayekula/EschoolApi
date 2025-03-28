@@ -14,6 +14,7 @@ export class ExamController {
       const requestBody = JSON.parse(JSON.stringify(body))
       requestBody['tenant'] = req.user.tenant
       requestBody['createdBy'] = req.user._id
+      requestBody['branch'] = req.user.branch
       const exam = await this.examService.createExam(requestBody);
       res.status(HttpStatus.CREATED).json({ message: 'Exam created successfully', data: exam });
     } catch (error) {
@@ -24,7 +25,7 @@ export class ExamController {
   @Get()
   async getExams(@Req() req, @Res() res) {
     try {
-      const exams = await this.examService.getExams(req.user.tenant);
+      const exams = await this.examService.getExams(req.user.tenant, req.user.branch);
       exams.forEach((exam) => {
         exam['passPercentage'] = exam.passPercentage || 0
       })

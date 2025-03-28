@@ -16,6 +16,12 @@ export class AcademicYear {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   tenant: mongoose.Schema.Types.ObjectId
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  branch: mongoose.Schema.Types.ObjectId
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  createdBy: mongoose.Schema.Types.ObjectId
+
   @Prop({ type: String, required: true, default: 'active' })
   status: string
 
@@ -23,4 +29,4 @@ export class AcademicYear {
 
 export const AcademicYearSchema = SchemaFactory.createForClass(AcademicYear);
 
-AcademicYearSchema.index({ year: 1, tenant: 1 }, { unique: true });
+AcademicYearSchema.index({ year: 1, tenant: 1, branch: 1 }, { unique: true });

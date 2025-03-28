@@ -38,6 +38,9 @@ export class Loan {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   tenant: mongoose.Schema.Types.ObjectId
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  branch: mongoose.Schema.Types.ObjectId
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false })
   createdBy: mongoose.Schema.Types.ObjectId
 

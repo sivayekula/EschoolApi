@@ -11,7 +11,7 @@ export class DesignationController {
   @Get()
   async getDesignations(@Req() req, @Res() res) {
     try {
-      let designations = await this.designationService.getDesignations(req.user.tenant, req.query.staffType)
+      let designations = await this.designationService.getDesignations(req.user.tenant, req.user.branch, req.query.staffType)
       return res.status(HttpStatus.OK).json({ message: 'Designations fetched successfully', data: designations });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json(error);
@@ -33,6 +33,8 @@ export class DesignationController {
     try {
       let requestBody = JSON.parse(JSON.stringify(req.body))
       requestBody['tenant'] = req.user.tenant
+      requestBody['createdBy'] = req.user._id
+      requestBody['branch'] = req.user.branch
       let designation = await this.designationService.createDesignation(requestBody)
       return res.status(HttpStatus.OK).json({ message: 'Designation created successfully', data: designation });
     } catch (error) {

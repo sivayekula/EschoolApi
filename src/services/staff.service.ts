@@ -10,8 +10,8 @@ export class StaffService {
     @InjectModel('Staff') private staffModel: Model<IStaff>
   ){}
 
-  async getStaff(tenantId){
-    return this.staffModel.find({ tenant: tenantId, status: 'active' }).populate('subjects').populate('designation');
+  async getStaff(tenantId: string, branchId: string) {
+    return this.staffModel.find({ tenant: tenantId, branch: branchId, status: 'active' }).populate('subjects').populate('designation');
   }
 
   async getStaffById(id: string){
@@ -54,9 +54,9 @@ export class StaffService {
     }
   }
 
-  async getStaffCount(tenantId: string) {
+  async getStaffCount(tenantId: string, branchId: string) {
     try {
-      return this.staffModel.countDocuments({ tenant: tenantId, status: 'active' });
+      return this.staffModel.countDocuments({ tenant: tenantId, branch: branchId, status: 'active' });
     } catch (error) {
       throw error;
     }

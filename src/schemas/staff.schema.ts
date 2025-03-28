@@ -26,9 +26,6 @@ export class Staff extends mongoose.Document {
   @Prop({ type: String, required: true})
   mobileNumber: string;
 
-  @Prop({type: Boolean, required: true, default: false})
-  isPortalLoginEnabled: boolean;
-
   @Prop({type: mongoose.Schema.Types.ObjectId, required: true, ref: "Role"})
   role: mongoose.Schema.Types.ObjectId;
 

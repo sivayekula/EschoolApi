@@ -16,9 +16,9 @@ export class BreakTimeService {
     }
   }
 
-  async getBreakTimes(tenantId: string) {
+  async getBreakTimes(tenantId: string, branchId: string) {
     try {
-      return await this.breakTimeModel.find({ tenant: tenantId, status: 'active' });
+      return await this.breakTimeModel.find({ tenant: tenantId, branch: branchId, status: 'active' });
     } catch (error) {
       throw error;
     }

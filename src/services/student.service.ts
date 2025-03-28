@@ -75,7 +75,7 @@ export class StudentService {
     }
   }
 
-  async getStudentCount(tenantId: string) {
+  async getStudentCount(tenantId: string, branchId: string, academicYear: string) {
     try {
       return await this.studentModel.countDocuments({ tenant: tenantId, status: 'active' });
     } catch (error) {

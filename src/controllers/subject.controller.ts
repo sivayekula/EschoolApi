@@ -15,6 +15,8 @@ export class SubjectController {
       }
       let requestBody = JSON.parse(JSON.stringify(body))
       requestBody['tenant'] = req.user.tenant
+      requestBody['createdBy'] = req.user._id
+      requestBody['branch'] = req.user.branch
       const subject = await this.subjectService.createSubject(requestBody)
       return res.status(HttpStatus.CREATED).json({ message: 'Subject created successfully', data: subject });
     } catch (error) {
@@ -25,7 +27,7 @@ export class SubjectController {
   @Get()
   async getSubjects(@Req() req, @Res() res) {
     try {
-      const subjects = await this.subjectService.getSubjects(req.user.tenant)
+      const subjects = await this.subjectService.getSubjects(req.user.tenant, req.user.branch);
       return res.status(HttpStatus.OK).json({ message: 'Subjects fetched successfully', data: subjects });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

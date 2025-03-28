@@ -40,11 +40,17 @@ export class StudentFees  extends mongoose.Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, index: true })
   tenant: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, index: true, ref: "Academic" })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, index: true, ref: "Academics" })
   academics: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, index: true, ref: "AcademicYear" })
+  academicYear: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: String, required: true, default: 'pending', enum: ['pending', 'overdue', 'paid'] })
   paymentStatus: string
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  createdBy: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: String, required: true, default: 'active' })
   status: string;

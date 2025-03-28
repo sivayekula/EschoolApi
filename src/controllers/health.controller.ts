@@ -6,7 +6,7 @@ import { Public } from "./login.controller";
 export class HealthController {
   constructor(private readonly health: HealthCheckService) {}
   @Public()
-  @Get('')
+  @Get()
   healthCheck() {
     return this.health.check([]);
   }

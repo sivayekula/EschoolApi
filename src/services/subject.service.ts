@@ -16,9 +16,9 @@ export class SubjectService {
     }
   }
 
-  async getSubjects(tenantId: string) {
+  async getSubjects(tenantId: string, branchId: string) {
     try {
-      return await this.subjectModel.find({tenant: tenantId, status: 'active'});
+      return await this.subjectModel.find({tenant: tenantId, branch: branchId, status: 'active'});
     } catch (error) {
       throw error;
     }

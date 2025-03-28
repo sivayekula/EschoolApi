@@ -8,9 +8,9 @@ export class HolidaysService {
     @InjectModel('Holidays') private readonly holidayModel
   ) {}
 
-  async getHolidays(tenantId: string) {
+  async getHolidays(tenantId: string, branchId: string, academicYear: string) {
     try {
-      return await this.holidayModel.find({ tenant: tenantId, status: 'active' });
+      return await this.holidayModel.find({ tenant: tenantId, branch: branchId, academicYear: academicYear, status: 'active' });
     } catch (error) {
       throw error;
     }

@@ -18,9 +18,9 @@ export class TransactionsService {
     }
   }
 
-  async getTransactions(tenantId: string, studentId?: string) {
+  async getTransactions(tenantId: string, branchId: string, studentId?: string) {
     try {
-      let query = { tenant: tenantId };
+      let query = { tenant: tenantId, branch: branchId };
       if (studentId) {
         query['student'] = studentId;
       }
@@ -39,9 +39,9 @@ export class TransactionsService {
     }
   }
 
-  async getCollectedFee(tenant: string) {
+  async getCollectedFee(tenant: string, branch: string, academicYear: string) {
     try {
-      return await this.transactionModel.find({tenant});
+      return await this.transactionModel.find({tenant: tenant, branch: branch, academicYear: academicYear});
     } catch (error) {
       return error;
     }

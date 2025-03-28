@@ -18,18 +18,28 @@ export class StudentMarks extends mongoose.Document {
 
 @Schema({ timestamps: true })
 export class Marks extends mongoose.Document {
+
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Exams" })
     exam: mongoose.Schema.Types.ObjectId
+
     @Prop({ type: StudentMarks, required: true })
     marksDetails: StudentMarks
+
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Tenant" })
     tenant: mongoose.Schema.Types.ObjectId
+
+    @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Branch" })
+    branch: mongoose.Schema.Types.ObjectId
+
     @Prop({ type: Number, required: true })
     passPercentage: number
+
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
     createdBy: mongoose.Schema.Types.ObjectId
+
     @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "AcademicYear" })
     academicYear: mongoose.Schema.Types.ObjectId
+
     @Prop({ type: String, required: true, default: 'active' })
     status: string
 }

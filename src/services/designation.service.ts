@@ -8,8 +8,8 @@ export class DesignationService {
     @InjectModel('Designation') private readonly designationModel
   ){}
 
-  async getDesignations(tenantId: string, staffType?: string) {
-    let qry = staffType ? {tenant: tenantId, staffType: staffType, status: 'active' } : {tenant: tenantId, status: 'active' }
+  async getDesignations(tenantId: string, branchId: string, staffType?: string) {
+    let qry = staffType ? {tenant: tenantId, branch: branchId, staffType: staffType, status: 'active' } : {tenant: tenantId, branch: branchId, status: 'active' }
     try {
       return await this.designationModel.find(qry);
     } catch (error) {

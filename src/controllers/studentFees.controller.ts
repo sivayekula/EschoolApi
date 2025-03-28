@@ -80,10 +80,11 @@ export class StudentFeesController {
       studentFees.paymentStatus = totalAmount === paidAmount ? 'paid' : 'pending';
       const transactionObj = {
         receiptLabel: req.body.receiptLabel || null,
-        academicYear: req.headers['x-academic-year'] || req.user.academicYear,
+        academicYear: req.user.academicYear,
         transactionNo: `txn-${Date.now()}`,
         student: studentFees.student,
         tenant: req.user.tenant,
+        branch: req.user.branch,
         studentFee: studentFees._id,
         fees: transactions,
         transactionId: req.body.transactionId,

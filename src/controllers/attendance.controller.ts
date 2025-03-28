@@ -4,6 +4,7 @@ import { SmsTemplateService } from '../services/smsTemplate.service';
 import { StudentService } from "../services/student.service";
 import { WhatsAppService } from "../services/whatsApp.service";
 import { ClassService } from "../services/class.service";
+import { create } from "domain";
 
 
 @Controller('attendance')
@@ -30,7 +31,7 @@ export class AttendanceController {
   async getAttendance(@Req() req, @Res() res) {
     try {
       if (!req.query.userType) throw new Error('User type is required');
-      const attendance = await this.attendanceService.getAttendance(req.user.tenant, req.query.date, req.query.userType, req.query.month, req.query.year, req.query.class, req.query.section);
+      const attendance = await this.attendanceService.getAttendance(req.user.tenant, req.user.branch, req.user.academicYear, req.query.date, req.query.userType, req.query.month, req.query.year, req.query.class, req.query.section);
       return res.status(HttpStatus.OK).json({message: 'Attendance fetched successfully', data: attendance});
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({message: error.message});
@@ -57,8 +58,10 @@ export class AttendanceController {
         attendance: attendance,
         class: data.class,
         section: data.section,
-        academicYear: req.headers['x-academic-year'] || req.user.academicYear,
-        tenant: req.user.tenant
+        academicYear: req.user.academicYear,
+        tenant: req.user.tenant,
+        branch: req.user.branch,
+        createdBy: req.user._id
       }
       const response = await this.attendanceService.createAttendance(reqData);
       if (data.sendSms && absentStudents.length) {

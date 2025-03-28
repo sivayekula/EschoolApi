@@ -1,10 +1,16 @@
 import { Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
 import { BranchService } from "../services/branch.service";
+import * as moment from 'moment';
+import { AcademicYearService } from "src/services/academicYear.service";
 
 
 @Controller('branch')
 export class BranchController {
-  constructor(private readonly branchService: BranchService) {}
+  constructor(
+    private readonly branchService: BranchService,
+    private readonly academicYearService: AcademicYearService
+
+  ) {}
 
   @Get()
   async getBranches(@Req() req, @Res() res) {
@@ -22,6 +28,8 @@ export class BranchController {
       const body = JSON.parse(JSON.stringify(req.body))
       body['tenant'] = req.user.tenant
       const branch = await this.branchService.createBranch(body);
+      let year = moment().format('YYYY');
+      await this.academicYearService.createAcademicYear({tenant: req.user.tenant, branch: branch._id, createdBy: req.user._id, year: year+'-'+(Number(year)+1), startDate: moment().format(), endDate: moment().add(12, 'months').format(), status: 'active'});
       return res.status(HttpStatus.OK).json({ message: 'Branch created successfully', data: branch });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

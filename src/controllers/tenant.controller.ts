@@ -5,6 +5,7 @@ import { TenantService } from "../services/tenant.service";
 import { UserService } from "../services/user.service";
 import * as moment from 'moment';
 import { AcademicYearService } from "../services/academicYear.service";
+import { create } from "domain";
 
 
 @Controller('tenant')
@@ -40,8 +41,9 @@ export class TenantController {
         whatsappCount: req.body.whatsappCount,
         portalEnabledStudents: req.body.portalEnabledStudents,
         portalEnabledStaff: req.body.portalEnabledStaff,
+        createdBy: req.user._id
       }
-      await this.branchService.createBranch(branchData);
+      const savedBranch = await this.branchService.createBranch(branchData);
       let adminUser = {
         firstName: req.body.contactPerson, 
         email: req.body.email,
@@ -55,7 +57,7 @@ export class TenantController {
       }
       const user = await this.userService.createUser(adminUser);
       let year = moment().format('YYYY');
-      await this.academicYearService.createAcademicYear({tenant: savedRecord._id, year: year+'-'+(Number(year)+1), startDate: moment().format(), endDate: moment().add(12, 'months').format(), status: 'active'});
+      await this.academicYearService.createAcademicYear({tenant: savedRecord._id, branch: savedBranch._id, createdBy: req.user._id, year: year+'-'+(Number(year)+1), startDate: moment().format(), endDate: moment().add(12, 'months').format(), status: 'active'});
       res.status(200).json({status: 200, message: 'tenant details', data: user})
     } else {
       throw new Error('Tenant already existed with this email/mobile')

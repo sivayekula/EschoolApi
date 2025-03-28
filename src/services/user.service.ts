@@ -9,7 +9,6 @@ export class UserService {
   ) {}
 
   async createUser(user) {
-    console.log(user);
     try {
       return await this.userModel.create(user);
     } catch (error) {

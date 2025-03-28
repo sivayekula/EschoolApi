@@ -16,9 +16,9 @@ export class ExamService {
     }
   }
 
-  async getExams(tenantId: string) {
+  async getExams(tenantId: string, branchId: string) {
     try {
-      return await this.examModel.find({tenant: tenantId, status: 'active'}).populate('class').populate('section').populate('board');
+      return await this.examModel.find({tenant: tenantId, branch: branchId, status: 'active'}).populate('class').populate('section').populate('board');
     } catch (error) {
       throw error;
     }

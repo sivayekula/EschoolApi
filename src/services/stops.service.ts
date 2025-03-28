@@ -14,13 +14,9 @@ export class StopsService {
     }
   }
 
-  async findAll(tenantId: string) {    
-
-
-
-    
+  async findAll(tenantId: string, branchId: string) {   
     try {
-      return await this.stopModel.find({tenant: tenantId, status: 'active'}).populate('route');
+      return await this.stopModel.find({tenant: tenantId, branch: branchId, status: 'active'}).populate('route');
     } catch (error) {
       throw error;
     }

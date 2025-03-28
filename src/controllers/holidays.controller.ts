@@ -11,7 +11,7 @@ export class HolidaysController {
   @Get()
   async getHolidays(@Req() req, @Res() res) {
     try {
-      const holidays = await this.holidayService.getHolidays(req.user.tenant);
+      const holidays = await this.holidayService.getHolidays(req.user.tenant, req.user.branch, req.user.academicYear);
       return res.status(HttpStatus.OK).json({ message: 'Holidays fetched successfully', data: holidays });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
@@ -33,6 +33,7 @@ export class HolidaysController {
     const data = JSON.parse(JSON.stringify(req.body))
     data['createdBy'] = req.user._id
     data['tenant'] = req.user.tenant
+    data['branch'] = req.user.branch
     try {
       let holiday = await this.holidayService.getHoliday('', data.startDate, data.endDate);
       if(holiday) return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Holidays already exists' });

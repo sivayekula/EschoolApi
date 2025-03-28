@@ -13,8 +13,6 @@ import { AcademicSchema } from './schemas/academic.schema';
 import { HealthController } from './controllers/health.controller';
 import { TerminusModule } from '@nestjs/terminus';
 import { ClassSchema } from './schemas/class.schema';
-import { GlobalController } from './controllers/global.controller';
-import { GlobalService } from './services/global.service';
 import { SubjectSchema } from './schemas/subjects.schema';
 import { StaffSchema } from './schemas/staff.schema';
 import { StaffController } from './controllers/staff.controller';
@@ -37,7 +35,7 @@ import { SubjectService } from './services/subject.service';
 import { TimeTableSchema } from './schemas/timetable.schema';
 import { TimetableController } from './controllers/timetable.controller';
 import { TimetableService } from './services/timetable.service';
-import { AcademicController } from './controllers/adadamic.controller';
+import { AcademicController } from './controllers/academic.controller';
 import { TenantSchema } from './schemas/tenant.schema';
 import { TenantController } from './controllers/tenant.controller';
 import { TenantService } from './services/tenant.service';
@@ -48,9 +46,6 @@ import { AcademicYearService } from './services/academicYear.service';
 import { SectionController } from './controllers/section.controller';
 import { SectionSchema } from './schemas/section.schema';
 import { SectionService } from './services/section.service';
-import { ClassCategorySchema } from './schemas/classCategory.schema';
-import { ClassCategoryController } from './controllers/classCategory.controller';
-import { ClassCategoryService } from './services/classCategory.service';
 import { FeeGroupSchema } from './schemas/feeGroup.schema';
 import { FeeGroupController } from './controllers/feeGroup.controller';
 import { FeeGroupService } from './services/feeGroup.service';
@@ -118,7 +113,7 @@ import { TemplateNamesSchema } from './schemas/templateNames.schema';
 
 @Module({
   imports: [ 
-    MongooseModule.forRoot('mongodb://localhost:27017/eschool', {
+    MongooseModule.forRoot('mongodb+srv://sivayekula:LcdXKbcjQOfLdMmR@cluster0.dicgf6g.mongodb.net/eschool?authSource=admin&replicaSet=atlas-39huat-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true', {
       maxPoolSize: 50,
     }),
     MongooseModule.forFeature([
@@ -136,7 +131,6 @@ import { TemplateNamesSchema } from './schemas/templateNames.schema';
       {name: 'Tenant', schema: TenantSchema },
       {name: 'AcademicYear', schema: AcademicYearSchema },
       {name: 'Section', schema: SectionSchema },
-      {name: 'ClassCategory', schema: ClassCategorySchema },
       {name: 'FeeGroup', schema: FeeGroupSchema },
       {name: 'Holidays', schema: HolidaysSchema },
       {name: 'Permission', schema: PermissionsSchema },
@@ -165,7 +159,6 @@ import { TemplateNamesSchema } from './schemas/templateNames.schema';
     StudentController, 
     LoginController,
     HealthController,
-    GlobalController,
     StaffController,
     UploadController,
     FeeController,
@@ -178,7 +171,6 @@ import { TemplateNamesSchema } from './schemas/templateNames.schema';
     AcademicYearController,
     ClassController,
     SectionController,
-    ClassCategoryController,
     FeeGroupController,
     HolidaysController,
     RoleController,
@@ -205,7 +197,6 @@ import { TemplateNamesSchema } from './schemas/templateNames.schema';
   providers: [ 
     StudentService,
     UserService,
-    GlobalService,
     StaffService,
     UploadService,
     FeeService,
@@ -219,7 +210,6 @@ import { TemplateNamesSchema } from './schemas/templateNames.schema';
     AcademicYearService,
     ClassService,
     SectionService,
-    ClassCategoryService,
     FeeGroupService,
     HolidaysService,
     PermissionService,

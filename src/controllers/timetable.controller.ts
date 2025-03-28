@@ -13,6 +13,7 @@ export class TimetableController {
     try {
       body['createdBy'] = req.user._id
       body['tenant'] = req.user.tenant
+      body['branch'] = req.user.branch
       const timetable = await this.timetableService.createTimetable(body);
       return res.status(HttpStatus.CREATED).json({ message: 'Timetable created successfully', data: timetable });
     } catch (error) {
@@ -23,7 +24,7 @@ export class TimetableController {
   @Get()
   async getTimetables(@Res() res, @Req() req) {
     try {
-      const timetables = await this.timetableService.getTimetables(req.user.tenant);
+      const timetables = await this.timetableService.getTimetables(req.user.tenant, req.user.branch);
       return res.status(HttpStatus.OK).json({ message: 'Timetables fetched successfully', data: timetables });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

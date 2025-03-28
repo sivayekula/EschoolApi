@@ -69,18 +69,21 @@ export class StudentController {
         student: newStudent._id,
         class: requestBoy.academics.class,
         section: requestBoy.academics.section,
-        academicYear: requestBoy.academics.academicYear,
-        branch: req.user.branch || null,
+        academicYear: req.user.academicYear,
+        branch: req.user.branch,
         tenant: req.user.tenant,
+        createdBy: req.user._id
       });
       const fees = getFees(requestBoy.fees);
       if (fees.length > 0) {
         const studentFees = {
           student: newStudent._id,
-          academic: academic._id,
-          branch: req.user.branch || null,
+          academics: academic._id,
+          academicYear: req.user.academicYear,
+          branch: req.user.branch,
           tenant: req.user.tenant,
-          feeList: fees
+          feeList: fees,
+          createdBy: req.user._id
         }
         await this.studentFeesService.createFees(studentFees);
       }
@@ -153,7 +156,7 @@ export class StudentController {
       delete result.updatedAt;
       delete result.createdAt;
       const student = await this.studentService.updateStudent(id, result);
-      await this.academicService.updateAcademic(id, {
+      const academic = await this.academicService.updateAcademic(id, {
         class: academics.class,
         section: academics.section,
         academicYear: academics.academicYear,
@@ -176,7 +179,11 @@ export class StudentController {
         await this.studentFeesService.createFees({
           student: id,
           tenant: req.user.tenant,
-          feeList: allSelectedFees
+          academicYear: academics.academicYear,
+          branch: req.user.branch,
+          academics: academic._id,
+          feeList: allSelectedFees,
+          createdBy: req.user._id
         });
       }
       return res

@@ -8,9 +8,9 @@ export class TimetableService {
     @InjectModel('Timetable') private readonly timetableModel
   ) {}
 
-  async getTimetables(tenantId: string) {
+  async getTimetables(tenantId: string, branchId: string) {
     try {
-      return await this.timetableModel.find({ tenant: tenantId, status: 'active' }).populate('class').populate('section').populate('classTeacher').populate('board');
+      return await this.timetableModel.find({ tenant: tenantId, branch: branchId, status: 'active' }).populate('class').populate('section').populate('classTeacher').populate('board');
     } catch (error) {
       throw error;
     }

@@ -15,11 +15,17 @@ export class Designation {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   tenant: mongoose.Schema.Types.ObjectId
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  branch: mongoose.Schema.Types.ObjectId
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  createdBy: mongoose.Schema.Types.ObjectId
 }
 
 export const DesignationSchema = SchemaFactory.createForClass(Designation)
 
 DesignationSchema.index(
-  { name: 1, tenant: 1 },
+  { name: 1, tenant: 1, branch: 1 },
   { unique: true }
 )

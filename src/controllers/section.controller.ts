@@ -14,6 +14,8 @@ export class SectionController {
     try {
       const requestBody = JSON.parse(JSON.stringify(body))
       requestBody['tenant'] = req.user.tenant
+      requestBody['branch'] = req.user.branch
+      requestBody['createdBy'] = req.user._id
       const section = await this.sectionService.createSection(requestBody);
       return res.status(HttpStatus.OK).json({ message: 'Section created successfully', data: section });
     } catch (error) {
@@ -33,7 +35,7 @@ export class SectionController {
   @Get()
   async getSections(@Req() req, @Res() res) {
     try {
-      const sections = await this.sectionService.getSections(req.user.tenant);
+      const sections = await this.sectionService.getSections(req.user.tenant, req.user.branch);
       return res.status(HttpStatus.OK).json({ message: 'Sections fetched successfully', data: sections });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
@@ -44,7 +46,6 @@ export class SectionController {
   async updateSection(@Req() req, @Res() res) {
     try {
       const body = JSON.parse(JSON.stringify(req.body))
-      body['tenant'] = req.user.tenant
       const section = await this.sectionService.updateSection(req.params.id, body);
       return res.status(HttpStatus.OK).json({ message: 'Section updated successfully', data: section });
     } catch (error) {

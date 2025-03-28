@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { Tenant } from './tenant.schema';
 
 @Schema({ timestamps: true })
 export class Subject extends mongoose.Document {
@@ -15,13 +14,19 @@ export class Subject extends mongoose.Document {
   status: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "tenant", required: true })
-  tenant: Tenant;
+  tenant: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "branch", required: true })
+  branch: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  createdBy: mongoose.Schema.Types.ObjectId;
   
 }
 
 export const SubjectSchema = SchemaFactory.createForClass(Subject);
 
 SubjectSchema.index(
-  { name: 1, tenant: 1 },
+  { name: 1, tenant: 1, branch: 1 },
   { unique: true, partialFilterExpression: { status: "active" } }
 );

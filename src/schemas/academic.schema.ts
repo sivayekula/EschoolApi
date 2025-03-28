@@ -22,6 +22,9 @@ export class Academic extends mongoose.Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Branch' })
   branch: mongoose.Schema.Types.ObjectId;
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  createdBy: mongoose.Schema.Types.ObjectId;
+
   @Prop({ type: String, required: true, default: 'active' })
   status: string;
 

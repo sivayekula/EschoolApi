@@ -23,10 +23,10 @@ export class PermissionService {
     }
   }
 
-  async getPermission(tenantId: string, roleId?: string, designation?: string) {
+  async getPermission(tenantId: string, branchId?: string, roleId?: string, designation?: string) {
     try {
-      let query = designation ? {tenant: tenantId, designation: designation, status: 'active'} : {role: roleId, tenant: tenantId, status: 'active'};
-      return await this.permissionModel.findOne(query);
+      let qry = {tenant: tenantId, status: 'active', ...(branchId && {branch: branchId}), ...(roleId && {role: roleId}), ...(designation && {designation: designation})};
+      return await this.permissionModel.findOne(qry);
     } catch (error) {
       throw error;
     }

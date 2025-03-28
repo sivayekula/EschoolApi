@@ -8,14 +8,18 @@ export class AcademicYearService {
     @InjectModel('AcademicYear') private readonly academicYearModel
   ) {}
 
-  async getAcademicYear(tenantId: string, id?: string) {
-    let qry = id ? { _id: id } : {tenant: tenantId, status: 'active' }
-    return await this.academicYearModel.findOne(qry);
+  async getAcademicYear(tenantId: string, branchId: string, id?: string) {
+    try {
+      let qry = id ? { _id: id } : {tenant: tenantId, branch: branchId, status: 'active' }
+      return await this.academicYearModel.findOne(qry);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  async getAllAcademicYears(tenantId?: string) {
+  async getAllAcademicYears(tenantId: string, branchId: string) {
     try {
-      return await this.academicYearModel.find({tenant: tenantId});
+      return await this.academicYearModel.find({tenant: tenantId, branch: branchId});
     } catch (error) {
       throw error;
     }
@@ -29,10 +33,10 @@ export class AcademicYearService {
     }
   }
 
-  async updateAcademicYear(id: string, tenantId: string) {
+  async updateAcademicYear(id: string, tenantId: string, branchId: string) {
     try {
-      await this.academicYearModel.findOneAndUpdate({ tenant: tenantId, status: 'active' }, { $set: { status: 'inactive' }} );
-      return await this.academicYearModel.findOneAndUpdate({ _id: id, tenant: tenantId }, { $set: { status: 'active' }} );
+      await this.academicYearModel.findOneAndUpdate({ tenant: tenantId, branch: branchId, status: 'active' }, { $set: { status: 'inactive' }} );
+      return await this.academicYearModel.findOneAndUpdate({ _id: id, tenant: tenantId, branch: branchId }, { $set: { status: 'active' }} );
     } catch (error) {
       throw error;
     }

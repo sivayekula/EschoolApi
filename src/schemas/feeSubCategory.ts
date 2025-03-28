@@ -15,6 +15,12 @@ export class FeeSubCategory {
 
     @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
     tenant: mongoose.Schema.Types.ObjectId;
+
+    @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
+    branch: mongoose.Schema.Types.ObjectId;
+
+    @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
+    createdBy: mongoose.Schema.Types.ObjectId;
 }
 
 export const FeeSubCategorySchema = SchemaFactory.createForClass(FeeSubCategory);

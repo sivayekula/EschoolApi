@@ -20,7 +20,6 @@ export class WhatsAppService {
       });
 
       const {data} = await axios.get(`${API_URL}?${params.toString()}`);
-      console.log('Response:', data);
       if (data?.status == 'failed') throw new Error(data?.response);
       return data;
     } catch (error) {

@@ -12,12 +12,18 @@ export class Class extends mongoose.Document {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   tenant: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  branch: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  createdBy: mongoose.Schema.Types.ObjectId;
   
 }
 
 export const ClassSchema = SchemaFactory.createForClass(Class);
 
 ClassSchema.index(
-  { name: 1, tenant: 1 },
+  { name: 1, tenant: 1, branch: 1 },
   { unique: true }
 );

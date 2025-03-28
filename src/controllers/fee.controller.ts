@@ -21,7 +21,9 @@ export class FeeController {
           name: body.feeTitle,
           isGlobal: true,
           amount: body.feeAmount || 0,
-          tenant: req.user.tenant
+          tenant: req.user.tenant,
+          branch: req.user.branch,
+          createdBy: req.user._id
         }]
       } else {  
         fees = classes.map((fee) => {
@@ -31,7 +33,9 @@ export class FeeController {
             feeGroup: body.feeGroup,
             name: body.feeTitle,
             amount: fee.amount,
-            tenant: req.user.tenant
+            tenant: req.user.tenant,
+            branch: req.user.branch,
+            createdBy: req.user._id
           }
         })
       }
@@ -45,7 +49,7 @@ export class FeeController {
   @Get()
   async getFees(@Req() req, @Res() res) {
     try {
-      const fees = await this.feeService.getFees(req.user.tenant);
+      const fees = await this.feeService.getFees(req.user.tenant, req.user.branch);
       res.status(HttpStatus.OK).json({ message: 'Fees fetched successfully', data: fees });
     } catch (error) {
       return { message: error.message };

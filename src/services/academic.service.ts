@@ -16,8 +16,8 @@ export class AcademicService {
     }
   }
 
-  async getAcademics(tenantId: string, branchId: string, classId?: string, sectionId?: string): Promise<any> {
-    const qry = tenantId ? { tenant: tenantId, branch: branchId, status: 'active' } : {};
+  async getAcademics(tenantId: string, branchId: string, academicYear: string, classId?: string, sectionId?: string): Promise<any> {
+    const qry = tenantId ? { tenant: tenantId, branch: branchId, academicYear: academicYear, status: 'active' } : {};
     if (classId) {
       qry['class'] = classId;
     }
@@ -37,7 +37,14 @@ export class AcademicService {
     } catch (error) {
       throw error;
     }
-    
+  }
+
+  async getStudentsCount(tenantId: string, branchId: string, academicYear: string) {
+    try {
+      return await this.academicModel.countDocuments({ tenant: tenantId, branch: branchId, academicYear: academicYear, status: 'active' });
+    } catch (error) {
+      throw error;
+    }
   }
 
   async updateAcademic(studentId: string, academic): Promise<any> {

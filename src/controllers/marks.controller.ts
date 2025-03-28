@@ -43,7 +43,8 @@ export class MarksController {
             const data = {
                 exam: requestBody.examId,
                 tenant: req.user.tenant,
-                academicYear: req.headers['x-academic-year'] || req.user.academicYear,
+                branch: req.user.branch,
+                academicYear: req.user.academicYear,
                 createdBy: req.user._id,
                 passPercentage: getPassPercentage(requestBody.studentsMarks),
                 marksDetails: requestBody.studentsMarks.map((studentMark) => ({

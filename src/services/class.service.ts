@@ -8,9 +8,9 @@ export class ClassService {
     @InjectModel('Class') private readonly classModel
   ) {}
 
-  async getClasses(tenantId: string) {
+  async getClasses(tenantId: string, branchId: string) {
     try {
-      return await this.classModel.find({tenant: tenantId, status: 'active'});
+      return await this.classModel.find({tenant: tenantId, branch: branchId, status: 'active'});
     } catch (error) {
       throw error;
     }

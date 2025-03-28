@@ -1,13 +1,13 @@
 import { Controller, Get, HttpStatus, Req, Res } from "@nestjs/common";
 import { StaffService } from "../services/staff.service";
-import { StudentService } from "../services/student.service";
 import { TransactionsService } from "../services/transactions.service";
+import { AcademicService } from "src/services/academic.service";
 
 
 @Controller('dashboard')
 export class DashboardController {
   constructor(
-    private readonly studentService: StudentService,
+    private readonly academicService: AcademicService,
     private readonly staffService: StaffService,
     private readonly transactionService: TransactionsService,   
   ) {}
@@ -15,9 +15,9 @@ export class DashboardController {
   @Get()
   async getDashboard(@Req() req, @Res() res) {
     try {
-      const studentCount = await this.studentService.getStudentCount(req.user.tenant);
-      const staffCount = await this.staffService.getStaffCount(req.user.tenant);
-      const collectedFee = await this.transactionService.getCollectedFee(req.user.tenant);
+      const studentCount = await this.academicService.getStudentsCount(req.user.tenant, req.user.branch, req.user.academicYear);
+      const staffCount = await this.staffService.getStaffCount(req.user.tenant, req.user.branch);
+      const collectedFee = await this.transactionService.getCollectedFee(req.user.tenant, req.user.branch, req.user.academicYear);
       let totalCollectedFee = 0;
       let totalExpense = 0;
       collectedFee.forEach((fee) => {

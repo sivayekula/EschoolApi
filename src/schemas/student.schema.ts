@@ -140,9 +140,6 @@ export class Student extends mongoose.Document {
     studyProof: object;
   };
   
-  @Prop({type: Boolean, required: true, default: false})
-  isPortalLoginEnabled: boolean;
-
   @Prop({ type: String, required: true })
   password: string;
 
@@ -161,8 +158,8 @@ export class Student extends mongoose.Document {
   @Prop({ type: String })
   metaInfo: string
 
-  @Prop({ type: String, required: true })
-  createdBy: string
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  createdBy: mongoose.Schema.Types.ObjectId
 
   @Prop({ type: String, required: true, default: 'active' })
   status: string

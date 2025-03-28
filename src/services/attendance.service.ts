@@ -17,11 +17,11 @@ export class AttendanceService {
     }
   }
 
-  async getAttendance(tenantId: string, date?: string, userType?: string, month?: string, year?: string, classId?: string, sectionId?: string) {
+  async getAttendance(tenantId: string, branchId: string, academicYear: string, date?: string, userType?: string, month?: string, year?: string, classId?: string, sectionId?: string) {
     try {
       let startDate;
       let endDate;
-      let qry = { tenant: tenantId, userType: userType, status: 'active' }
+      let qry = { tenant: tenantId, branch: branchId, academicYear: academicYear, userType: userType, status: 'active' }
       if (date) {
         startDate = moment(date).startOf('day')
         endDate = moment(date).endOf('day')

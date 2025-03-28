@@ -22,7 +22,10 @@ export class BankAccounts {
   @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
   tenant: mongoose.Schema.Types.ObjectId;
 
-  @Prop({type: mongoose.Schema.Types.ObjectId, required: false})
+  @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
+  branch: mongoose.Schema.Types.ObjectId;
+
+  @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
   createdBy: mongoose.Schema.Types.ObjectId;
 
   @Prop({type: String, required: true, default: 'active'})

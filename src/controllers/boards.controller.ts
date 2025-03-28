@@ -12,6 +12,8 @@ export class BoardsController {
   async create(@Req() req, @Res() res) {
     let requestBody = JSON.parse(JSON.stringify(req.body))
     requestBody['tenant'] = req.user.tenant
+    requestBody['branch'] = req.user.branch
+    requestBody['createdBy'] = req.user._id
     if(!requestBody.name) return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Name is required' })
     try {
       let boards = await this.boardService.create(requestBody);
@@ -24,7 +26,7 @@ export class BoardsController {
   @Get()
   async getBoards(@Req() req, @Res() res) {
     try {
-      let boards = await this.boardService.getBoards(req.user.tenant);
+      let boards = await this.boardService.getBoards(req.user.tenant, req.user.branch);
       return res.status(HttpStatus.OK).json({ message: 'Boards fetched successfully', data: boards });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

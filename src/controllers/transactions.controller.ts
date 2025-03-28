@@ -10,7 +10,7 @@ export class TransactionsController {
   @Get(':id?')
   async getTransactions(@Req() req, @Res() res) {
     try {
-      const transactions = await this.transactionService.getTransactions(req.user.tenant, req.params.id);
+      const transactions = await this.transactionService.getTransactions(req.user.tenant, req.user.branch, req.params.id);
       return res.status(HttpStatus.OK).json(transactions);
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json(error);

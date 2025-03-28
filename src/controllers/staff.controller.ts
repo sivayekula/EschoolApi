@@ -19,7 +19,7 @@ export class StaffController {
       requestBody['role'] = getRoleData._id;
       requestBody['password'] = body.firstName.replace(/\s+/g, '').slice(0, 4).toLowerCase() + new Date(body.DOB).getFullYear();
       requestBody['tenant'] = req.user.tenant;
-      requestBody['branch'] = req.user.branch || null;
+      requestBody['branch'] = req.user.branch;
       requestBody['createdBy'] = req.user._id;
       const staff = await this.staffService.saveStaff(requestBody);
       res.status(HttpStatus.CREATED).json({ message: 'Staff created successfully', data: staff });
@@ -47,7 +47,7 @@ export class StaffController {
   @Get()
   async getStaff(@Req() req, @Res() res) {
     try {
-      const staff = await this.staffService.getStaff(req.user.tenant);
+      const staff = await this.staffService.getStaff(req.user.tenant, req.user.branch);
       return res.status(HttpStatus.OK).json({ message: 'Staff fetched successfully', data: staff });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

@@ -24,9 +24,9 @@ export class SectionService {
     }
   }
 
-  async getSections(tenantId?: string) {
+  async getSections(tenantId?: string, branchId?: string) {
     try {
-      return await this.sectionModel.find({tenant: tenantId,  status: 'active' }).populate('class');
+      return await this.sectionModel.find({tenant: tenantId, branch: branchId, status: 'active' }).populate('class');
     } catch (error) {
       throw error;
     }

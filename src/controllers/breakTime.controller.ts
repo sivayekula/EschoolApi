@@ -13,6 +13,8 @@ export class BreakTimeController {
     try {
       let body = JSON.parse(JSON.stringify(breakTime));
       body['tenant'] = req.user.tenant
+      body['createdBy'] = req.user._id
+      body['branch'] = req.user.branch
       const newBreakTime = await this.breakTimeService.createBreakTime(body);
       return res.status(HttpStatus.CREATED).json({ message: 'Break time created successfully', data: newBreakTime });
     } catch (error) {
@@ -33,7 +35,7 @@ export class BreakTimeController {
   @Get()
   async getBreakTimes(@Req() req, @Res() res) {
     try {
-      const breakTimes = await this.breakTimeService.getBreakTimes(req.user.tenant);
+      const breakTimes = await this.breakTimeService.getBreakTimes(req.user.tenant, req.user.branch);
       return res.status(HttpStatus.OK).json({ message: 'Break times fetched successfully', data: breakTimes });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
