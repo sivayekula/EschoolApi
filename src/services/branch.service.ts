@@ -7,8 +7,9 @@ export class BranchService {
   constructor(@InjectModel('Branch') private readonly branchModel) {}
 
   async findAll(tenantId: string, isDefault?: boolean) {
+    tenantId = tenantId !== 'global' ? tenantId : null
     try {
-      let qry = isDefault ? {isDefault: true, status: 'active'} : {tenant: tenantId, status: 'active'}
+      let qry = {status: 'active', ...(tenantId && {tenant: tenantId}), ...(isDefault && {isDefault: true})};
       return await this.branchModel.find(qry).populate('tenant');
     } catch (error) {
       throw error;
