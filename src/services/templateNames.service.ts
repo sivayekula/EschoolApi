@@ -8,9 +8,10 @@ export class TemplateNamesService {
     @InjectModel('TemplateNames') private readonly templateNames
   ) { }
 
-  async getTemplateNames(tenantId: string) {
+  async getTemplateNames(tenantId: string, branchId: string) {
     try {
-      return await this.templateNames.find({ tenant: tenantId, status: 'active' });
+      tenantId = tenantId !== 'global' ? tenantId : null
+      return await this.templateNames.find({ status: 'active', ...(tenantId && {tenant: tenantId}), ...(branchId && {branch: branchId}) }).populate('branch');
     } catch (error) {
       throw error;
     }

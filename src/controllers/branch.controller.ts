@@ -50,7 +50,6 @@ export class BranchController {
   async updateBranch(@Req() req, @Res() res) {
     try {
       const body = JSON.parse(JSON.stringify(req.body))
-      body['tenant'] = req.user.tenant
       const branch = await this.branchService.updateBranch(req.params.id, body);
       return res.status(HttpStatus.OK).json({ message: 'Branch updated successfully', data: branch });
     } catch (error) { 

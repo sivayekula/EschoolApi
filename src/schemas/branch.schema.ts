@@ -29,22 +29,28 @@ export class Branch {
   };
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Tenant" })
   tenant: mongoose.Schema.Types.ObjectId
+  @Prop({ type: String, required: true})
+  contactPerson: string
   @Prop({type: Boolean, required: true, default: false})
   isDefault: boolean
-  @Prop({ type: Number, required: true })
+  @Prop({ type: Number, required: false })
   studentCount: number
-  @Prop({ type: Number, required: true })
+  @Prop({ type: Number, required: false })
   smsCount: number
-  @Prop({ type: Number, required: true })
+  @Prop({ type: Number, required: false })
   whatsappCount: number
-  @Prop({ type: Number, required: true, default: 0 })
+  @Prop({ type: Number, required: false, default: 0 })
   totalSmsUsed: number;
-  @Prop({ type: Number, required: true, default: 0 })
+  @Prop({ type: Number, required: false, default: 0 })
   totalWhatsappUsed: number;
   @Prop({ type: Boolean, required: true, default: false })
   portalEnabledStudents: boolean
   @Prop({ type: Boolean, required: true, default: false })
   portalEnabledStaff: boolean
+  @Prop({ type: String, required: false })
+  whatsappUserId: string
+  @Prop({ type: String, required: false })
+  whatsappPassword: string
   @Prop({ type: String, required: true, default: 'active' })
   status: string
 }

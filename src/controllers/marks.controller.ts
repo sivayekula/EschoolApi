@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Post, Query, Req, Res } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Param, Post, Query, Req, Res } from "@nestjs/common";
 import { ExamService } from "../services/exam.service";
 import { MarksService } from "../services/marks.service";
 
@@ -30,6 +30,16 @@ export class MarksController {
     async getMarks(@Query('examId') examId: string, @Res() res) {
         try {
             const marks = await this.marksService.getMarks(examId);
+            return res.status(HttpStatus.OK).json({ message: 'Marks fetched successfully', data: marks });
+        } catch (error) {
+            return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+        }
+    }
+
+    @Get(':id')
+    async getExamBySTudent(@Res() res, @Req() req) {
+        try {
+            const marks = await this.marksService.getMarksByStudent(req.params.id, req.user.academicYear, req.user.branch, req.user.tenant);
             return res.status(HttpStatus.OK).json({ message: 'Marks fetched successfully', data: marks });
         } catch (error) {
             return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

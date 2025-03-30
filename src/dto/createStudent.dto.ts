@@ -128,6 +128,14 @@ export class CreateStudentDto {
   readonly DOB: Date;
 
   @IsString()
+  @IsOptional()
+  readonly mobileNumber: string;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly board: string;
+
+  @IsString()
   @IsNotEmpty()
   @IsEnum(['male', 'female', 'other'])
   readonly gender: string;

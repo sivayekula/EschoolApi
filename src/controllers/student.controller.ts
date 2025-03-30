@@ -70,6 +70,7 @@ export class StudentController {
         class: requestBoy.academics.class,
         section: requestBoy.academics.section,
         academicYear: req.user.academicYear,
+        board: requestBoy.academics.board,
         branch: req.user.branch,
         tenant: req.user.tenant,
         createdBy: req.user._id
@@ -159,6 +160,7 @@ export class StudentController {
       const academic = await this.academicService.updateAcademic(id, {
         class: academics.class,
         section: academics.section,
+        board: academics.board,
         academicYear: academics.academicYear,
       });
       let studentFee = await this.studentFeesService.getFeesByStudent(id);

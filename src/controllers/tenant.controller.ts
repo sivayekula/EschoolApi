@@ -32,6 +32,7 @@ export class TenantController {
         name: req.body.name,
         logo: req.body.logo,
         address: req.body.address,
+        contactPerson: req.body.contactPerson,
         email: req.body.email,
         mobileNumber: req.body.mobileNumber,
         tenant: savedRecord._id,
@@ -41,6 +42,8 @@ export class TenantController {
         whatsappCount: req.body.whatsappCount,
         portalEnabledStudents: req.body.portalEnabledStudents,
         portalEnabledStaff: req.body.portalEnabledStaff,
+        whatsappUserId: req.body.whatsappUserId,
+        whatsappPassword: req.body.whatsappPassword,
         createdBy: req.user._id
       }
       const savedBranch = await this.branchService.createBranch(branchData);

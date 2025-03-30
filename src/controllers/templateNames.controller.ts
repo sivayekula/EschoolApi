@@ -11,7 +11,7 @@ export class TemplateNamesController {
   @Get()
   async getTemplateNames(@Req() req, @Res() res) {
     try {
-      const templateNames = await this.templateNamesService.getTemplateNames(req.user.tenant);
+      const templateNames = await this.templateNamesService.getTemplateNames(req.user.tenant, req.user.branch);
       return res.status(HttpStatus.OK).json({ message: 'Template names fetched successfully', data: templateNames });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
@@ -21,7 +21,9 @@ export class TemplateNamesController {
   @Post()
   async createTemplateNames(@Req() req, @Res() res) {
     const requestBody = JSON.parse(JSON.stringify(req.body))
-    requestBody['tenant'] = req.user.tenant
+    requestBody['tenant'] = requestBody.tenantId || req.user.tenant
+    requestBody['branch'] = requestBody.branchId || req.user.branch
+    requestBody['createdBy'] = req.user._id
     try {
       const templateNames = await this.templateNamesService.createTemplateNames(requestBody);
       return res.status(HttpStatus.OK).json({ message: 'Template names created successfully', data: templateNames });

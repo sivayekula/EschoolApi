@@ -16,6 +16,9 @@ export class Academic extends mongoose.Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'AcademicYear' })
   academicYear: mongoose.Schema.Types.ObjectId;
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Board' })
+  board: mongoose.Schema.Types.ObjectId;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Tenant' })
   tenant: mongoose.Schema.Types.ObjectId;
 

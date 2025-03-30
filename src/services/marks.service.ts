@@ -23,4 +23,12 @@ export class MarksService {
             throw error;
         }
     }
+
+    async getMarksByStudent(studentId: string, academicYear: string, branchId: string, tenantId: string) {
+        try {
+            return await this.marksModel.find({ academicYear: academicYear, branch: branchId, tenant: tenantId, 'marksDetails.student': studentId }).populate('exam');
+        } catch (error) {
+            throw error;
+        }
+    }
 }

@@ -112,6 +112,9 @@ export class Student extends mongoose.Document {
 
   @Prop({ type: Object, required: false })
   parentIdProof: object;
+
+  @Prop({ type: String, required: false })
+  mobileNumber: string;
   
   @Prop({ type: String, required: true, unique: true })
   admissionNumber: string;

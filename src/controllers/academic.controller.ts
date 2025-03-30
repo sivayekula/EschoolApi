@@ -18,14 +18,14 @@ export class AcademicController {
     }
   }
 
-  // @Post()
-  // async createAcademic(@Req() req, @Res() res) {
-  //   try {
-  //     const academic = await this.academicService.createAcademic(req.user.tenant, req.body);
-  //     return res.status(HttpStatus.OK).json({ message: 'Academic created successfully', data: academic });
-  //   } catch (error) {
-  //     return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
-  //   }
-  // }
+  @Post()
+  async promoteStudents(@Req() req, @Res() res) {
+    try {
+      const academic = await this.academicService.promoteStudents(req.user.tenant, req.user.branch, req.user.academicYear, req.body);
+      return res.status(HttpStatus.OK).json({ message: 'Academic created successfully', data: academic });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
 
 }

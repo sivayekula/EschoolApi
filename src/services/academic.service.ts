@@ -8,7 +8,7 @@ export class AcademicService {
     @InjectModel('Academics') private readonly academicModel
   ) {}
 
-  async createAcademic(academic): Promise<any> {
+  async createAcademic(academic: any){
     try {
       return await this.academicModel.create(academic);
     } catch (error) {
@@ -25,7 +25,7 @@ export class AcademicService {
       qry['section'] = sectionId;
     }
     try {
-      return await this.academicModel.find(qry).populate('student').populate('class').populate('section');
+      return await this.academicModel.find(qry).populate('student').populate('class').populate('section').populate('board');
     } catch (error) {
       throw error;
     }
@@ -67,6 +67,15 @@ export class AcademicService {
   async deleteAcademic(studentId: string) {
     try {
       return await this.academicModel.findOneAndUpdate({ student: studentId, status: 'active' }, { status: 'inactive' });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async promoteStudents(tenantId: string, branchId: string, academicYear: string, body: {studentIds: string[], classId: string, sectionId: string}) {
+    try {
+      let acadamics = await this.academicModel.find({ student: { $in: body.studentIds }, academicYear: academicYear, status: 'active' });
+      // return await this.academicModel.updateMany({ student: { $in: studentIds }, status: 'active' }, { class: classId, section: sectionId });
     } catch (error) {
       throw error;
     }
