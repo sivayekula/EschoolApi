@@ -51,6 +51,10 @@ class Academic {
 
   @IsString()
   @IsNotEmpty()
+  readonly board: string;
+
+  @IsString()
+  @IsNotEmpty()
   readonly section: string;
 }
 
@@ -130,10 +134,6 @@ export class CreateStudentDto {
   @IsString()
   @IsOptional()
   readonly mobileNumber: string;
-
-  @IsString()
-  @IsNotEmpty()
-  readonly board: string;
 
   @IsString()
   @IsNotEmpty()
