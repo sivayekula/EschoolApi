@@ -11,6 +11,8 @@ export class BankAccountsController {
   async create(@Req() req, @Res() res) {
     let requestBody = JSON.parse(JSON.stringify(req.body))
     requestBody['tenant'] = req.user.tenant
+    requestBody['branch'] = req.user.branch
+    requestBody['createdBy'] = req.user._id
     try {
       let bankAccounts = await this.bankAccountService.create(requestBody);
       return res.status(HttpStatus.OK).json({ message: 'Bank accounts created successfully', data: bankAccounts });

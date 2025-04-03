@@ -70,14 +70,15 @@ export class AttendanceController {
         let smsTemplate = await this.smsTemplateService.findTemplate('', 'attendance_eng')
         // let smsbalance = await this.whatsAppService.checkBalance('', '');
         // console.log(smsbalance, 'smsbalance');
-        let message = smsTemplate?.template;
-        if (message) {
-          for (let i = 0; i < students.length; i++) {
-            message = message.replace('{{studentName}}', students[i].firstName + ' ' + students[i].lastName);
-            message = message.replace('{{InstituteName}}', students[i].branch.name);
+        let template = smsTemplate?.template;
+        if (template) {
+          for (let student of students) {
+            let message = template
+            message = message.replace('{{studentName}}', student.firstName + ' ' + student.lastName);
+            message = message.replace('{{InstituteName}}', student.branch.name);
             message = message.replace('{{date}}', reqData.date);
             message = message.replace('{{class}}', classData.name);
-            await this.whatsAppService.sendSms('', '', students[i].fatherDetails.mobileNumber, message);
+            await this.whatsAppService.sendSms('', '', student.fatherDetails.mobileNumber, message);
           }
         }
       }

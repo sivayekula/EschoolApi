@@ -147,3 +147,7 @@ StaffSchema.pre('save', async function (next) {
   staff.password = await bcrypt.hash(staff.password, salt);
   next();
 });
+
+StaffSchema.index({ mobileNumber: 1, tenant: 1, branch: 1 },
+  { unique: true }
+);

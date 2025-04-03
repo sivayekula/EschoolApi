@@ -185,3 +185,11 @@ StudentSchema.pre('save', async function (next) {
   student.password = await bcrypt.hash(student.password, salt);
   next();
 });
+
+StudentSchema.index({ admissionNumber: 1, tenant: 1, branch: 1 },
+  { unique: true }
+);
+
+StudentSchema.index({ aadharNumber: 1, tenant: 1, branch: 1 },
+  { unique: true }
+);
