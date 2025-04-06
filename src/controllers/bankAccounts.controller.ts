@@ -24,7 +24,17 @@ export class BankAccountsController {
   @Get()
   async findAll(@Req() req, @Res() res) {
     try {
-      let bankAccounts = await this.bankAccountService.findAll(req.user.tenant);
+      let bankAccounts = await this.bankAccountService.findAll(req.user.tenant, req.user.branch);
+      return res.status(HttpStatus.OK).json({ message: 'Bank accounts found successfully', data: bankAccounts });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
+  @Get(':id')
+  async findOne(@Req() req, @Res() res) {
+    try {
+      let bankAccounts = await this.bankAccountService.findOne(req.params.id);
       return res.status(HttpStatus.OK).json({ message: 'Bank accounts found successfully', data: bankAccounts });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

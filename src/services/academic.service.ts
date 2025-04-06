@@ -12,12 +12,13 @@ export class AcademicService {
     try {
       return await this.academicModel.create(academic);
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
 
   async getAcademics(tenantId: string, branchId: string, academicYear: string, classId?: string, sectionId?: string): Promise<any> {
-    const qry = tenantId ? { tenant: tenantId, branch: branchId, academicYear: academicYear, status: 'active' } : {};
+    const qry = tenantId ? { tenant: tenantId, branch: branchId, academicYear: academicYear } : {};
     if (classId) {
       qry['class'] = classId;
     }
@@ -31,9 +32,9 @@ export class AcademicService {
     }
   }
 
-  async getStudentsByClassAndSection(tenantId: string, classId: string, sectionId: string): Promise<any> {
+  async getStudentsByClassAndSection(tenantId: string, branchId: string, classId: string, sectionId: string): Promise<any> {
     try {
-      return await this.academicModel.countDocuments({ tenant: tenantId, class: classId, section: sectionId, status: 'active' });
+      return await this.academicModel.countDocuments({ tenant: tenantId, branch: branchId, class: classId, section: sectionId, status: 'active' });
     } catch (error) {
       throw error;
     }
@@ -47,9 +48,10 @@ export class AcademicService {
     }
   }
 
-  async updateAcademic(studentId: string, academic): Promise<any> {
+  async updateAcademic(ids: string, academic: any): Promise<any> {
     try {
-      return await this.academicModel.findOneAndUpdate({ student: studentId, status: 'active' }, academic);
+      await this.academicModel.updateMany({student: { $in: ids }, status: 'active'}, academic, { new: true });
+      return await this.academicModel.find({student: { $in: ids }});
     } catch (error) {
       throw error;
     }
@@ -72,10 +74,9 @@ export class AcademicService {
     }
   }
 
-  async promoteStudents(tenantId: string, branchId: string, academicYear: string, body: {studentIds: string[], classId: string, sectionId: string}) {
+  async deleteAcademics(studentIds: string[], status?: string) {
     try {
-      let acadamics = await this.academicModel.find({ student: { $in: body.studentIds }, academicYear: academicYear, status: 'active' });
-      // return await this.academicModel.updateMany({ student: { $in: studentIds }, status: 'active' }, { class: classId, section: sectionId });
+      return await this.academicModel.updateMany({ student: { $in: studentIds}, status: 'active' }, { status:  status ? status : 'inactive' });
     } catch (error) {
       throw error;
     }

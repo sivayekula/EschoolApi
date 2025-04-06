@@ -35,7 +35,7 @@ export class AcademicYearService {
 
   async updateAcademicYear(id: string, tenantId: string, branchId: string) {
     try {
-      await this.academicYearModel.findOneAndUpdate({ tenant: tenantId, branch: branchId, status: 'active' }, { $set: { status: 'inactive' }} );
+      await this.academicYearModel.findOneAndUpdate({ tenant: tenantId, branch: branchId, status: 'active' }, { $set: { status: 'completed' }} );
       return await this.academicYearModel.findOneAndUpdate({ _id: id, tenant: tenantId, branch: branchId }, { $set: { status: 'active' }} );
     } catch (error) {
       throw error;

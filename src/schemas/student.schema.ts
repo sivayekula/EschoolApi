@@ -164,7 +164,7 @@ export class Student extends mongoose.Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: mongoose.Schema.Types.ObjectId
 
-  @Prop({ type: String, required: true, default: 'active' })
+  @Prop({ type: String, required: true, default: 'active' }) // active', 'graduated', 'repeat', 'transferred'
   status: string
 
 }

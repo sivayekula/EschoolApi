@@ -63,4 +63,12 @@ export class StudentFeesService {
     }
   }
 
+  async getFeesByStudentAndAcademic(studentIds: string[], academicYear: string) {
+    try {
+      return await this.studentFeesModel.find({ student:{ $in: studentIds}, academicYear: academicYear});
+    } catch (error) {
+      throw error;
+    }
+  }
+
 }

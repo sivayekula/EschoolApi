@@ -54,7 +54,7 @@ export class StudentController {
     try {
       const getRoleData = await this.roleService.getRole('student');
       const requestBoy = JSON.parse(JSON.stringify(createStudentDto));
-      const studentCount = await this.academicService.getStudentsByClassAndSection(req.user.tenant, requestBoy.academics.class, requestBoy.academics.section);
+      const studentCount = await this.academicService.getStudentsByClassAndSection(req.user.tenant, req.user.branch, requestBoy.academics.class, requestBoy.academics.section);
       requestBoy['password'] =
         createStudentDto.firstName.replace(/\s+/g, '').slice(0, 4).toLowerCase() +
         new Date(createStudentDto.DOB).getFullYear();
@@ -101,42 +101,39 @@ export class StudentController {
   @Post('bulk')
   async createBulk(
     @Req() req,
-    @Res() res,
-    @Body() createStudentDto: CreateStudentDto[],
+    @Res() res
   ) {
     try {
       const getRoleData = await this.roleService.getRole('student');
-      const requestBody = JSON.parse(JSON.stringify(createStudentDto));
-      for (let student of requestBody) {
+      const studentCount = await this.academicService.getStudentsByClassAndSection(req.user.tenant, req.user.branch, req.body[0].class, req.body[0].section);
+      let newRollNumber = studentCount;
+      for (let student of req.body) {
+        console.log(student);
+        student['rollNumber'] = ++newRollNumber;
         student['password'] =
         student.firstName.replace(/\s+/g, '').slice(0, 4) +
         new Date(student.DOB).getFullYear();
         student['role'] = getRoleData._id;
         student['tenant'] = req.user.tenant;
+        student['branch'] = req.user.branch;
         student['createdBy'] = req.user._id;
       const newStudent = await this.studentService.createStudent(student);
       await this.academicService.createAcademic({
         student: newStudent._id,
-        class: student.academics.class,
-        section: student.academics.section,
-        academicYear: student.academics.academicYear,
+        class: student.class,
+        section: student.section,
+        academicYear: student.academicYear,
+        board: student.board,
         tenant: req.user.tenant,
+        branch: req.user.branch,
+        createdBy: req.user._id
       });
-      const feeData = await this.feeService.getFee(req.user.tenant, student.academics.class, 'tution');
-      const fees = getFees(feeData);
-      if (fees.length === 0) {
-        const studentFees = {
-          student: newStudent._id,
-          tenant: req.user.tenant,
-          feeList: fees
-        }
-        await this.studentFeesService.createFees(studentFees);
-      }
     }
       return res
         .status(HttpStatus.CREATED)
         .json({ message: 'Student created successfully'});
     } catch (error) {
+      console.log(error);
       return res
         .status(HttpStatus.BAD_REQUEST)
         .json({ message: error.message });

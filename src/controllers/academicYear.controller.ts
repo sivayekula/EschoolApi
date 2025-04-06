@@ -34,7 +34,7 @@ export class AcademicYearController {
     requestBody['tenant'] = req.user.tenant
     requestBody['branch'] = req.user.branch
     requestBody['createdBy'] = req.user._id
-    requestBody['status'] = 'inactive'
+    requestBody['status'] = 'upcoming'
     try {
       const academicYear = await this.academicYearService.createAcademicYear(requestBody);
       return res.status(HttpStatus.OK).json({ message: 'Academic Year created successfully', data: academicYear });

@@ -22,7 +22,7 @@ export class AcademicYear {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: mongoose.Schema.Types.ObjectId
 
-  @Prop({ type: String, required: true, default: 'active' })
+  @Prop({ type: String, required: true, default: 'active' }) //'active', 'completed', 'upcoming'
   status: string
 
 }

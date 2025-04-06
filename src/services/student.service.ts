@@ -34,6 +34,14 @@ export class StudentService {
     }
   }
 
+  async updateStudentBulk(ids: string[], updatedData) {
+    try {
+      return await this.studentModel.updateMany({ _id: { $in: ids } }, updatedData);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteStudent(id: string) {
     try {
       let student = await this.studentModel.findByIdAndUpdate({_id: id}, { status: 'inactive' });

@@ -14,7 +14,7 @@ export class Staff extends mongoose.Document {
   @Prop({ type: String, required: false})
   lastName: string;
 
-  @Prop({ type: String, required: true})
+  @Prop({ type: String, required: true, unique: true})
   empId: string;
 
   @Prop({ type: Date, required: true})
