@@ -5,7 +5,8 @@ import { TenantService } from "../services/tenant.service";
 import { UserService } from "../services/user.service";
 import * as moment from 'moment';
 import { AcademicYearService } from "../services/academicYear.service";
-import { create } from "domain";
+import { PermissionService } from "src/services/permission.service";
+import { GlobalPermissionsService } from "src/services/globalPermissions.service";
 
 
 @Controller('tenant')
@@ -15,7 +16,9 @@ export class TenantController {
     private readonly roleService: RoleService,
     private readonly userService: UserService,
     private readonly branchService: BranchService,
-    private readonly academicYearService: AcademicYearService
+    private readonly academicYearService: AcademicYearService,
+    private readonly permissionService: PermissionService,
+    private readonly globalPermissionsService: GlobalPermissionsService
   ) {}
 
   @Post()
@@ -61,6 +64,8 @@ export class TenantController {
       const user = await this.userService.createUser(adminUser);
       let year = moment().format('YYYY');
       await this.academicYearService.createAcademicYear({tenant: savedRecord._id, branch: savedBranch._id, createdBy: req.user._id, year: year+'-'+(Number(year)+1), startDate: moment().format(), endDate: moment().add(12, 'months').format(), status: 'active'});
+      let data = await this.globalPermissionsService.getGlobalPermissions();
+      await this.permissionService.createPermission({tenant: savedRecord._id,  role: role._id, permissions: data.permissions});
       res.status(200).json({status: 200, message: 'tenant details', data: user})
     } else {
       throw new Error('Tenant already existed with this email/mobile')

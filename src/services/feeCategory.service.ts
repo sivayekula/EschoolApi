@@ -19,8 +19,7 @@ export class FeeCategoryService {
 
     async getFeeCategory(id: string) {
         try {
-            const feeCategory = await this.feeCategoryModel.findById(id);
-            return feeCategory;
+            return await this.feeCategoryModel.findById(id);
         } catch (error) {
             throw error;
         }
@@ -46,10 +45,9 @@ export class FeeCategoryService {
 
     async findAll(tenant: string) {
         try {
-            let qry = {$or:[{tenant: tenant}, {tenant: 'global'}], status: 'active'};
-            const feeCategories = await this.feeCategoryModel.find(qry);
-            return feeCategories;
+            return await this.feeCategoryModel.find({tenant: {$in: [tenant, 'global']}})
         } catch (error) {
+            console.log(error);
             throw error;
         }
     }

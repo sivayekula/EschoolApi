@@ -18,7 +18,7 @@ export class MarksService {
 
     async getMarks(examId: string) {
         try {
-            return await this.marksModel.findOne({exam: examId}).populate('academicYear').populate({path: 'exam', populate: [{path: 'section'}, {path: 'class'}, {path: 'board'}]}).populate({path: 'marksDetails.student', select: 'firstName lastName profilePic admissionNumber fatherDetails motherDetails DOB presentAddress', model: 'Student'});
+            return await this.marksModel.findOne({exam: examId}).populate('academicYear').populate({path: 'exam', populate: [{path: 'section'}, {path: 'class'}, {path: 'board'}]}).populate({path: 'marksDetails.student', select: 'firstName lastName profilePic admissionNumber fatherDetails motherDetails DOB presentAddress rollNumber', model: 'Student'});
         } catch (error) {
             throw error;
         }
@@ -26,7 +26,9 @@ export class MarksService {
 
     async getMarksByStudent(studentId: string, academicYear: string, branchId: string, tenantId: string) {
         try {
-            return await this.marksModel.find({ academicYear: academicYear, branch: branchId, tenant: tenantId, 'marksDetails.student': studentId }).populate('exam');
+            return await this.marksModel.find({ academicYear: academicYear, branch: branchId, tenant: tenantId, 'marksDetails.student': studentId }, {
+                'marksDetails.$': 1  // Only return the matched element from the array
+              }).populate('exam');
         } catch (error) {
             throw error;
         }

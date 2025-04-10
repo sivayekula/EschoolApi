@@ -109,11 +109,16 @@ import { ContactUsService } from './services/contactUs.service';
 import { TemplateNamesController } from './controllers/templateNames.controller';
 import { TemplateNamesService } from './services/templateNames.service';
 import { TemplateNamesSchema } from './schemas/templateNames.schema';
+import { GlobalPermissionsSchema } from './schemas/globalPermissions.schema';
+import { GlobalPermissionsService } from './services/globalPermissions.service';
+import { LoanSchema } from './schemas/loan.schema';
+import { LoanService } from './services/loan.service';
+import { LoansController } from './controllers/loans.controller';
 
 
 @Module({
   imports: [ 
-    MongooseModule.forRoot('mongodb+srv://sivayekula:LcdXKbcjQOfLdMmR@cluster0.dicgf6g.mongodb.net/eschool?authSource=admin&replicaSet=atlas-39huat-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true', {
+    MongooseModule.forRoot('mongodb+srv://sivayekula:LcdXKbcjQOfLdMmR@cluster0.dicgf6g.mongodb.net/eschooltest?authSource=admin&replicaSet=atlas-39huat-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true', {
       maxPoolSize: 50,
     }),
     MongooseModule.forFeature([
@@ -148,6 +153,8 @@ import { TemplateNamesSchema } from './schemas/templateNames.schema';
       {name: 'BankAccounts', schema: BankAccountsSchema},
       {name: 'Board', schema: BoardSchema},
       {name: 'TemplateNames', schema: TemplateNamesSchema},
+      {name: 'GlobalPermissions', schema: GlobalPermissionsSchema},
+      {name: 'Loans', schema: LoanSchema},
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -193,6 +200,7 @@ import { TemplateNamesSchema } from './schemas/templateNames.schema';
     BoardsController,
     ContactUsController,
     TemplateNamesController,
+    LoansController
   ],
   providers: [ 
     StudentService,
@@ -220,6 +228,7 @@ import { TemplateNamesSchema } from './schemas/templateNames.schema';
     RouteService,
     StopsService,
     BranchService,
+    GlobalPermissionsService,
     SmsService,
     WhatsAppService,
     FeeCategoryService,
@@ -229,6 +238,7 @@ import { TemplateNamesSchema } from './schemas/templateNames.schema';
     BoardService,
     ContactUsService,
     TemplateNamesService,
+    LoanService,
     DesignationService,
     {
       provide: 'MomentWrapper',

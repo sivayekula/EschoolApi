@@ -13,11 +13,20 @@ export class Transaction {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "TemplateNames" })
   receiptLabel: mongoose.Schema.Types.ObjectId;
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "FeeCategory" }) // loan category loan/expence...
+  category: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: String, required: false })
+  subCategory: string;
+
   @Prop({ type: String, required: true })
   transactionNo: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Student", index: true })
   student: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Staff", index: true })
+  staff: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "AcademicYear", index: true })
   academicYear: mongoose.Schema.Types.ObjectId;
@@ -29,13 +38,13 @@ export class Transaction {
   fees: FeeList[];
 
   @Prop({ type: String, required: true, enum: ['credit', 'debit'], default: 'credit' })
-  transactionMode: string;
+  transactionType: string;
+
+  @Prop({ type: String, required: true, enum: ['offline', 'online'], default: 'offline' })
+  transactionMode: string; // offline or online
 
   @Prop({ type: String, required: false })
   transactionId: string;
-
-  @Prop({ type: String, required: true })
-  transactionType: string; // offline or online
 
   @Prop({ type: String, required: false })
   transactionBank: string;  // bank name if transaction type is online
@@ -46,8 +55,8 @@ export class Transaction {
   @Prop({ type: Number, required: true })
   amount: number;
 
-  @Prop({ type: String, required: false })
-  proof: string;
+  @Prop({ type: Object, required: false })
+  proof: object;
 
   @Prop({ type: String, required: true, default: 'success', enum: ['pending', 'success', 'failed'] })
   transactionStatus: string;
@@ -60,6 +69,12 @@ export class Transaction {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   branch: mongoose.Schema.Types.ObjectId
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  createdBy: mongoose.Schema.Types.ObjectId
+
+  @Prop({ type: String, required: false })
+  reason: string
 }
 
 export const TransactionSchema = SchemaFactory.createForClass(Transaction);

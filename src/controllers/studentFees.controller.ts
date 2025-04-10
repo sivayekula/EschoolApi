@@ -15,8 +15,8 @@ export class StudentFeesController {
   @Get(':id')
   async getFeesByStudent(@Req() req, @Res() res) {
     try {
-      const fees = await this.studentFeesService.getFeesByStudent(req.params.id);
-      const academicDetails = await this.academicService.getAcademicByStudent(req.params.id);
+      const fees = await this.studentFeesService.getFeesByStudent(req.params.id, req.user.academicYear);
+      const academicDetails = await this.academicService.getAcademicByStudent(req.params.id, req.user.academicYear);
       return res.status(HttpStatus.OK).json({ message: 'Fees fetched successfully', data: {fees: fees, academic: academicDetails} });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
@@ -88,7 +88,7 @@ export class StudentFeesController {
         studentFee: studentFees._id,
         fees: transactions,
         transactionId: req.body.transactionId,
-        transactionType: req.body.paymentMode,
+        transactionMode: req.body.paymentMode,
         transactionBank: req.body.bank,
         date: req.body.transactionDate,
         amount: transactions.reduce((acc, curr) => acc + curr.amount, 0),

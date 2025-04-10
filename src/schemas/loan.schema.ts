@@ -1,42 +1,41 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import * as mongoose from "mongoose";
-import { ImageDto } from "src/dto/image.dto";
 
 
 @Schema({ timestamps: true })
 export class Loan {
-  @Prop({ type: String, required: true })
-  type: string;
-
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Staff" })
   staff: mongoose.Schema.Types.ObjectId
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Designation" })
-  designation: mongoose.Schema.Types.ObjectId
-
   @Prop({ type: Number, required: true })
-  amount: number;
+  loanAmount: number;
+
+  @Prop({ type: Number, required: true, default: 0 })
+  paidAmount: number;
 
   @Prop({ type: Date, required: true })
   issuedDate: Date;
 
   @Prop({type: String, required: true})
-  issueType: string; // cash or cheque
+  transactionMode: string; // online or offline
 
   @Prop({type: String, required: false})
   bankAccount: string;
 
-  @Prop({type: String, required: false})
-  transactionId: string;
+  @Prop({type: mongoose.Schema.Types.ObjectId, required: true, ref: "Transaction"})
+  transaction: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ type: ImageDto, required: false })
-  proof: ImageDto
+  @Prop({type: [mongoose.Schema.Types.ObjectId], required: false, ref: "Transaction"})
+  repayTransactions: mongoose.Schema.Types.ObjectId[]
 
   @Prop({ type: String, required: true, default: 'active' })
   status: string
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   tenant: mongoose.Schema.Types.ObjectId
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  academicYear: mongoose.Schema.Types.ObjectId
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   branch: mongoose.Schema.Types.ObjectId

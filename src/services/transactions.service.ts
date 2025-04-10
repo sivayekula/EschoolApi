@@ -46,5 +46,14 @@ export class TransactionsService {
       return error;
     }
   }
+  
+  //internally using if any dependent record not created 
+  async deleteTransaction(transactionId: string) {
+    try {
+      return await this.transactionModel.findByIdAndDelete(transactionId);
+    } catch (error) {
+      return error;
+    }
+  }
 
 }

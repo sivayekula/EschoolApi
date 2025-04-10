@@ -14,8 +14,11 @@ export class FeeCategory {
     @Prop({type: String, required: true, default: 'active'})
     status: string;
 
-    @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
-    tenant: mongoose.Schema.Types.ObjectId;
+    @Prop({type: String, required: false})
+    value: string;
+
+    @Prop({type: String, required: true})
+    tenant: string;
 
     @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
     branch: mongoose.Schema.Types.ObjectId;

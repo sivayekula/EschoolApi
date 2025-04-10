@@ -228,8 +228,8 @@ export class StudentController {
     try {
       const [student, academic, fees] = await Promise.all([
         this.studentService.getStudentDetails(req.params.id),
-        this.academicService.getAcademicByStudent(req.params.id),
-        this.studentFeesService.getFeesByStudent(req.params.id),
+        this.academicService.getAcademicByStudent(req.params.id, req.user.academicYear),
+        this.studentFeesService.getFeesByStudent(req.params.id, req.user.academicYear),
       ]);
       const data = JSON.parse(JSON.stringify(student));
       data['academics'] = academic;

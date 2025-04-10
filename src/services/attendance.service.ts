@@ -26,22 +26,14 @@ export class AttendanceService {
         startDate = moment(date).startOf('day')
         endDate = moment(date).endOf('day')
         qry['date'] = { $gte: startDate, $lte: endDate }
-        if (classId) {
-          qry['class'] = classId;
-        }
-        if (sectionId) {
-          qry['section'] = sectionId;
-        }
+        classId && classId !== 'undefined' && (qry['class'] = classId);
+        sectionId && sectionId !== 'undefined' && (qry['section'] = sectionId)
       } else {
         startDate = moment(`${year}/${month}/01`, 'YYYY/MM/DD')
         endDate = moment(startDate).clone().endOf('month')
         qry['date'] = { $gte: startDate, $lte: endDate }
-        if (classId) {
-          qry['class'] = classId;
-        }
-        if (sectionId) {
-          qry['section'] = sectionId;
-        }
+        classId && classId !== 'undefined' && (qry['class'] = classId);
+        sectionId && sectionId !== 'undefined' && (qry['section'] = sectionId)
       }
       return await this.attendanceModel.find(qry).populate({path: 'attendance.userId', model: userType === 'student' ? 'Student' : 'Staff'});
     } catch (error) {
