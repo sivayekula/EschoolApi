@@ -36,7 +36,7 @@ export class StudentFeesController {
   @Post()
   async collectFees(@Req() req, @Res() res) {
     try {
-      const studentFees = await this.studentFeesService.getFeesByStudent(req.body.studentId);
+      const studentFees = await this.studentFeesService.getFeesByStudent(req.body.studentId, req.user.academicYear);
       const studentNewFees= [];
       const transactions = [];
       let totalAmount = 0;
