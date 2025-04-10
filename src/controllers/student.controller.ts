@@ -108,7 +108,6 @@ export class StudentController {
       const studentCount = await this.academicService.getStudentsByClassAndSection(req.user.tenant, req.user.branch, req.body[0].class, req.body[0].section);
       let newRollNumber = studentCount;
       for (let student of req.body) {
-        console.log(student);
         student['rollNumber'] = ++newRollNumber;
         student['password'] =
         student.firstName.replace(/\s+/g, '').slice(0, 4) +
@@ -133,7 +132,6 @@ export class StudentController {
         .status(HttpStatus.CREATED)
         .json({ message: 'Student created successfully'});
     } catch (error) {
-      console.log(error);
       return res
         .status(HttpStatus.BAD_REQUEST)
         .json({ message: error.message });

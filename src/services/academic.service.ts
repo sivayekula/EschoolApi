@@ -12,7 +12,6 @@ export class AcademicService {
     try {
       return await this.academicModel.create(academic);
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }

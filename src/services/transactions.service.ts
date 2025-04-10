@@ -14,7 +14,7 @@ export class TransactionsService {
     try {
       return await this.transactionModel.create(transaction);
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
@@ -35,7 +35,7 @@ export class TransactionsService {
       }
       return transactionList;
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 
@@ -43,7 +43,7 @@ export class TransactionsService {
     try {
       return await this.transactionModel.find({tenant: tenant, branch: branch, academicYear: academicYear});
     } catch (error) {
-      return error;
+      throw error;
     }
   }
   
@@ -52,7 +52,7 @@ export class TransactionsService {
     try {
       return await this.transactionModel.findByIdAndDelete(transactionId);
     } catch (error) {
-      return error;
+      throw error;
     }
   }
 

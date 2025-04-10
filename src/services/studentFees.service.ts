@@ -43,7 +43,6 @@ export class StudentFeesService {
 
   async getAllFees(tenantId: string, branchId: string, academicYear: string) {
     try {
-      console.log(tenantId, branchId, academicYear);
       return await this.studentFeesModel.find({ tenant: tenantId, branch: branchId, academicYear: academicYear, status: 'active' }).populate('student').populate({
         path: 'academics', // First populate academic year
         populate: {

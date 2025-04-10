@@ -1,8 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
-import { CreateStaffDto } from "src/dto/staff.dto";
-import { IStaff } from "src/interfaces/staff.interface";
+import { CreateStaffDto } from "../dto/staff.dto";
+import { IStaff } from "../interfaces/staff.interface";
 
 @Injectable()
 export class StaffService {

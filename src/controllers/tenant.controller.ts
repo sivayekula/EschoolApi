@@ -5,8 +5,8 @@ import { TenantService } from "../services/tenant.service";
 import { UserService } from "../services/user.service";
 import * as moment from 'moment';
 import { AcademicYearService } from "../services/academicYear.service";
-import { PermissionService } from "src/services/permission.service";
-import { GlobalPermissionsService } from "src/services/globalPermissions.service";
+import { PermissionService } from "../services/permission.service";
+import { GlobalPermissionsService } from "../services/globalPermissions.service";
 
 
 @Controller('tenant')

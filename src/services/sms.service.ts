@@ -31,7 +31,6 @@ export class SmsService {
       });
 
       const response = await axios.get(`${API_URL}?${params.toString()}`);
-      console.log('Response:', response.data);
     } catch (error) {
       console.error('Error sending SMS:', error.message);
       throw error;

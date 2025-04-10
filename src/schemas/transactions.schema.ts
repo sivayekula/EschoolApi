@@ -46,8 +46,8 @@ export class Transaction {
   @Prop({ type: String, required: false })
   transactionId: string;
 
-  @Prop({ type: String, required: false })
-  transactionBank: string;  // bank name if transaction type is online
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "BankAccounts" })
+  transactionBank: mongoose.Schema.Types.ObjectId;  // bank name if transaction type is online
 
   @Prop({ type: Date, required: true })
   date: Date;

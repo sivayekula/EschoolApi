@@ -1,8 +1,8 @@
 import { Controller, Delete, Get, HttpStatus, Post, Req, Res } from "@nestjs/common";
 import { AcademicService } from "../services/academic.service";
-import { StudentFeesService } from "src/services/studentFees.service";
-import { AcademicYearService } from 'src/services/academicYear.service';
-import { StudentService } from "src/services/student.service";
+import { StudentFeesService } from "../services/studentFees.service";
+import { AcademicYearService } from '../services/academicYear.service';
+import { StudentService } from "../services/student.service";
 
 
 @Controller('academics')
@@ -60,7 +60,6 @@ export class AcademicController {
       }
       return res.status(HttpStatus.OK).json({ message: 'Students promoted successfully'});
     } catch (error) {
-      console.log(error);
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }
   }
@@ -69,7 +68,6 @@ export class AcademicController {
   async delete(@Req() req, @Res() res) {
     try {
       const { studentIds, status } = req.body;
-      console.log(req.body);
       const studentFees = await this.studentFeesService.getFeesByStudentAndAcademic(studentIds, req.user.academicYear);
       let canDelete = true;
       studentFees.forEach(async(fee) => {

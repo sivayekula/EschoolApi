@@ -16,7 +16,7 @@ export class LoanService {
     }
   }
 
-  async findLoan({staffId}) {
+  async findLoan(staffId: string) {
     try {
       return await this.loanModel.findOne({staff: staffId, status: 'active'})
     } catch (error) {
@@ -27,6 +27,14 @@ export class LoanService {
   async updateLoan(id: string, loan) {
     try {
       return await this.loanModel.findByIdAndUpdate(id, loan)
+    } catch (error) {
+      throw error
+    }
+  }
+
+  async getLoans(tenantId: string, branchId: string) {
+    try {
+      return await this.loanModel.find({tenant: tenantId, branch: branchId, status: 'active'}).populate({path: 'staff',populate: {path: 'designation', model: 'Designation'}}).populate({path: 'repayTransactions', populate: {path: 'transactionBank', model: 'BankAccounts'}})
     } catch (error) {
       throw error
     }

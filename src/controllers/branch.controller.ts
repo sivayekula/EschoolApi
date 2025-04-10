@@ -1,7 +1,7 @@
 import { Controller, Delete, Get, HttpStatus, Param, Post, Put, Req, Res } from "@nestjs/common";
 import { BranchService } from "../services/branch.service";
 import * as moment from 'moment';
-import { AcademicYearService } from "src/services/academicYear.service";
+import { AcademicYearService } from "../services/academicYear.service";
 
 
 @Controller('branch')

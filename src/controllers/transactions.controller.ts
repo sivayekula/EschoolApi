@@ -15,9 +15,9 @@ export class TransactionsController {
   async getTransactions(@Req() req, @Res() res) {
     try {
       const transactions = await this.transactionService.getTransactions(req.user.tenant, req.user.branch, req.params.id);
-      return res.status(HttpStatus.OK).json(transactions);
+      return res.status(HttpStatus.OK).json({ message: 'Transactions fetched successfully', data: transactions});
     } catch (error) {
-      return res.status(HttpStatus.BAD_REQUEST).json(error);
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message});
     }
   }
 
@@ -32,7 +32,7 @@ export class TransactionsController {
       requestBody['createdBy'] = req.user._id
       requestBody['academicYear'] = req.user.academicYear
       requestBody['transactionNo'] = `txn-${Date.now()}`
-      requestBody['transactionBank'] = requestBody.account
+      requestBody['transactionBank'] = requestBody.account || null
       requestBody['staff'] = requestBody.staff || null
       transaction = await this.transactionService.createTransaction(requestBody);
       let feecategory = await this.feeCategoryService.getFeeCategory(requestBody.category);
@@ -41,9 +41,9 @@ export class TransactionsController {
           let loanData = await this.loanService.findLoan(requestBody.staff);
           if(loanData) {
             await this.loanService.updateLoan(loanData._id, {
-              paidAmount: loanData.paidAmount + requestBody.amount,
+              paidAmount: loanData.paidAmount*1 + requestBody.amount*1,
               repayTransactions: [...loanData.repayTransactions, transaction._id],
-              status: loanData.paidAmount + requestBody.amount === loanData.loanAmount ? 'paid' : 'active'
+              status: loanData.paidAmount*1 + requestBody.amount*1 === loanData.loanAmount*1 ? 'paid' : 'active'
             })
           } else {
             isdeleteTransaction = true
@@ -58,7 +58,7 @@ export class TransactionsController {
         if(requestBody.staff) {
           await this.loanService.createLoan({
             staff: requestBody.staff,
-            loanAmount: requestBody.amount,
+            loanAmount: requestBody.amount*1,
             issuedDate: requestBody.date,
             transactionMode: requestBody.transactionMode,
             transaction: transaction._id,

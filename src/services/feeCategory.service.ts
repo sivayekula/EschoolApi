@@ -47,7 +47,6 @@ export class FeeCategoryService {
         try {
             return await this.feeCategoryModel.find({tenant: {$in: [tenant, 'global']}})
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }

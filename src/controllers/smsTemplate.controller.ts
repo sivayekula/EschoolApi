@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, Res, HttpStatus, Req } from '@nestjs/common';
 import { SmsTemplateService } from '../services/smsTemplate.service';
 
-@Controller('sms-template')
+@Controller('smsTemplate')
 export class SmsTemplateController {
     constructor(private readonly smsTemplateService: SmsTemplateService) {}
 

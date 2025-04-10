@@ -13,7 +13,6 @@ export class ContactUsController {
   @Post()
   async sendContactEmail(@Req() req, @Res() res) {
     try {
-      console.log(req.body);
       const requestBody = JSON.parse(JSON.stringify(req.body));
       const branch = await this.branchService.getBranch(requestBody.branch);
       requestBody['email'] = branch.email;

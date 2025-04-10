@@ -89,10 +89,11 @@ export class StudentFeesController {
         fees: transactions,
         transactionId: req.body.transactionId,
         transactionMode: req.body.paymentMode,
-        transactionBank: req.body.bank,
+        transactionBank: req.body.bank || null,
         date: req.body.transactionDate,
         amount: transactions.reduce((acc, curr) => acc + curr.amount, 0),
-        proof: req.body.transactionProof
+        proof: req.body.transactionProof,
+        createdBy: req.user._id
       }
       const transaction = await this.transactionService.createTransaction(transactionObj);
       await this.studentFeesService.updateFees(studentFees._id, studentFees);
