@@ -16,7 +16,7 @@ async function bootstrap() {
   app.enableCors({
     origin: ['https://digiakshara.com', 'http://localhost:3000', 'https://eschoolapi.onrender.com'], // Allow frontend domain
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
+    credentials: false,
   });
   app.setGlobalPrefix('api/');
   await app.listen(process.env.PORT || 8001);
