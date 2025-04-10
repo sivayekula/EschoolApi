@@ -14,7 +14,7 @@ async function bootstrap() {
   app.use(bodyParser.json({ limit: '10mb' })); // Adjust the size as needed
   app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
   app.enableCors({
-    origin: [], // Allow frontend domain
+    origin: ['https://digiakshara.com', 'http://localhost:3000', 'https://eschoolapi.onrender.com'], // Allow frontend domain
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
