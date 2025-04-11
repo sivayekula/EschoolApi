@@ -23,6 +23,8 @@ export class TransactionsService {
       let query = { tenant: tenantId, branch: branchId };
       if (studentId) {
         query['student'] = studentId;
+      } else {
+        query['student'] = { $exists: true };
       }
       let transactionList= [];
       let transactions = await this.transactionModel.find(query).populate('receiptLabel').populate({path: 'fees.fee', model: 'Fee',populate: {
@@ -35,6 +37,7 @@ export class TransactionsService {
       }
       return transactionList;
     } catch (error) {
+      console.log(error);
       throw error;
     }
   }
@@ -51,6 +54,14 @@ export class TransactionsService {
   async deleteTransaction(transactionId: string) {
     try {
       return await this.transactionModel.findByIdAndDelete(transactionId);
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getTransactionList(tenantId: string, branchId: string) {
+    try {
+      return await this.transactionModel.find({tenant: tenantId, branch: branchId}).populate({path: 'fees.fee', model: 'Fee'}).populate('category');
     } catch (error) {
       throw error;
     }

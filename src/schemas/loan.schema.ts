@@ -4,9 +4,13 @@ import * as mongoose from "mongoose";
 
 @Schema({ timestamps: true })
 export class Loan {
+
+  @Prop({ type: String, required: true })
+  title: string;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Staff" })
   staff: mongoose.Schema.Types.ObjectId
-
+ 
   @Prop({ type: Number, required: true })
   loanAmount: number;
 

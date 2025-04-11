@@ -18,4 +18,14 @@ export class LoansController {
     }
   }
 
+  @Get(':id')
+  async getLoan(@Req() req, @Res() res) {
+    try{
+      const loan = await this.loanService.findLoan(req.params.id);
+      return res.status(HttpStatus.OK).json({ message: 'Loan fetched successfully', data: loan});
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message});
+    }
+  }
+
 }
