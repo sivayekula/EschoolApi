@@ -4,6 +4,9 @@ import * as mongoose from "mongoose";
 
 @Schema({ timestamps: true })
 export class BankAccounts {
+  @Prop({type: String, required: true, enum: ['online', 'offline'], default: 'online'})
+  mode: string;
+  
   @Prop({type: String, required: true})
   name: string;
 
@@ -16,7 +19,7 @@ export class BankAccounts {
   @Prop({type: String, required: false})
   ifscCode: string;
 
-  @Prop({type: Number, required: false})
+  @Prop({type: Number, required: false, default: 0})
   currentBalance: number;
 
   @Prop({type: mongoose.Schema.Types.ObjectId, required: true})

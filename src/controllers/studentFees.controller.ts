@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/commo
 import { AcademicService } from "../services/academic.service";
 import { StudentFeesService } from "../services/studentFees.service";
 import { TransactionsService } from "../services/transactions.service";
+import { BankAccountService } from "src/services/bankAccount.service";
 
 
 @Controller('studentFees')
@@ -9,7 +10,8 @@ export class StudentFeesController {
   constructor(
     private readonly studentFeesService: StudentFeesService,
     private readonly academicService: AcademicService,
-    private readonly transactionService: TransactionsService
+    private readonly transactionService: TransactionsService,
+    private readonly bankAccountService: BankAccountService
   ) {}
 
   @Get(':id')
@@ -42,8 +44,7 @@ export class StudentFeesController {
       let totalAmount = 0;
       let paidAmount = 0;
       for(let fee of req.body.fees) {
-        const studentFee = studentFees.feeList.findIndex((item) => {
-          return item.fee._id.toString() === fee._id.toString()});
+        const studentFee = studentFees.feeList.findIndex((item) => item.fee._id.toString() === fee._id.toString());
         if (fee.paymentAmount*1 > 0) {
           transactions.push({
             amount: fee.paymentAmount*1,
@@ -62,20 +63,19 @@ export class StudentFeesController {
             pendingAmount: studentFees.feeList[studentFee].paybalAmount - paidTill,
             paymentStatus: fee.paymentAmount*1>0? paidTill === studentFees.feeList[studentFee].paybalAmount ? 'paid' : 'partially-paid' :  studentFees.feeList[studentFee].paymentStatus
           })
-        } else {
-          totalAmount += fee.paybalAmount*1
-          paidAmount += fee.paymentAmount*1
-          studentNewFees.push({
-            fee: fee._id,
-            duration: fee.duration,
-            dueDate: fee.dueDate,
-            paidAmount: fee.paidAmount*1,
-            pendingAmount: fee.pendingAmount*1,
-            paybalAmount: fee.paybalAmount*1,
-            paymentStatus: fee.paymentAmount*1>0?fee.paybalAmount === fee.paymentAmount ? 'paid' :"partially-paid" :'pending'
-          });
         }
       }
+      let bankData = null
+      if(req.body.paymentMode === 'online') {
+        bankData = await this.bankAccountService.findOne(req.body.bank);
+      } else {
+        let cashData = await this.bankAccountService.findAll(req.user.tenant, req.user.branch, 'offline');
+        if(!cashData.length) {
+          cashData = await this.bankAccountService.create({ name: 'Cash', accountNumber: 'cash', branch: req.user.branch, tenant: req.user.tenant, mode: 'offline', createdBy: req.user._id });
+        }
+        bankData = Array.isArray(cashData) ? cashData[0] : cashData
+      }
+      let balance = bankData.currentBalance*1 + totalAmount*1
       studentFees.feeList = studentNewFees;
       studentFees.paymentStatus = totalAmount === paidAmount ? 'paid' : 'pending';
       const transactionObj = {
@@ -87,6 +87,7 @@ export class StudentFeesController {
         branch: req.user.branch,
         studentFee: studentFees._id,
         fees: transactions,
+        balance: balance,
         transactionId: req.body.transactionId,
         transactionMode: req.body.paymentMode,
         transactionBank: req.body.bank || null,
@@ -96,6 +97,7 @@ export class StudentFeesController {
         createdBy: req.user._id
       }
       const transaction = await this.transactionService.createTransaction(transactionObj);
+      await this.bankAccountService.updateAccount(bankData._id, { currentBalance: balance});
       await this.studentFeesService.updateFees(studentFees._id, studentFees);
       return res.status(HttpStatus.OK).json({ message: 'Fees collected successfully', data: transaction});
     } catch (error) {

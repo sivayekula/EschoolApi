@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { AcademicService } from "./academic.service";
+import * as moment from "moment";
 
 
 @Injectable()
@@ -59,9 +60,10 @@ export class TransactionsService {
     }
   }
 
-  async getTransactionList(tenantId: string, branchId: string) {
+  async getTransactionList(tenantId: string, branchId: string, date?: string, transactionMode?: string) {
+    let query = { tenant: tenantId, branch: branchId, ...(date && {date: { $gte: moment.utc(date).startOf('day').toDate(), $lte: moment.utc(date).endOf('day').toDate() }}), ...(transactionMode && {transactionMode: transactionMode}) };
     try {
-      return await this.transactionModel.find({tenant: tenantId, branch: branchId}).populate({path: 'fees.fee', model: 'Fee'}).populate('category');
+      return await this.transactionModel.find(query).populate({path: 'fees.fee', model: 'Fee'}).populate('category').populate('transactionBank').populate('loanId');
     } catch (error) {
       throw error;
     }

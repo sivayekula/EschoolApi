@@ -10,6 +10,12 @@ class FeeList {
 @Schema({ timestamps: true })
 export class Transaction {
 
+  @Prop({ type: String, required: false })
+  title: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Loans" })
+  loanId: mongoose.Schema.Types.ObjectId;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "TemplateNames" })
   receiptLabel: mongoose.Schema.Types.ObjectId;
 
@@ -54,6 +60,9 @@ export class Transaction {
 
   @Prop({ type: Number, required: true })
   amount: number;
+
+  @Prop({ type: Number, required: true, default: 0 })
+  balance: number;
 
   @Prop({ type: Object, required: false })
   proof: object;

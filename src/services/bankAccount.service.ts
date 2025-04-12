@@ -15,9 +15,10 @@ export class BankAccountService {
     }
   }
 
-  async findAll(tenantId: string, branchId: string) {
+  async findAll(tenantId: string, branchId: string, mode?: string) {
+    let query = {tenant: tenantId, branch: branchId, status: 'active', ...(mode && {mode: mode})};
     try {
-      return await this.bankAccountModel.find({tenant: tenantId, branch: branchId, status: 'active'});
+      return await this.bankAccountModel.find(query);
     } catch (error) {
       throw error;
     }
@@ -27,6 +28,14 @@ export class BankAccountService {
   async findOne(id: string) {
     try {
       return await this.bankAccountModel.findOne({ _id: id});
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateAccount(id: string, bankAccount) {
+    try {
+      return await this.bankAccountModel.updateOne({ _id: id }, bankAccount);
     } catch (error) {
       throw error;
     }
