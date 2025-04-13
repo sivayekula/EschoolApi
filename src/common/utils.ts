@@ -1,4 +1,5 @@
 import moment from "moment";
+import * as mongoose from "mongoose";
 
 export function getWorkingDays(startDate, endDate, holidays = [], weekends = [0, 6]) {
   let workingDays = 0;
@@ -20,4 +21,22 @@ export function getWorkingDays(startDate, endDate, holidays = [], weekends = [0,
   }
 
   return workingDays;
+}
+
+export function getListOfFees(oldFees, newFees) {
+  const feeMap = new Map();
+
+  // Step 1: Add all newFees
+  newFees.forEach(fee => {
+    feeMap.set(fee.fee.toString(), fee);
+  });
+
+  // Step 2: Override with oldFees if same ID exists or add new ones
+  oldFees.forEach(fee => {
+    feeMap.set(fee.fee.toString(), fee); // this overrides the newFee with the same ID
+  });
+
+  // Return as array
+  return Array.from(feeMap.values());
+
 }

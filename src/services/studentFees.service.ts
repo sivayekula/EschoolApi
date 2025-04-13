@@ -25,6 +25,15 @@ export class StudentFeesService {
     }
   }
 
+  async getFeeByStudent(studentId: string, academicYear: string) {
+    try {
+      let qry = { student: studentId, academicYear: academicYear};
+      return await this.studentFeesModel.findOne(qry);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteFees(feesId: string) {
     try {
       return await this.studentFeesModel.delete({ _id: feesId });

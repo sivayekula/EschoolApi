@@ -16,6 +16,7 @@ import { RoleService } from '../services/role.service';
 import { AcademicService } from '../services/academic.service';
 import { FeeService } from '../services/fee.service';
 import { StudentFeesService } from '../services/studentFees.service';
+import { getListOfFees } from '../common/utils';
 
 function getFees(fees) {
   const newFees = [];
@@ -151,6 +152,7 @@ export class StudentController {
       delete result.status;
       delete result.updatedAt;
       delete result.createdAt;
+      result['busRoute'] = body.busRoute ? body.busRoute : null;
       const student = await this.studentService.updateStudent(id, result);
       const academic = await this.academicService.updateAcademic(id, {
         class: academics.class,
@@ -158,17 +160,10 @@ export class StudentController {
         board: academics.board,
         academicYear: academics.academicYear,
       });
-      let studentFee = await this.studentFeesService.getFeesByStudent(id);
+      let studentFee = await this.studentFeesService.getFeeByStudent(id, req.user.academicYear);
       const allSelectedFees = getFees(fees);
+      let updatedFees = getListOfFees(studentFee?.feeList || [], allSelectedFees);
       if (studentFee) {
-        let updatedFees = allSelectedFees.map((item) => {
-          let index = studentFee.feeList.findIndex((fee) => item.fee.toString() === fee.fee._id.toString())
-          if (index !== -1) {
-            return studentFee.feeList[index]
-          } else {
-            return item
-          }
-        })
         await this.studentFeesService.updateFees(studentFee._id, {
           feeList: updatedFees
         });
@@ -178,8 +173,8 @@ export class StudentController {
           tenant: req.user.tenant,
           academicYear: academics.academicYear,
           branch: req.user.branch,
-          academics: academic._id,
-          feeList: allSelectedFees,
+          academics: Array.isArray(academic) ? academic[0]._id : academic._id,
+          feeList: updatedFees,
           createdBy: req.user._id
         });
       }
@@ -187,6 +182,7 @@ export class StudentController {
         .status(HttpStatus.OK)
         .json({ message: 'Student updated successfully', data: student });
     } catch (error) {
+      console.log(error);
       return res
         .status(HttpStatus.BAD_REQUEST)
         .json({ message: error.message });
