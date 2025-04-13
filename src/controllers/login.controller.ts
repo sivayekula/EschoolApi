@@ -6,7 +6,6 @@ import { AuthService } from "../services/auth.service";
 import { PermissionService } from "../services/permission.service";
 import * as bcrypt from 'bcrypt';
 import { BranchService } from '../services/branch.service';
-export const Public = () => SetMetadata('isPublic', true);
 
 @Controller('login')
 export class LoginController {
@@ -17,7 +16,7 @@ constructor(
   private readonly permissionService: PermissionService,
   private readonly branchService: BranchService
 ){}
-  @Public()
+
   @Post()
   async login(@Req() req, @Body() loginObj: LoginDto, @Res() res) {
     try {

@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
@@ -15,12 +15,10 @@ export class AuthGuard implements CanActivate {
     const excludedRoutes = ['/api/login', '/api/health']; // Add routes you want to exclude
     const { url } = request;
     // Allow excluded routes without authentication
-    if (excludedRoutes.includes(url)) {
-      return true;
-    }
+    if (excludedRoutes.some((route) => url.startsWith(route))) return true;
 
     const authHeader = request.headers['authorization'];
-    if (!authHeader) return false;
+    if (!authHeader) throw new UnauthorizedException('Missing Authorization header');
 
     const token = authHeader.split(' ')[1];
     try {
@@ -32,7 +30,7 @@ export class AuthGuard implements CanActivate {
       request.user['branch'] = request.headers['x-branch'];
       return true;
     } catch (err) {
-      return false;
+      throw new UnauthorizedException('Invalid token');
     }
   }
 }

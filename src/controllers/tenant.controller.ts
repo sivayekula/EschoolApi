@@ -1,4 +1,4 @@
-import { Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Post, Req, Res, UnauthorizedException } from "@nestjs/common";
 import { BranchService } from "../services/branch.service";
 import { RoleService } from "../services/role.service";
 import { TenantService } from "../services/tenant.service";
@@ -7,6 +7,9 @@ import * as moment from 'moment';
 import { AcademicYearService } from "../services/academicYear.service";
 import { PermissionService } from "../services/permission.service";
 import { GlobalPermissionsService } from "../services/globalPermissions.service";
+import { StudentService } from "../services/student.service";
+import { StaffService } from "../services/staff.service";
+import * as bcrypt from 'bcrypt';
 
 
 @Controller('tenant')
@@ -18,7 +21,9 @@ export class TenantController {
     private readonly branchService: BranchService,
     private readonly academicYearService: AcademicYearService,
     private readonly permissionService: PermissionService,
-    private readonly globalPermissionsService: GlobalPermissionsService
+    private readonly globalPermissionsService: GlobalPermissionsService,
+    private readonly studentService: StudentService,
+    private readonly staffService: StaffService
   ) {}
 
   @Post()
@@ -63,7 +68,8 @@ export class TenantController {
       }
       const user = await this.userService.createUser(adminUser);
       let year = moment().format('YYYY');
-      await this.academicYearService.createAcademicYear({tenant: savedRecord._id, branch: savedBranch._id, createdBy: req.user._id, year: year+'-'+(Number(year)+1), startDate: moment().format(), endDate: moment().add(12, 'months').format(), status: 'active'});
+      await this.academicYearService.createAcademicYear({tenant: savedRecord._id, branch: savedBranch._id, createdBy: req.user._id, year: year+'-'+(Number(year)+1), startDate: moment().format(), endDate: moment().add(12, 'months').format(), status: 'upcoming'});
+      await this.academicYearService.createAcademicYear({tenant: savedRecord._id, branch: savedBranch._id, createdBy: req.user._id, year: (Number(year)-1)+'-'+(Number(year)), startDate: moment().subtract(12, 'months').format(), endDate: moment().format(), status: 'active'});
       let data = await this.globalPermissionsService.getGlobalPermissions();
       await this.permissionService.createPermission({tenant: savedRecord._id,  role: role._id, permissions: data.permissions});
       res.status(200).json({status: 200, message: 'tenant details', data: user})
@@ -72,6 +78,38 @@ export class TenantController {
     }
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
+  @Post('changePassword')
+  async changePassword(@Req() req, @Res() res) {
+    try {
+      console.log(req.user);
+      if(!req.user) throw new UnauthorizedException('Invalid credentials');
+      if(req.user.role?.name === 'student') {
+        let user = await this.studentService.getStudentDetails(req.user._id)
+        if(!user) throw new UnauthorizedException('Invalid credentials'); 
+        let isPasswordValid= await bcrypt.compare(req.body.currentPassword, user.password)
+        if(!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
+        await this.studentService.changePassword(req.user._id, req.body.newPassword);
+      } else if(req.user.role?.name === 'staff') {
+        let user = await this.staffService.getStaffById(req.user._id)
+        if(!user) throw new UnauthorizedException('Invalid credentials'); 
+        let isPasswordValid= await bcrypt.compare(req.body.currentPassword, user.password)
+        if(!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
+        await this.staffService.changePassword(req.user._id, req.body.newPassword);
+      } else {
+        let user = await this.userService.getUserById(req.user._id)
+        if(!user) throw new UnauthorizedException('Invalid credentials'); 
+        let isPasswordValid= await bcrypt.compare(req.body.currentPassword, user.password)
+        if(!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
+        await this.userService.changePassword(req.user._id, req.body.newPassword);
+      }
+      return res.status(HttpStatus.OK).json({ message: 'Password changed successfully' });
+    } catch (error) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        message: error.message
+      })
     }
   }
 

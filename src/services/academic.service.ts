@@ -49,8 +49,7 @@ export class AcademicService {
 
   async updateAcademic(ids: string, academic: any): Promise<any> {
     try {
-      await this.academicModel.updateMany({student: { $in: ids }, status: 'active'}, academic, { new: true });
-      return await this.academicModel.find({student: { $in: ids }});
+      await this.academicModel.findOneAndUpdate({student: ids , status: 'active'}, academic, { new: true });
     } catch (error) {
       throw error;
     }

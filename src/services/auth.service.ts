@@ -19,5 +19,25 @@ export class AuthService {
     }
   }
 
+  async getUserById(id: string, userType: string) {
+    if (userType === 'student') {
+      return await this.studentModel.findOne({ _id: id });
+    } else if (userType === 'staff') {
+      return await this.staffModel.findOne({ _id: id });
+    } else {
+      return await this.userModel.findOne({ _id: id });
+    }
+  }
+
+  async changePassword(id: string, password: string, userType: string) {
+    if (userType === 'student') {
+      return await this.studentModel.updateOne({ _id: id }, { $set: { password } });
+    } else if (userType === 'staff') {
+      return await this.staffModel.updateOne({ _id: id }, { $set: { password } });
+    } else {
+      return await this.userModel.updateOne({ _id: id }, { $set: { password } });
+    }
+  }
+
   
 } 

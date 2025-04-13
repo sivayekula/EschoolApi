@@ -1,7 +1,6 @@
 import { Controller, Post, UseInterceptors, UploadedFile, BadRequestException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UploadService } from '../services/upload.service';
-import { Public } from './login.controller';
 import { memoryStorage } from 'multer';
 const storage = memoryStorage()
 
@@ -16,7 +15,6 @@ const fileFilter = (req, file, callback) => {
 @Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
-  @Public()
   @Post('')
   @UseInterceptors(FileInterceptor('file', {storage, fileFilter}))
   async uploadImage(@UploadedFile() file: any) {

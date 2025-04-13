@@ -47,15 +47,19 @@ export class AcademicController {
           }
         })
       })
-      let prevAcademic = await this.academicService.updateAcademic(studentIds, { status: 'promoted' });
-      fees.forEach(async(fee) => {
-        await this.studentFeesService.updateFees(fee._id, { feeList: fee.feeList });
-      })
-      for(let studentId of studentIds) {
-        
-        let academic = await this.academicService.createAcademic({ student: studentId, board: prevAcademic[0].board, class: classId, section: sectionId, academicYear: academicYear, status: 'active', tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id});
-        if (remainingFees[studentId]) {
-          await this.studentFeesService.createFees({ student: studentId, feeList: remainingFees[studentId], tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id, academics: academic._id, academicYear: academicYear });
+
+      for (let studentId of studentIds) {
+        let academic = await this.academicService.getAcademicByStudent(studentId, academicYear);
+        if (!academic) {
+          let prevAcademic = await this.academicService.updateAcademic(studentId, { status: 'promoted' });
+          await this.academicService.createAcademic({ student: studentId, board: prevAcademic[0].board, class: classId, section: sectionId, academicYear: academicYear, status: 'active', tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id});
+          if (remainingFees[studentId]) {
+            await this.studentFeesService.createFees({ student: studentId, feeList: remainingFees[studentId], tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id, academics: academic._id, academicYear: academicYear });
+          }
+          let index = fees.findIndex(fee => fee.student.toString() === studentId.toString());
+          if (index !== -1) {
+            await this.studentFeesService.updateFees(fees[index]._id, { feeList: fees[index].feeList });
+          }
         }
       }
       return res.status(HttpStatus.OK).json({ message: 'Students promoted successfully'});

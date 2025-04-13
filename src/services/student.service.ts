@@ -97,4 +97,12 @@ export class StudentService {
       throw error;
     }
   }
+
+  async changePassword(id: string, password: string) {
+    try {
+      return await this.studentModel.updateOne({ _id: id }, { $set: { password } });
+    } catch(error){
+      throw error
+    }
+  }
 }
