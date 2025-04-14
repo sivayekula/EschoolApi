@@ -49,7 +49,7 @@ export class AcademicService {
 
   async updateAcademic(ids: string, academic: any): Promise<any> {
     try {
-      await this.academicModel.findOneAndUpdate({student: ids , status: 'active'}, academic, { new: true });
+      return await this.academicModel.findOneAndUpdate({student: ids , status: 'active'}, academic, { new: true });
     } catch (error) {
       throw error;
     }

@@ -52,9 +52,9 @@ export class AcademicController {
         let academic = await this.academicService.getAcademicByStudent(studentId, academicYear);
         if (!academic) {
           let prevAcademic = await this.academicService.updateAcademic(studentId, { status: 'promoted' });
-          await this.academicService.createAcademic({ student: studentId, board: prevAcademic[0].board, class: classId, section: sectionId, academicYear: academicYear, status: 'active', tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id});
+          let currentAcademic = await this.academicService.createAcademic({ student: studentId, board: prevAcademic.board, class: classId, section: sectionId, academicYear: academicYear, status: 'active', tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id});
           if (remainingFees[studentId]) {
-            await this.studentFeesService.createFees({ student: studentId, feeList: remainingFees[studentId], tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id, academics: academic._id, academicYear: academicYear });
+            await this.studentFeesService.createFees({ student: studentId, feeList: remainingFees[studentId], tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id, academics: currentAcademic._id, academicYear: academicYear });
           }
           let index = fees.findIndex(fee => fee.student.toString() === studentId.toString());
           if (index !== -1) {
