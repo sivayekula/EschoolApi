@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import {IStudent} from '../interfaces/student.interface';
+import { UpdateQuery } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class Student extends mongoose.Document {
@@ -185,6 +187,26 @@ StudentSchema.pre('save', async function (next) {
   student.password = await bcrypt.hash(student.password, salt);
   next();
 });
+
+StudentSchema.pre('findOneAndUpdate', async function (next) {
+  const update = this.getUpdate() as UpdateQuery<IStudent>;
+
+  // Skip if update is an aggregation pipeline
+  if (!update || Array.isArray(update)) {
+    return next();
+  }
+  // If the password is being updated, hash it
+  // Check if password is being updated via $set
+  if (update.$set && update.$set.password) {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(update.$set.password, salt);
+    update.$set.password = hashedPassword;
+    this.setUpdate(update);
+  }
+
+  next();
+});
+
 
 StudentSchema.index({ admissionNumber: 1, tenant: 1, branch: 1 },
   { unique: true }

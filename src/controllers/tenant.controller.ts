@@ -84,7 +84,6 @@ export class TenantController {
   @Post('changePassword')
   async changePassword(@Req() req, @Res() res) {
     try {
-      console.log(req.user);
       if(!req.user) throw new UnauthorizedException('Invalid credentials');
       if(req.user.role?.name === 'student') {
         let user = await this.studentService.getStudentDetails(req.user._id)

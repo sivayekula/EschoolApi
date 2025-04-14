@@ -18,7 +18,7 @@ export class UserService {
 
   async changePassword(id: string, password: string) {
     try{
-      return await this.userModel.updateOne({ _id: id }, { $set: { password } });
+      return await this.userModel.findOneAndUpdate({ _id: id }, {$set: { password }});
     } catch (error) {
       throw error;
     }

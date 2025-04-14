@@ -38,7 +38,6 @@ export class TransactionsService {
       }
       return transactionList;
     } catch (error) {
-      console.log(error);
       throw error;
     }
   }

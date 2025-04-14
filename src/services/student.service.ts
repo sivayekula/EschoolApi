@@ -100,7 +100,7 @@ export class StudentService {
 
   async changePassword(id: string, password: string) {
     try {
-      return await this.studentModel.updateOne({ _id: id }, { $set: { password } });
+      return await this.studentModel.findOneAndUpdate({ _id: id }, { $set: { password } });
     } catch(error){
       throw error
     }

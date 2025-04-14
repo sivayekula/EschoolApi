@@ -65,7 +65,7 @@ export class StaffService {
 
   async changePassword(id: string, password: string) {
     try{
-      return await this.staffModel.updateOne({ _id: id }, { $set: { password } });
+      return await this.staffModel.findOneAndUpdate({ _id: id }, { $set: { password } });
     } catch(error) {
       throw error
     }
