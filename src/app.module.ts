@@ -118,7 +118,7 @@ import { LoansController } from './controllers/loans.controller';
 
 @Module({
   imports: [ 
-    MongooseModule.forRoot('mongodb://localhost:27017/eschool', {
+    MongooseModule.forRoot('mongodb+srv://sivayekula:LcdXKbcjQOfLdMmR@cluster0.dicgf6g.mongodb.net/eschooltest?authSource=admin&replicaSet=atlas-39huat-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true', {
       maxPoolSize: 50,
     }),
     MongooseModule.forFeature([
