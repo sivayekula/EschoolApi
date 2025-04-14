@@ -41,15 +41,15 @@ export class AcademicService {
 
   async getStudentsCount(tenantId: string, branchId: string, academicYear: string) {
     try {
-      return await this.academicModel.countDocuments({ tenant: tenantId, branch: branchId, academicYear: academicYear, status: 'active' });
+      return await this.academicModel.countDocuments({ tenant: tenantId, branch: branchId, academicYear: academicYear, status: {$ne: 'deleted'}});
     } catch (error) {
       throw error;
     }
   }
 
-  async updateAcademic(ids: string, academic: any): Promise<any> {
+  async updateAcademic(studentId: string, academic: any) {
     try {
-      return await this.academicModel.findOneAndUpdate({student: ids , status: 'active'}, academic, { new: true });
+      return await this.academicModel.findOneAndUpdate({student: studentId , status: 'active'}, academic, { new: true });
     } catch (error) {
       throw error;
     }
@@ -66,7 +66,7 @@ export class AcademicService {
 
   async deleteAcademic(studentId: string) {
     try {
-      return await this.academicModel.findOneAndUpdate({ student: studentId, status: 'active' }, { status: 'inactive' });
+      return await this.academicModel.findOneAndUpdate({ student: studentId, status: 'active' }, { status: 'deleted' });
     } catch (error) {
       throw error;
     }

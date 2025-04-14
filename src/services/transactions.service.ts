@@ -19,9 +19,9 @@ export class TransactionsService {
     }
   }
 
-  async getTransactions(tenantId: string, branchId: string, studentId?: string) {
+  async getTransactions(tenantId: string, branchId: string, academicYear?: string, studentId?: string) {
     try {
-      let query = { tenant: tenantId, branch: branchId };
+      let query = { tenant: tenantId, branch: branchId, academicYear: academicYear };
       if (studentId) {
         query['student'] = studentId;
       } else {
@@ -59,8 +59,8 @@ export class TransactionsService {
     }
   }
 
-  async getTransactionList(tenantId: string, branchId: string, date?: string, transactionMode?: string) {
-    let query = { tenant: tenantId, branch: branchId, ...(date && {date: { $gte: moment.utc(date).startOf('day').toDate(), $lte: moment.utc(date).endOf('day').toDate() }}), ...(transactionMode && {transactionMode: transactionMode}) };
+  async getTransactionList(tenantId: string, branchId: string, academicYear: string, date?: string, transactionMode?: string) {
+    let query = { tenant: tenantId, branch: branchId, academicYear: academicYear, ...(date && {date: { $gte: moment.utc(date).startOf('day').toDate(), $lte: moment.utc(date).endOf('day').toDate() }}), ...(transactionMode && {transactionMode: transactionMode}) };
     try {
       return await this.transactionModel.find(query).populate({path: 'fees.fee', model: 'Fee'}).populate('category').populate('transactionBank').populate('loanId');
     } catch (error) {

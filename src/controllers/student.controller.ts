@@ -210,9 +210,9 @@ export class StudentController {
           await this.studentFeesService.createFees({
             student: student,
             tenant: req.user.tenant,
-            academicYear: body.academicYear,
+            academicYear: req.user.academicYear,
             branch: req.user.branch,
-            academics: Array.isArray(academic) ? academic[0]._id : academic._id,
+            academics: academic._id,
             feeList: updatedFees,
             createdBy: req.user._id
           });

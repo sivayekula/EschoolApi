@@ -52,13 +52,15 @@ export class AcademicController {
         let academic = await this.academicService.getAcademicByStudent(studentId, academicYear);
         if (!academic) {
           let prevAcademic = await this.academicService.updateAcademic(studentId, { status: 'promoted' });
-          let currentAcademic = await this.academicService.createAcademic({ student: studentId, board: prevAcademic.board, class: classId, section: sectionId, academicYear: academicYear, status: 'active', tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id});
-          if (remainingFees[studentId]) {
-            await this.studentFeesService.createFees({ student: studentId, feeList: remainingFees[studentId], tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id, academics: currentAcademic._id, academicYear: academicYear });
-          }
-          let index = fees.findIndex(fee => fee.student.toString() === studentId.toString());
-          if (index !== -1) {
-            await this.studentFeesService.updateFees(fees[index]._id, { feeList: fees[index].feeList });
+          if(prevAcademic) {
+            let currentAcademic = await this.academicService.createAcademic({ student: studentId, board: prevAcademic.board, class: classId, section: sectionId, academicYear: academicYear, status: 'active', tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id});
+            if (remainingFees[studentId]) {
+              await this.studentFeesService.createFees({ student: studentId, feeList: remainingFees[studentId], tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id, academics: currentAcademic._id, academicYear: academicYear });
+            }
+            let index = fees.findIndex(fee => fee.student.toString() === studentId.toString());
+            if (index !== -1) {
+              await this.studentFeesService.updateFees(fees[index]._id, { feeList: fees[index].feeList });
+            }
           }
         }
       }

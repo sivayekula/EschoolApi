@@ -40,7 +40,7 @@ export class Student extends mongoose.Document {
   @Prop({ type: String, required: false })
   bloodGroup: string;
 
-  @Prop({ type: String, required: true, unique: true })
+  @Prop({ type: String, required: true })
   aadharNumber: string;
 
   @Prop({ type: Object, required: false })
@@ -118,7 +118,7 @@ export class Student extends mongoose.Document {
   @Prop({ type: String, required: false })
   mobileNumber: string;
   
-  @Prop({ type: String, required: true, unique: true })
+  @Prop({ type: String, required: true })
   admissionNumber: string;
 
   @Prop({ type: Date, required: true })
@@ -166,7 +166,7 @@ export class Student extends mongoose.Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: mongoose.Schema.Types.ObjectId
 
-  @Prop({ type: String, required: true, default: 'active' }) // active', 'graduated', 'repeat', 'transferred'
+  @Prop({ type: String, required: true, default: 'active' }) // active', 'graduated', 'deleted', 'transferred'
   status: string
 
 }

@@ -44,7 +44,7 @@ export class StudentService {
 
   async deleteStudent(id: string) {
     try {
-      let student = await this.studentModel.findByIdAndUpdate({_id: id}, { status: 'inactive' });
+      let student = await this.studentModel.findByIdAndUpdate({_id: id}, { status: 'deleted' });
       return student;
     } catch (error) {
       throw error;

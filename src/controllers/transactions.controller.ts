@@ -17,7 +17,7 @@ export class TransactionsController {
   @Get('/list')
   async getTransactionList(@Req() req, @Res() res) {
     try {
-      const transactions = await this.transactionService.getTransactionList(req.user.tenant, req.user.branch, req.query.date, req.query.transactionMode);
+      const transactions = await this.transactionService.getTransactionList(req.user.tenant, req.user.branch, req.user.academicYear, req.query.date, req.query.transactionMode);
       return res.status(HttpStatus.OK).json({ message: 'Transactions fetched successfully', data: transactions });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
@@ -27,7 +27,7 @@ export class TransactionsController {
   @Get(':id?')
   async getTransactions(@Req() req, @Res() res) {
     try {
-      const transactions = await this.transactionService.getTransactions(req.user.tenant, req.user.branch, req.params.id);
+      const transactions = await this.transactionService.getTransactions(req.user.tenant, req.user.branch, req.user.academicYear, req.params.id);
       return res.status(HttpStatus.OK).json({ message: 'Transactions fetched successfully', data: transactions});
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message});

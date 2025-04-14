@@ -28,7 +28,7 @@ export class Academic extends mongoose.Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ type: String, required: true, default: 'active' }) // active', 'graduated', 'repeat', 'transferred', 'promoted'
+  @Prop({ type: String, required: true, default: 'active' }) // active', 'graduated', 'deleted', 'transferred', 'promoted'
   status: string;
 
 }
