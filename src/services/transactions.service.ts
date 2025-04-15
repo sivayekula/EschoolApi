@@ -2,17 +2,21 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { AcademicService } from "./academic.service";
 import * as moment from "moment";
+import { CounterService } from "./counter.service";
 
 
 @Injectable()
 export class TransactionsService {
   constructor(
     @InjectModel('Transaction') private readonly transactionModel,
-    private readonly academicService: AcademicService
+    private readonly academicService: AcademicService,
+    private readonly counterService: CounterService
   ) {}
 
   async createTransaction(transaction) {
     try {
+      let counter = await this.counterService.getCounter();
+      transaction['receiptNumber'] = counter.seq
       return await this.transactionModel.create(transaction);
     } catch (error) {
       throw error;

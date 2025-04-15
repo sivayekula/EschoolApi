@@ -13,10 +13,10 @@ export class FeeSubCategory {
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'FeeCategory', required: true})
     category: mongoose.Schema.Types.ObjectId;
 
-    @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
-    tenant: mongoose.Schema.Types.ObjectId;
+    @Prop({type: String, required: true, default: 'global'})
+    tenant: string;
 
-    @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
+    @Prop({type: mongoose.Schema.Types.ObjectId, required: false})
     branch: mongoose.Schema.Types.ObjectId;
 
     @Prop({type: mongoose.Schema.Types.ObjectId, required: true})

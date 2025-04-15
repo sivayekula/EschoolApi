@@ -114,11 +114,13 @@ import { GlobalPermissionsService } from './services/globalPermissions.service';
 import { LoanSchema } from './schemas/loan.schema';
 import { LoanService } from './services/loan.service';
 import { LoansController } from './controllers/loans.controller';
+import { CounterSchema } from './schemas/counter.schema';
+import { CounterService } from './services/counter.service';
 
 
 @Module({
   imports: [ 
-    MongooseModule.forRoot('mongodb+srv://sivayekula:LcdXKbcjQOfLdMmR@cluster0.dicgf6g.mongodb.net/eschooltest?authSource=admin&replicaSet=atlas-39huat-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true', {
+    MongooseModule.forRoot('mongodb+srv://sivayekula:LcdXKbcjQOfLdMmR@cluster0.dicgf6g.mongodb.net/eschool?authSource=admin&replicaSet=atlas-39huat-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true', {
       maxPoolSize: 50,
     }),
     MongooseModule.forFeature([
@@ -155,6 +157,7 @@ import { LoansController } from './controllers/loans.controller';
       {name: 'TemplateNames', schema: TemplateNamesSchema},
       {name: 'GlobalPermissions', schema: GlobalPermissionsSchema},
       {name: 'Loans', schema: LoanSchema},
+      {name: 'Counter', schema: CounterSchema}
     ]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key',
@@ -239,6 +242,7 @@ import { LoansController } from './controllers/loans.controller';
     ContactUsService,
     TemplateNamesService,
     LoanService,
+    CounterService,
     DesignationService,
     {
       provide: 'MomentWrapper',

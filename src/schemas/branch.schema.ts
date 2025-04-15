@@ -29,7 +29,7 @@ export class Branch {
   };
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: "Tenant" })
   tenant: mongoose.Schema.Types.ObjectId
-  @Prop({ type: String, required: true})
+  @Prop({ type: String, required: false})
   contactPerson: string
   @Prop({type: Boolean, required: true, default: false})
   isDefault: boolean

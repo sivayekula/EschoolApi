@@ -12,7 +12,7 @@ export class FeeCategoryController {
     async createFeeCategory(@Req() req, @Res() res) {
         try {
             const body = JSON.parse(JSON.stringify(req.body))
-            body['tenant'] = req.user.tenant
+            body['createdBy'] = req.user._id
             const feeCategory = await this.feeCategoryService.createFeeCategory(body);
             return res.status(HttpStatus.OK).json({ message: 'Fee Category created successfully', data: feeCategory });
         } catch (error) {

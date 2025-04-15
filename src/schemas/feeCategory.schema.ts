@@ -17,10 +17,10 @@ export class FeeCategory {
     @Prop({type: String, required: false})
     value: string;
 
-    @Prop({type: String, required: true})
+    @Prop({type: String, required: true, default: 'global'})
     tenant: string;
 
-    @Prop({type: mongoose.Schema.Types.ObjectId, required: true})
+    @Prop({type: mongoose.Schema.Types.ObjectId, required: false})
     branch: mongoose.Schema.Types.ObjectId;
 
     @Prop({type: mongoose.Schema.Types.ObjectId, required: true})

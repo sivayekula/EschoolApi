@@ -16,6 +16,9 @@ export class Transaction {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Loans" })
   loanId: mongoose.Schema.Types.ObjectId;
 
+  @Prop({ type: String, required: false })
+  receiptNumber: string;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "TemplateNames" })
   receiptLabel: mongoose.Schema.Types.ObjectId;
 

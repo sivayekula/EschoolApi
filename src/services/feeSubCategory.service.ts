@@ -46,7 +46,7 @@ export class FeeSubCategoryService {
 
     async findAll(tenant: string) {
         try {
-            const feeSubCategories = await this.feeSubCategoryModel.find({tenant});
+            const feeSubCategories = await this.feeSubCategoryModel.find();
             return feeSubCategories;
         } catch (error) {
             throw error;

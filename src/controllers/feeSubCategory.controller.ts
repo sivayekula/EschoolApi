@@ -10,7 +10,7 @@ export class FeeSubCategoryController {
     async createFeeSubCategory(@Req() req, @Res() res) {
         try {
             const body = JSON.parse(JSON.stringify(req.body))
-            body['tenant'] = req.user.tenant
+            body['createdBy'] = req.user._id
             const feeSubCategory = await this.feeSubCategoryService.createFeeSubCategory(body);
             return res.status(HttpStatus.OK).json({ message: 'Fee Sub Category created successfully', data: feeSubCategory });
         } catch (error) {
