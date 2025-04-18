@@ -48,6 +48,16 @@ export class AcademicController {
         })
       })
 
+      let studentAcademics =  await this.academicService.getAcademicsByStudents(studentIds, req.user.academicYear);
+      let isSameClass = true;
+      studentAcademics.forEach(academic => {
+        if (academic.class.toString() !== classId) {
+          isSameClass = false;
+        }
+      })
+      if (!isSameClass) {
+        throw new Error('All students should be in same class');
+      }
       for (let studentId of studentIds) {
         let academic = await this.academicService.getAcademicByStudent(studentId, academicYear);
         if (!academic) {

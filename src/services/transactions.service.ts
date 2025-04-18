@@ -66,7 +66,7 @@ export class TransactionsService {
   async getTransactionList(tenantId: string, branchId: string, academicYear: string, date?: string, transactionMode?: string) {
     let query = { tenant: tenantId, branch: branchId, academicYear: academicYear, ...(date && {date: { $gte: moment.utc(date).startOf('day').toDate(), $lte: moment.utc(date).endOf('day').toDate() }}), ...(transactionMode && {transactionMode: transactionMode}) };
     try {
-      return await this.transactionModel.find(query).populate({path: 'fees.fee', model: 'Fee'}).populate('category').populate('transactionBank').populate('loanId');
+      return await this.transactionModel.find(query).populate({path: 'fees.fee', model: 'Fee'}).populate('category').populate('transactionBank').populate('loanId').populate('subCategory');
     } catch (error) {
       throw error;
     }

@@ -64,6 +64,15 @@ export class AcademicService {
     }
   }
 
+  async getAcademicsByStudents(studentIds: string[], academicYear: string) {
+    const qry = { student: { $in: studentIds}, academicYear: academicYear, status: 'active' };
+    try {
+      return await this.academicModel.find(qry);
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteAcademic(studentId: string) {
     try {
       return await this.academicModel.findOneAndUpdate({ student: studentId, status: 'active' }, { status: 'deleted' });

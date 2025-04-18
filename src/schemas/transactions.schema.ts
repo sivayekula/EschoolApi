@@ -13,6 +13,9 @@ export class Transaction {
   @Prop({ type: String, required: false })
   title: string;
 
+  @Prop({ type: String, required: false })
+  type: string;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "Loans" })
   loanId: mongoose.Schema.Types.ObjectId;
 
@@ -25,8 +28,8 @@ export class Transaction {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "FeeCategory" }) // loan category loan/expence...
   category: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ type: String, required: false })
-  subCategory: string;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: "FeeSubCategory" })
+  subCategory: mongoose.Schema.Types.ObjectId;
 
   @Prop({ type: String, required: true })
   transactionNo: string;

@@ -49,6 +49,8 @@ export class TransactionsController {
       requestBody['transactionBank'] = requestBody.account || null
       requestBody['staff'] = requestBody.staff || null
       requestBody['loanId'] = requestBody.loanId || null
+      requestBody['category'] = requestBody.category || null
+      requestBody['subCategory'] = requestBody.subCategory || null
       let loanData = null;
       if(requestBody.loanId) {
         loanData = await this.loanService.findLoanById(requestBody.loanId);
@@ -65,8 +67,7 @@ export class TransactionsController {
       requestBody['balance'] = requestBody.transactionType === 'credit' ? bankData.currentBalance*1 + requestBody.amount*1 : bankData.currentBalance*1 - requestBody.amount*1
       transaction = await this.transactionService.createTransaction(requestBody);
       await this.bankAccountService.updateAccount(bankData._id, { currentBalance: requestBody.balance})
-      let feecategory = await this.feeCategoryService.getFeeCategory(requestBody.category);
-      if(requestBody.transactionType === 'credit' && feecategory.value === 'repayment') {
+      if(requestBody.transactionType === 'credit' && requestBody.type === 'repayment') {
         if(requestBody.staff) {
           if(loanData) {
             if(loanData.paidAmount*1 + requestBody.amount*1 > loanData.loanAmount*1) {
@@ -87,7 +88,7 @@ export class TransactionsController {
           throw new Error('Staff is required')
         }
       }
-      if(requestBody.transactionType === 'debit' && feecategory.value === 'loan') {
+      if(requestBody.transactionType === 'debit' && requestBody.type === 'loan') {
         if(requestBody.staff) {
           await this.loanService.createLoan({
             title: requestBody.title,
