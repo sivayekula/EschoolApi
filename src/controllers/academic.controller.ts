@@ -49,14 +49,22 @@ export class AcademicController {
       })
 
       let studentAcademics =  await this.academicService.getAcademicsByStudents(studentIds, req.user.academicYear);
-      let isSameClass = true;
+      let isPromotedSameClass = true;
+      let isSameClassForAll = true;
+      let studentClass = studentAcademics[0].class.toString();
       studentAcademics.forEach(academic => {
-        if (academic.class.toString() !== classId) {
-          isSameClass = false;
+        if (academic.class.toString() === classId) {
+          isPromotedSameClass = false;
+        }
+        if (academic.class.toString() !== studentClass) {
+          isSameClassForAll = false;
         }
       })
-      if (!isSameClass) {
-        throw new Error('All students should be in same class');
+      if (!isPromotedSameClass) {
+        throw new Error("Don't promote students in same class");
+      }
+      if (!isSameClassForAll) {
+        throw new Error("All students should be in same class");
       }
       for (let studentId of studentIds) {
         let academic = await this.academicService.getAcademicByStudent(studentId, academicYear);
