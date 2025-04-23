@@ -75,7 +75,8 @@ export class StudentFeesController {
         }
         bankData = Array.isArray(cashData) ? cashData[0] : cashData
       }
-      let balance = bankData.currentBalance*1 + totalAmount*1
+      let trxAmt = transactions.reduce((acc, curr) => acc + curr.amount, 0)
+      let balance = bankData.currentBalance*1 + trxAmt*1
       studentFees.feeList = studentNewFees;
       studentFees.paymentStatus = totalAmount === paidAmount ? 'paid' : 'pending';
       const transactionObj = {
@@ -92,7 +93,7 @@ export class StudentFeesController {
         transactionMode: req.body.paymentMode,
         transactionBank: req.body.bank || null,
         date: req.body.transactionDate,
-        amount: transactions.reduce((acc, curr) => acc + curr.amount, 0),
+        amount: trxAmt,
         proof: req.body.transactionProof,
         createdBy: req.user._id
       }
