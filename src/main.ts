@@ -13,7 +13,11 @@ async function bootstrap() {
   // Increase payload size
   app.use(bodyParser.json({ limit: '10mb' })); // Adjust the size as needed
   app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
-  app.enableCors();
+  app.enableCors({
+    origin: '*', // or your frontend domain
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: '*',
+  });
   app.setGlobalPrefix('api/');
   await app.listen(process.env.PORT || 8001);
 }
