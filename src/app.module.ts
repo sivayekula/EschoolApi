@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { StudentSchema } from './schemas/student.schema';
 import { StudentController } from './controllers/student.controller';
@@ -116,6 +116,7 @@ import { LoanService } from './services/loan.service';
 import { LoansController } from './controllers/loans.controller';
 import { CounterSchema } from './schemas/counter.schema';
 import { CounterService } from './services/counter.service';
+import { CorsMiddleware } from './common/middleware/cors.middleware';
 
 
 @Module({
@@ -255,4 +256,8 @@ import { CounterService } from './services/counter.service';
     }
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CorsMiddleware).forRoutes('*');
+  }
+}
