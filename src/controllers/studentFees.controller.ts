@@ -14,6 +14,55 @@ export class StudentFeesController {
     private readonly bankAccountService: BankAccountService
   ) {}
 
+  @Get('reports')
+  async getFeesReports(@Req() req, @Res() res) {
+    try {
+      const fees = await this.studentFeesService.getAllFees(req.user.tenant, req.user.branch, req.user.academicYear);
+      let feesMap = {};
+      for(let fee of fees) {
+        for(let studentFee of fee.feeList) {
+          // console.log(studentFee._id.toString());
+          if(feesMap[studentFee._id.toString()]) {
+            feesMap[studentFee._id.toString()].push(studentFee);
+          } else {
+            feesMap[studentFee._id.toString()]= [studentFee];
+          } 
+        }
+      }
+      let feeReport= [];
+      let totalAmount=0, discountedAmount= 0, dueAmount= 0, collectedAmount = 0, pendingAmount = 0;
+
+      for(let key in feesMap) {
+        let feeTotalAmount=0, feeDiscountedAmount=0, feeDueAmount=0, feeCollectedAmount=0, feePendingAmount = 0;
+        for(let fee of feesMap[key]) {
+          totalAmount += fee.totalAmount;
+          discountedAmount += fee.discount;
+          dueAmount += fee.paybalAmount;
+          collectedAmount += fee.paidAmount;
+          pendingAmount += fee.pendingAmount;
+          feeTotalAmount += fee.totalAmount;
+          feeDiscountedAmount += fee.discount;
+          feeDueAmount += fee.paybalAmount;
+          feeCollectedAmount += fee.paidAmount;
+          feePendingAmount += fee.pendingAmount;
+        }
+        feeReport.push({
+          fee: key,
+          name: feesMap[key][0].feeName,
+          totalAmount: feeTotalAmount,
+          discountedAmount: feeDiscountedAmount,
+          dueAmount: feeDueAmount,
+          collectedAmount: feeCollectedAmount,
+          pendingAmount: feePendingAmount
+        })
+      }
+      
+      return res.status(HttpStatus.OK).json({ message: 'Fees fetched successfully', data: {feeReport, totalAmount, discountedAmount, dueAmount, collectedAmount, pendingAmount} });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
   @Get(':id')
   async getFeesByStudent(@Req() req, @Res() res) {
     try {
