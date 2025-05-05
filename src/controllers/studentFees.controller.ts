@@ -21,11 +21,10 @@ export class StudentFeesController {
       let feesMap = {};
       for(let fee of fees) {
         for(let studentFee of fee.feeList) {
-          // console.log(studentFee._id.toString());
-          if(feesMap[studentFee._id.toString()]) {
-            feesMap[studentFee._id.toString()].push(studentFee);
+          if(feesMap[studentFee?._id?.toString()]) {
+            feesMap[studentFee?._id?.toString()].push(studentFee);
           } else {
-            feesMap[studentFee._id.toString()]= [studentFee];
+            feesMap[studentFee?._id?.toString()]= [studentFee];
           } 
         }
       }
@@ -93,7 +92,7 @@ export class StudentFeesController {
       let totalAmount = 0;
       let paidAmount = 0;
       for(let fee of req.body.fees) {
-        const studentFee = studentFees.feeList.findIndex((item) => item.fee._id.toString() === fee._id.toString());
+        const studentFee = studentFees.feeList.findIndex((item) => item.fee?._id?.toString() === fee?._id?.toString());
         if (fee.paymentAmount*1 > 0) {
           transactions.push({
             amount: fee.paymentAmount*1,
