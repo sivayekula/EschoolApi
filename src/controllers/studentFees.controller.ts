@@ -21,33 +21,32 @@ export class StudentFeesController {
       let feesMap = {};
       for(let fee of fees) {
         for(let studentFee of fee.feeList) {
-          if(feesMap[studentFee?._id?.toString()]) {
-            feesMap[studentFee?._id?.toString()].push(studentFee);
+          if(feesMap[studentFee.fee._id?.toString()]) {
+            feesMap[studentFee.fee._id?.toString()].push(studentFee);
           } else {
-            feesMap[studentFee?._id?.toString()]= [studentFee];
+            feesMap[studentFee.fee._id?.toString()]= [studentFee];
           } 
         }
       }
       let feeReport= [];
       let totalAmount=0, discountedAmount= 0, dueAmount= 0, collectedAmount = 0, pendingAmount = 0;
-
       for(let key in feesMap) {
         let feeTotalAmount=0, feeDiscountedAmount=0, feeDueAmount=0, feeCollectedAmount=0, feePendingAmount = 0;
         for(let fee of feesMap[key]) {
-          totalAmount += fee.totalAmount;
-          discountedAmount += fee.discount;
+          totalAmount += fee.fee.amount;
+          discountedAmount += fee.discount*1;
           dueAmount += fee.paybalAmount;
           collectedAmount += fee.paidAmount;
-          pendingAmount += fee.pendingAmount;
-          feeTotalAmount += fee.totalAmount;
-          feeDiscountedAmount += fee.discount;
+          pendingAmount += fee.paybalAmount*1 - fee.paidAmount*1;
+          feeTotalAmount += fee.fee.amount;
+          feeDiscountedAmount += fee.discount*1;
           feeDueAmount += fee.paybalAmount;
           feeCollectedAmount += fee.paidAmount;
-          feePendingAmount += fee.pendingAmount;
+          feePendingAmount += fee.paybalAmount*1 - fee.paidAmount*1;
         }
         feeReport.push({
           fee: key,
-          name: feesMap[key][0].feeName,
+          name: feesMap[key][0].fee.name,
           totalAmount: feeTotalAmount,
           discountedAmount: feeDiscountedAmount,
           dueAmount: feeDueAmount,
@@ -92,7 +91,7 @@ export class StudentFeesController {
       let totalAmount = 0;
       let paidAmount = 0;
       for(let fee of req.body.fees) {
-        const studentFee = studentFees.feeList.findIndex((item) => item.fee?._id?.toString() === fee?._id?.toString());
+        const studentFee = studentFees.feeList.findIndex((item) => item.fee._id?.toString() === fee._id?.toString());
         if (fee.paymentAmount*1 > 0) {
           transactions.push({
             amount: fee.paymentAmount*1,
