@@ -4,7 +4,7 @@ import { SmsTemplateService } from '../services/smsTemplate.service';
 import { StudentService } from "../services/student.service";
 import { WhatsAppService } from "../services/whatsApp.service";
 import { ClassService } from "../services/class.service";
-import { create } from "domain";
+import { BranchService } from "src/services/branch.service";
 
 
 @Controller('attendance')
@@ -14,7 +14,8 @@ export class AttendanceController {
     private readonly smsTemplateService: SmsTemplateService,
     private readonly classService: ClassService,
     private readonly studentService: StudentService,
-    private readonly whatsAppService: WhatsAppService
+    private readonly whatsAppService: WhatsAppService,
+    private readonly branchService: BranchService
   ) {}
 
   @Put()
@@ -68,8 +69,7 @@ export class AttendanceController {
         let students = await this.studentService.getStudentList(absentStudents);
         let classData = await this.classService.getClass(reqData.class);
         let smsTemplate = await this.smsTemplateService.findTemplate('', 'attendance_eng')
-        // let smsbalance = await this.whatsAppService.checkBalance('', '');
-        // console.log(smsbalance, 'smsbalance');
+        let branchData = await this.branchService.getBranch(req.user.branch);
         let template = smsTemplate?.template;
         if (template) {
           for (let student of students) {
@@ -78,7 +78,7 @@ export class AttendanceController {
             message = message.replace('{{InstituteName}}', student.branch.name);
             message = message.replace('{{date}}', reqData.date);
             message = message.replace('{{class}}', classData.name);
-            await this.whatsAppService.sendSms('', '', student.fatherDetails.mobileNumber, message);
+            await this.whatsAppService.sendSms(branchData.whatsappUserId, branchData.whatsappPassword, student.fatherDetails.mobileNumber, message);
           }
         }
       }

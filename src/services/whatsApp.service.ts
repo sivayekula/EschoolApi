@@ -11,9 +11,10 @@ export class WhatsAppService {
     const API_URL = 'https://login.bulksmsgateway.in/textmobilesmsapi.php';
     // Function to send SMS
     try {
+      if(!userName || !password) throw new Error('No credentials found');
       const params = new URLSearchParams({
-        user: userName || 'dhanu414',
-        password: password || 'Dhanu@0414',
+        user: userName,
+        password: password,
         mobile: phoneNumber,
         message: message,
         type: '203',
@@ -24,7 +25,7 @@ export class WhatsAppService {
       return data;
     } catch (error) {
       console.error('Error sending SMS:', error.message);
-      throw error;
+      return error;
     }
   }
 

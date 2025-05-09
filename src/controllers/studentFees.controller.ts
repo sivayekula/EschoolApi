@@ -33,12 +33,12 @@ export class StudentFeesController {
       for(let key in feesMap) {
         let feeTotalAmount=0, feeDiscountedAmount=0, feeDueAmount=0, feeCollectedAmount=0, feePendingAmount = 0;
         for(let fee of feesMap[key]) {
-          totalAmount += fee.fee.amount;
+          totalAmount += fee.fee.isGlobal ? (fee.paybalAmount + fee.discount) : fee.fee.amount;
           discountedAmount += fee.discount*1;
           dueAmount += fee.paybalAmount;
           collectedAmount += fee.paidAmount;
           pendingAmount += fee.paybalAmount*1 - fee.paidAmount*1;
-          feeTotalAmount += fee.fee.amount;
+          feeTotalAmount += fee.fee.isGlobal ? (fee.paybalAmount + fee.discount) : fee.fee.amount ;
           feeDiscountedAmount += fee.discount*1;
           feeDueAmount += fee.paybalAmount;
           feeCollectedAmount += fee.paidAmount;
