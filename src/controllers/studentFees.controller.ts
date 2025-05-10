@@ -17,7 +17,8 @@ export class StudentFeesController {
   @Get('reports')
   async getFeesReports(@Req() req, @Res() res) {
     try {
-      const fees = await this.studentFeesService.getAllFees(req.user.tenant, req.user.branch, req.user.academicYear);
+      let academicYear = req.query.academicYear || req.user.academicYear;
+      const fees = await this.studentFeesService.getAllFees(req.user.tenant, req.user.branch, academicYear);
       let feesMap = {};
       for(let fee of fees) {
         for(let studentFee of fee.feeList) {
