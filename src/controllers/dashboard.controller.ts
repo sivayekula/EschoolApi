@@ -21,10 +21,10 @@ export class DashboardController {
       let totalCollectedFee = 0;
       let totalExpense = 0;
       collectedFee.forEach((fee) => {
-        if (fee.transactionType === 'debit') {
+        if (fee.type !== 'loan' && fee.transactionType === 'debit') {
           totalExpense += fee.amount;
         }
-        if (fee.transactionType === 'credit') {
+        if (fee.type !== 'repayment' && fee.transactionType === 'credit') {
           totalCollectedFee += fee.amount;
         }
       });
