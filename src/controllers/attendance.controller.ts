@@ -5,6 +5,7 @@ import { StudentService } from "../services/student.service";
 import { WhatsAppService } from "../services/whatsApp.service";
 import { ClassService } from "../services/class.service";
 import { BranchService } from "src/services/branch.service";
+import { SmsService } from "src/services/sms.service";
 
 
 @Controller('attendance')
@@ -15,7 +16,8 @@ export class AttendanceController {
     private readonly classService: ClassService,
     private readonly studentService: StudentService,
     private readonly whatsAppService: WhatsAppService,
-    private readonly branchService: BranchService
+    private readonly branchService: BranchService,
+    private readonly smsService: SmsService
   ) {}
 
   @Put()
@@ -68,9 +70,10 @@ export class AttendanceController {
       if (data.sendSms && absentStudents.length) {
         let students = await this.studentService.getStudentList(absentStudents);
         let classData = await this.classService.getClass(reqData.class);
-        let smsTemplate = await this.smsTemplateService.findTemplate('', 'attendance_eng')
+        let whatappTemplate = await this.smsTemplateService.findTemplate('', 'attendance_eng', 'whatsapp')
+        let smsTemplate = await this.smsTemplateService.findTemplate('', 'attendance_eng', 'sms')
         let branchData = await this.branchService.getBranch(req.user.branch);
-        let template = smsTemplate?.template;
+        let template = whatappTemplate?.template;
         if (template) {
           for (let student of students) {
             let message = template
@@ -79,6 +82,16 @@ export class AttendanceController {
             message = message.replace('{{date}}', reqData.date);
             message = message.replace('{{class}}', classData.name);
             await this.whatsAppService.sendSms(branchData.whatsappUserId, branchData.whatsappPassword, student.fatherDetails.mobileNumber, message);
+          }
+        }
+        if(smsTemplate?.template) {
+          for (let student of students) {
+            let message = smsTemplate.template
+            message = message.replace('{{studentName}}', student.firstName + ' ' + student.lastName);
+            message = message.replace('{{InstituteName}}', student.branch.name);
+            message = message.replace('{{date}}', reqData.date);
+            message = message.replace('{{class}}', classData.name);
+            await this.smsService.sendSms(branchData.whatsappUserId, branchData.whatsappPassword, student.fatherDetails.mobileNumber, message, smsTemplate.templateId);
           }
         }
       }

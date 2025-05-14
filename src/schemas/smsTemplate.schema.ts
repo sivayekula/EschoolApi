@@ -8,6 +8,9 @@ export class SmsTemplate {
   @Prop({ type: String, required: true })
   template: string;
 
+  @Prop({ type: String, required: false, default: null })
+  templateId: string;
+
   @Prop({ type: String, required: true })
   type: string;
 

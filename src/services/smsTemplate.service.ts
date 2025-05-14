@@ -24,13 +24,13 @@ export class SmsTemplateService {
     }
   }
 
-  async findTemplate(id?: string, name?: string) {
+  async findTemplate(id?: string, name?: string, type?: string) {
     try {
       if (id) {
         return await this.smsTemplateModel.findById(id);
       }
       if (name) {
-        return await this.smsTemplateModel.findOne({name: name, status: 'active'});
+        return await this.smsTemplateModel.findOne({name: name, type: type, status: 'active'});
       }
     } catch (error) {
       throw error;

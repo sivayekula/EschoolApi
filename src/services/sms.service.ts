@@ -1,12 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-const USERNAME = process.env.SMS_USERNAME || 'siva9032';
-const PASSWORD = process.env.SMS_PASSWORD || 'Admin@123';
-
-// SMS details
-const MESSAGE = 'Hello, this is a test message.';
-const SENDER = 'INVITE'; // Replace with your actual sender ID
-const MOBILE_NUMBER = '919032732879'; // Use international format without '+'
 
 // Prepare API URL
 const API_URL = 'https://www.bulksmsgateway.in/sendmessage.php';
@@ -15,25 +8,26 @@ const API_URL = 'https://www.bulksmsgateway.in/sendmessage.php';
 export class SmsService {
   constructor() {}
 
-  async sendSms(phoneNumber: string, message: string) {
+  async sendSms(userName: string, password: string, phoneNumber: string, message: string, template:string) {
     // Securely store credentials in environment variables
 
     // Function to send SMS
     try {
       const params = new URLSearchParams({
-        user: USERNAME,
-        password: PASSWORD,
-        mobile: MOBILE_NUMBER,
-        message: MESSAGE,
-        sender: SENDER,
+        user: userName,
+        password: password,
+        mobile: phoneNumber,
+        message: message,
+        sender: 'DGIAKA',
         type: '3',
-        template_id: '123',
+        template_id: template
       });
 
       const response = await axios.get(`${API_URL}?${params.toString()}`);
+      return response.data;
     } catch (error) {
       console.error('Error sending SMS:', error.message);
-      throw error;
+      return error;
     }
   }
 }
