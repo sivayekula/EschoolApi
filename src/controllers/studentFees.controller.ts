@@ -104,7 +104,7 @@ export class StudentFeesController {
           totalAmount += studentFees.feeList[studentFee].paybalAmount*1
           paidAmount += paidTill*1
           studentNewFees.push({
-            ...fee,
+            ...studentFees.feeList[studentFee],
             fee: fee._id,
             dueDate: fee.dueDate,
             paidAmount: paidTill,
