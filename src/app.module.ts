@@ -120,7 +120,7 @@ import { CounterService } from './services/counter.service';
 
 @Module({
   imports: [ 
-    MongooseModule.forRoot('mongodb+srv://sivayekula:LcdXKbcjQOfLdMmR@cluster0.dicgf6g.mongodb.net/eschool?authSource=admin&replicaSet=atlas-39huat-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true', {
+    MongooseModule.forRoot('mongodb+srv://sivayekula:LcdXKbcjQOfLdMmR@cluster0.dicgf6g.mongodb.net/eschool_data?authSource=admin&replicaSet=atlas-39huat-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true', {
       maxPoolSize: 50,
     }),
     MongooseModule.forFeature([

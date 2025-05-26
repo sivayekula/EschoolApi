@@ -7,9 +7,9 @@ import { File } from 'multer';
 @Injectable()
 export class UploadService {
   private storage = new Storage({
-    keyFilename: path.join(__dirname, '../../school-management-450616-8b0ba4cfd14c.json'), // Your service account key
+    keyFilename: path.join(__dirname, '../../school-managemant-40257-c143f0d7d218.json'), // Your service account key
   });
-  private bucketName = 'eschool-images';
+  private bucketName = 'eschool_images';
   private filePath = 'images/';
   async uploadFile(file: File): Promise<any> {
     try {

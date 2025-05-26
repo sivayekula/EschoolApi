@@ -18,7 +18,6 @@ export class AuthGuard implements CanActivate {
     if (excludedRoutes.some((route) => url.startsWith(route))) return true;
 
     const authHeader = request.headers['authorization'];
-    console.log(authHeader, '*********************');
     if (!authHeader) throw new UnauthorizedException('Missing Authorization header');
 
     const token = authHeader.split(' ')[1];
