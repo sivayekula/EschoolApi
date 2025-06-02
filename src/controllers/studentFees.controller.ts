@@ -65,9 +65,13 @@ export class StudentFeesController {
   @Get(':id')
   async getFeesByStudent(@Req() req, @Res() res) {
     try {
+      if (!req.params.id || req.params.id !== req.user._id.toString()) {
+        return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Please provide valid student id' });
+      }
       const fees = await this.studentFeesService.getFeesByStudent(req.params.id, req.user.academicYear);
       const academicDetails = await this.academicService.getAcademicByStudent(req.params.id, req.user.academicYear);
-      return res.status(HttpStatus.OK).json({ message: 'Fees fetched successfully', data: {fees: fees, academic: academicDetails} });
+      let resp = req.user.device === 'webApp' ? {fees: fees, academic: academicDetails} : fees
+      return res.status(HttpStatus.OK).json({ message: 'Fees fetched successfully', data: resp });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }

@@ -6,6 +6,7 @@ import { WhatsAppService } from "../services/whatsApp.service";
 import { ClassService } from "../services/class.service";
 import { BranchService } from "src/services/branch.service";
 import { SmsService } from "src/services/sms.service";
+import { first } from "rxjs";
 
 
 @Controller('attendance')
@@ -35,7 +36,32 @@ export class AttendanceController {
     try {
       if (!req.query.userType) throw new Error('User type is required');
       const attendance = await this.attendanceService.getAttendance(req.user.tenant, req.user.branch, req.user.academicYear, req.query.date, req.query.userType, req.query.month, req.query.year, req.query.classId, req.query.sectionId);
-      return res.status(HttpStatus.OK).json({message: 'Attendance fetched successfully', data: attendance});
+      let resp= attendance
+      if(req.user.device === 'mobile') {
+        resp = attendance.map((element: any) => {
+          let attstatus= []
+          element.attendance.map((item: any) => {
+            return attstatus.push({
+              studentId: item.userId._id,
+              attendanceStatus: item.attendanceStatus,
+              firstName: item.userId.firstName,
+              lastName: item.userId.lastName,
+              rollNo: item.userId.rollNumber,
+              profilePic: item.userId.profilePic,
+            })
+          })
+          return {
+            _id: element._id,
+            userType: element.userType,
+            date: element.date,
+            class: element.class,
+            section: element.section,
+            academicYear: element.academicYear,
+            attendance: attstatus
+          }
+        })
+      }
+      return res.status(HttpStatus.OK).json({message: 'Attendance fetched successfully', data: resp});
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({message: error.message});
     }

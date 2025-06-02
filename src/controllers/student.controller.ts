@@ -105,7 +105,6 @@ export class StudentController {
     @Res() res
   ) {
     try {
-      console.log(req.body);
       const getRoleData = await this.roleService.getRole('student');
       const studentCount = await this.academicService.getStudentsByClassAndSection(req.user.tenant, req.user.branch, req.body[0].class, req.body[0].section);
       let newRollNumber = studentCount;

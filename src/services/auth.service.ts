@@ -43,5 +43,9 @@ export class AuthService {
     }
   }
 
+  async updateDeviceId(id: string, deviceId: string, deviceType: string) {
+    return await this.studentModel.updateOne({ _id: id }, { $set: { deviceId, deviceType } });
+  }
+
   
 } 

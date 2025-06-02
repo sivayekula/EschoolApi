@@ -42,6 +42,11 @@ constructor(
         branch: user.branch._id,
         role: user.role._id
       }
+      if(req.body.deviceId && req.body.deviceType) {
+        if(user.deviceId !== req.body.deviceId) {
+          await this.authService.updateDeviceId(user._id, req.body.deviceId, req.body.deviceType);
+        }
+      }
       let token = this.jwtService.sign(result);
       const branch = user.role.name !== 'superadmin' ? user.branch ? [await this.branchService.getBranch(user.branch)] : await this.branchService.findAll(user.tenant, true) : [];
       const academicYear = user.role.name !== 'superadmin' ? await this.academicYearService.getAcademicYear(user.tenant, branch[0]?._id) : null;

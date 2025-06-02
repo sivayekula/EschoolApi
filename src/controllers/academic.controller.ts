@@ -3,6 +3,8 @@ import { AcademicService } from "../services/academic.service";
 import { StudentFeesService } from "../services/studentFees.service";
 import { AcademicYearService } from '../services/academicYear.service';
 import { StudentService } from "../services/student.service";
+import { first } from "rxjs";
+import { profile } from "console";
 
 
 @Controller('academics')
@@ -13,6 +15,33 @@ export class AcademicController {
     private readonly academicYearService: AcademicYearService,
     private readonly studentService: StudentService
   ) {}
+
+   @Get('student/:studentId')
+  async getAcademicByStudent(@Req() req, @Res() res) {
+    try {
+      if(!req.params.studentId || req.params.studentId !== req.user._id.toString()) {
+        throw new Error('Invalid student id');
+      }
+      const academic = await this.academicService.getAcademicByStudent(req.params.studentId, req.user.academicYear);
+      let resp = req.user.device === 'webApp' ? academic : { 
+        academic: academic._id,
+        _id: academic.student._id,
+        firstName: academic.student.firstName,
+        lastName: academic.student.lastName,
+        rollNo: academic.student.rollNumber,
+        dob: academic.student.DOB,
+        profilePic: academic.student.profilePic,
+        admissionNumber: academic.student.admissionNumber,
+        class: academic.class,
+        section: academic.section,
+        fatherDetails: academic.student.fatherDetails,
+        aadharPic: academic.student.aadharPic,
+      }
+      return res.status(HttpStatus.OK).json({ message: 'Academic fetched successfully', data: resp });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
 
   @Get(':classId?/:sectionId?')
   async getAcademics(@Req() req, @Res() res) {

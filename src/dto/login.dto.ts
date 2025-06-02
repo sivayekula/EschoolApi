@@ -20,6 +20,14 @@ export class LoginDto {
   @IsOptional()
   @IsString()
   readonly organizationCode: string
+
+  @IsOptional()
+  @IsString()
+  readonly deviceId: string
+
+  @IsOptional()
+  @IsString()
+  readonly deviceType: string
 }
 
 export function IsEmailOrMobile(validationOptions?: ValidationOptions) {

@@ -163,6 +163,12 @@ export class Student extends mongoose.Document {
   @Prop({ type: String })
   metaInfo: string
 
+  @Prop({ type: String, required: false })
+  deviceId: string
+  
+  @Prop({ type: String, required: false })
+  deviceType: string
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: mongoose.Schema.Types.ObjectId
 
