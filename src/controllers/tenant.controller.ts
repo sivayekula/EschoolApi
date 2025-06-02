@@ -31,6 +31,7 @@ export class TenantController {
     try {
       let tenantWithMobile = await this.tenantService.getTenantByLoginId(req.body.mobileNumber);
       let tenantWithEmail = await this.tenantService.getTenantByLoginId(req.body.email);
+      if(!req.body.organizationCode) throw new Error('Organization code is required');
     if(!tenantWithEmail && !tenantWithMobile) {
       let obj = {email: req.body.email, mobileNumber: req.body.mobileNumber, createdBy: req.user._id}
       let savedRecord = await this.tenantService.createTenant(obj);
@@ -41,6 +42,7 @@ export class TenantController {
         logo: req.body.logo,
         address: req.body.address,
         contactPerson: req.body.contactPerson,
+        organizationCode: req.body.organizationCode,
         email: req.body.email,
         mobileNumber: req.body.mobileNumber,
         tenant: savedRecord._id,

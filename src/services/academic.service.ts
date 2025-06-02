@@ -16,13 +16,16 @@ export class AcademicService {
     }
   }
 
-  async getAcademics(tenantId: string, branchId: string, academicYear: string, classId?: string, sectionId?: string): Promise<any> {
-    const qry = tenantId ? { tenant: tenantId, branch: branchId, academicYear: academicYear } : {};
+  async getAcademics(tenantId: string, branchId: string, academicYear: string, classId?: string, sectionId?: string, status?: string | string[]): Promise<any> {
+    const qry = { tenant: tenantId, branch: branchId, academicYear: academicYear }
     if (classId) {
       qry['class'] = classId;
     }
     if (sectionId) {
       qry['section'] = sectionId;
+    }
+    if (status) {
+      qry['status'] = {$in: status};
     }
     try {
       return await this.academicModel.find(qry).populate('student').populate('class').populate('section').populate('board');

@@ -208,7 +208,7 @@ StudentSchema.pre('findOneAndUpdate', async function (next) {
 });
 
 
-StudentSchema.index({ admissionNumber: 1, tenant: 1, branch: 1 },
+StudentSchema.index({ admissionNumber: 1, tenant: 1 },
   { unique: true }
 );
 

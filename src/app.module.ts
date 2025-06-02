@@ -116,12 +116,23 @@ import { LoanService } from './services/loan.service';
 import { LoansController } from './controllers/loans.controller';
 import { CounterSchema } from './schemas/counter.schema';
 import { CounterService } from './services/counter.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 
 @Module({
   imports: [ 
-    MongooseModule.forRoot('mongodb+srv://sivayekula:LcdXKbcjQOfLdMmR@cluster0.dicgf6g.mongodb.net/eschool_data?authSource=admin&replicaSet=atlas-39huat-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true', {
-      maxPoolSize: 50,
+    ConfigModule.forRoot({
+      isGlobal: true, // makes config available globally
+      envFilePath: '.env', // optional if your .env is in root
+    }),
+    // Use forRootAsync to load env vars properly
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        uri: configService.get<string>('DB_URL'),
+        maxPoolSize: 50,
+      }),
+      inject: [ConfigService],
     }),
     MongooseModule.forFeature([
       {name: 'Student', schema: StudentSchema },
@@ -160,7 +171,7 @@ import { CounterService } from './services/counter.service';
       {name: 'Counter', schema: CounterSchema}
     ]),
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'your-secret-key',
+      secret: process.env.JWT_SECRET || 'brBsTtEcOywyQGSAynpcnA==',
       signOptions: { expiresIn: '24h' },
     }),
     TerminusModule,

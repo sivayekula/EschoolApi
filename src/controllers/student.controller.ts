@@ -105,12 +105,22 @@ export class StudentController {
     @Res() res
   ) {
     try {
+      console.log(req.body);
       const getRoleData = await this.roleService.getRole('student');
       const studentCount = await this.academicService.getStudentsByClassAndSection(req.user.tenant, req.user.branch, req.body[0].class, req.body[0].section);
       let newRollNumber = studentCount;
       let errors = [];
-      for (let student of req.body) {
+      // req.body.bulkUploadList
+      for (let student of req.body.bulkUploadList) {
         try {
+          // let student = await this.studentService.getStudentsByAadhar(req.user.tenant, req.user.branch, student.rollNumber);
+          if(req.body.duplicateHandlingOption = 'overwrite') {
+            
+          } else if(req.body.duplicateHandlingOption = 'skip') {
+            continue;
+          } else {
+            
+          }
           student['rollNumber'] = ++newRollNumber;
           student['password'] =
           student.firstName.replace(/\s+/g, '').slice(0, 4) +
@@ -131,7 +141,7 @@ export class StudentController {
             createdBy: req.user._id
           });
         } catch (err) {
-          errors.push(student.firstName);
+          errors.push(student.firstName+'-'+err.message);
           continue;
         }
       }

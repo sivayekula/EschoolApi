@@ -20,8 +20,9 @@ constructor(
   @Post()
   async login(@Req() req, @Body() loginObj: LoginDto, @Res() res) {
     try {
-      const user = await this.authService.validateUser(loginObj.loginId, loginObj.userType);
-      if(!user) throw new UnauthorizedException('Invalid credentials'); 
+      if(!req.headers['x-device']) throw new UnauthorizedException('Missing device header');
+      const user = await this.authService.validateUser(loginObj.loginId, loginObj.userType, loginObj.organizationCode);
+      if(!user) throw new UnauthorizedException('Invalid credentials');
       let isPasswordValid= await bcrypt.compare(loginObj.password, user.password)
       if(!isPasswordValid) throw new UnauthorizedException('Invalid credentials');
       if(user.status !== 'active') throw new Error('We are unable to process with your details. Please contact to admin')
@@ -30,14 +31,22 @@ constructor(
       delete user.password
       let result= {}
       let permissions = user.role.name !== 'superadmin' ? await this.permissionService.getPermission( user.tenant, user.branch, user?.role?._id, user?.designation) : null;
-      result = {
+      result = req.headers['x-device'] === 'webApp' ? {
         ...user,
         permissions
+      } : {
+        _id: user._id,
+        firstName:user.firstName,
+        lastName: user.lastName,
+        tenant: user.tenant,
+        branch: user.branch._id,
+        role: user.role._id
       }
       let token = this.jwtService.sign(result);
       const branch = user.role.name !== 'superadmin' ? user.branch ? [await this.branchService.getBranch(user.branch)] : await this.branchService.findAll(user.tenant, true) : [];
       const academicYear = user.role.name !== 'superadmin' ? await this.academicYearService.getAcademicYear(user.tenant, branch[0]?._id) : null;
-      return res.status(HttpStatus.OK).json({ token, academicYear, branch: branch[0] });
+      const resp = req.headers['x-device'] === 'webApp' ? { token, academicYear, branch: branch[0] } : {token, academicYear:academicYear._id}
+      return res.status(HttpStatus.OK).json(resp);
     } catch (error) {
       return res.status(HttpStatus.UNAUTHORIZED).json({
         message: error.message

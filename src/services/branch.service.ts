@@ -40,6 +40,14 @@ export class BranchService {
     }
   }
 
+  async getBranchByCode(code: string) {
+    try {
+      return await this.branchModel.findOne({organazationCode: code});
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteBranch(id: string) {
     try {
       return await this.branchModel.findByIdAndUpdate(id, { status: 'inactive' });

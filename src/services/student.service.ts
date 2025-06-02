@@ -16,6 +16,15 @@ export class StudentService {
     }
   }
 
+  async getStudentsByAadhar(tenant: string, branch: string, aadhar: string[]) {
+    let students= await this.studentModel.find({
+      tenant: tenant,
+      branch: branch,
+      aadhar: { $in: aadhar }
+    })
+    return students
+  }
+
   async createStudentBulk(createStudentDto) {
     try {
       let students = await this.studentModel.insertMany(createStudentDto);

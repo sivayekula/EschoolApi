@@ -1,13 +1,11 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
-import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    private readonly jwtService: JwtService,
-    private readonly reflector: Reflector,
+    private readonly jwtService: JwtService
   ) {}
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
@@ -23,7 +21,7 @@ export class AuthGuard implements CanActivate {
     const token = authHeader.split(' ')[1];
     try {
       const decoded = this.jwtService.verify(token, {
-        secret: process.env.JWT_SECRET || 'your-secret-key',
+        secret: process.env.JWT_SECRET || 'brBsTtEcOywyQGSAynpcnA==',
       });
       request.user = decoded; // Attach decoded token to the request
       request.user['academicYear'] = request.headers['x-academic-year'];

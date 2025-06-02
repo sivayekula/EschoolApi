@@ -16,6 +16,10 @@ export class LoginDto {
   @IsString()
   @IsNotEmpty()
   readonly userType: string
+
+  @IsOptional()
+  @IsString()
+  readonly organizationCode: string
 }
 
 export function IsEmailOrMobile(validationOptions?: ValidationOptions) {

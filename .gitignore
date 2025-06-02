@@ -42,7 +42,7 @@ lerna-debug.log*
 .env.production.local
 .env.local
 # main file
-school-management-450616-8b0ba4cfd14c.json
+credentials.json
 # broxford
 school-managemant-40257-c143f0d7d218.json
 

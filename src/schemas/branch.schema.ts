@@ -33,6 +33,8 @@ export class Branch {
   contactPerson: string
   @Prop({type: Boolean, required: true, default: false})
   isDefault: boolean
+  @Prop({ type: String, required: true })
+  organizationCode: string
   @Prop({ type: Number, required: false })
   studentCount: number
   @Prop({ type: Number, required: false })
@@ -56,3 +58,5 @@ export class Branch {
 }
 
 export const BranchSchema = SchemaFactory.createForClass(Branch);
+
+BranchSchema.index({ organizationCode: 1, isDefault: 1 }, { unique: true });

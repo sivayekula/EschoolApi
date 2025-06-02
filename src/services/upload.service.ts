@@ -1,15 +1,16 @@
 import { Storage } from '@google-cloud/storage';
 import * as path from 'path';
 import { Injectable } from "@nestjs/common";
-import * as fs from 'fs';
 import { File } from 'multer';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UploadService {
+  constructor(private configService: ConfigService ) {}
   private storage = new Storage({
-    keyFilename: path.join(__dirname, '../../school-managemant-40257-c143f0d7d218.json'), // Your service account key
+    keyFilename: path.join(__dirname, `../../${this.configService.get<string>('GCP_CREDENTIALS')}.json`), // Your service account key
   });
-  private bucketName = 'eschool_images';
+  private bucketName = this.configService.get<string>('BUCKET_NAME');
   private filePath = 'images/';
   async uploadFile(file: File): Promise<any> {
     try {
