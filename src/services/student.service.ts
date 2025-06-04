@@ -20,7 +20,7 @@ export class StudentService {
     let students= await this.studentModel.find({
       tenant: tenant,
       branch: branch,
-      aadhar: { $in: aadhar }
+      aadharNumber: { $in: aadhar }
     })
     return students
   }

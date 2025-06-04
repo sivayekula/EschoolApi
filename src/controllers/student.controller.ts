@@ -106,39 +106,49 @@ export class StudentController {
   ) {
     try {
       const getRoleData = await this.roleService.getRole('student');
-      const studentCount = await this.academicService.getStudentsByClassAndSection(req.user.tenant, req.user.branch, req.body[0].class, req.body[0].section);
+      const studentCount = await this.academicService.getStudentsByClassAndSection(req.user.tenant, req.user.branch, req.body.bulkUploadList[0].class, req.body.bulkUploadList[0].section);
       let newRollNumber = studentCount;
       let errors = [];
-      // req.body.bulkUploadList
+      const aadharList = [];
+      req.body.bulkUploadList.forEach((student) => {
+        if (student.aadharNumber) {
+          aadharList.push(student.aadharNumber.toString());
+        }
+      })
+      let students = [];
+      if (aadharList.length > 0) {
+        students = await this.studentService.getStudentsByAadhar(req.user.tenant, req.user.branch, aadharList);
+      }
       for (let student of req.body.bulkUploadList) {
         try {
-          // let student = await this.studentService.getStudentsByAadhar(req.user.tenant, req.user.branch, student.rollNumber);
-          if(req.body.duplicateHandlingOption = 'overwrite') {
-            
-          } else if(req.body.duplicateHandlingOption = 'skip') {
-            continue;
+          let indx = students.findIndex((s) => s.aadharNumber === student.aadharNumber.toString());
+          if (indx !== -1) {
+            if(req.body.duplicateHandlingOption == 'overwrite') {
+              await this.studentService.updateStudent(students[indx]._id, student);
+            } else {
+              continue;
+            }
           } else {
-            
+            student['rollNumber'] = ++newRollNumber;
+            student['password'] =
+            student.firstName.replace(/\s+/g, '').slice(0, 4) +
+            new Date(student.DOB).getFullYear();
+            student['role'] = getRoleData._id;
+            student['tenant'] = req.user.tenant;
+            student['branch'] = req.user.branch;
+            student['createdBy'] = req.user._id;
+            const newStudent = await this.studentService.createStudent(student);
+            await this.academicService.createAcademic({
+              student: newStudent._id,
+              class: student.class,
+              section: student.section,
+              academicYear: student.academicYear,
+              board: student.board,
+              tenant: req.user.tenant,
+              branch: req.user.branch,
+              createdBy: req.user._id
+            });
           }
-          student['rollNumber'] = ++newRollNumber;
-          student['password'] =
-          student.firstName.replace(/\s+/g, '').slice(0, 4) +
-          new Date(student.DOB).getFullYear();
-          student['role'] = getRoleData._id;
-          student['tenant'] = req.user.tenant;
-          student['branch'] = req.user.branch;
-          student['createdBy'] = req.user._id;
-          const newStudent = await this.studentService.createStudent(student);
-          await this.academicService.createAcademic({
-            student: newStudent._id,
-            class: student.class,
-            section: student.section,
-            academicYear: student.academicYear,
-            board: student.board,
-            tenant: req.user.tenant,
-            branch: req.user.branch,
-            createdBy: req.user._id
-          });
         } catch (err) {
           errors.push(student.firstName+'-'+err.message);
           continue;
@@ -148,6 +158,7 @@ export class StudentController {
         .status(HttpStatus.CREATED)
         .json({ message: errors.length > 0 ? `Those students are having issue: ${errors.join(', ')}` : 'Student created successfully'});
     } catch (error) {
+      console.log(error)
       return res
         .status(HttpStatus.BAD_REQUEST)
         .json({ message: error.message });
