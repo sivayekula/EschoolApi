@@ -19,9 +19,6 @@ export class AcademicController {
    @Get('student/:studentId')
   async getAcademicByStudent(@Req() req, @Res() res) {
     try {
-      if(!req.params.studentId || req.params.studentId !== req.user._id.toString()) {
-        throw new Error('Invalid student id');
-      }
       const academic = await this.academicService.getAcademicByStudent(req.params.studentId, req.user.academicYear);
       let resp = req.user.device === 'webApp' ? academic : { 
         academic: academic._id,
@@ -46,7 +43,7 @@ export class AcademicController {
   @Get(':classId?/:sectionId?')
   async getAcademics(@Req() req, @Res() res) {
     try {
-      let status = req.query.status == 'inactive' ? ['inactive', 'deleted', 'transferred'] : null;
+      let status = req.query.status == 'inactive' ? ['inactive', 'deleted', 'transferred'] : ['active'];
       const academics = await this.academicService.getAcademics(req.user.tenant, req.user.branch, req.user.academicYear, req.params.classId, req.params.sectionId, status);
       return res.status(HttpStatus.OK).json({ message: 'Academics fetched successfully', data: academics });
     } catch (error) {
