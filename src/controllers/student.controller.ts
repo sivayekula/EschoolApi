@@ -26,10 +26,12 @@ function getFees(fees) {
         fee: fee.id,
         duration: fee.feeType,
         dueDate: fee.dueDate,
-        paidAmount: 0,
-        discount: fee.discount,
-        paybalAmount: fee.installmentAmount,
-        paymentStatus: fee.paymentStatus || 'pending'
+        paidAmount: fee.paidAmount || 0,
+        discount: fee.discount*1 || 0,
+        paybalAmount: fee.installmentAmount*1,
+        totalFee: fee.totalFee*1,
+        pendingAmount: fee.totalFee*1 - (fee.discount*1 + (fee.paidAmount*1 || 0)),
+        paymentStatus: fee.installmentAmount*1 === fee.paidAmount*1 ? 'paid' : fee.paymentStatus || 'pending'
       });
     }
   }
@@ -189,23 +191,21 @@ export class StudentController {
       let studentFee = await this.studentFeesService.getFeeByStudent(id, req.user.academicYear);
       const allSelectedFees = getFees(fees);
       let updatedFees = getListOfFees(studentFee?.feeList || [], allSelectedFees);
-      console.log(updatedFees)
-      throw new Error('Error')
-      // if (studentFee) {
-      //   await this.studentFeesService.updateFees(studentFee._id, {
-      //     feeList: updatedFees
-      //   });
-      // } else {
-      //   await this.studentFeesService.createFees({
-      //     student: id,
-      //     tenant: req.user.tenant,
-      //     academicYear: academics.academicYear,
-      //     branch: req.user.branch,
-      //     academics: Array.isArray(academic) ? academic[0]._id : academic._id,
-      //     feeList: updatedFees,
-      //     createdBy: req.user._id
-      //   });
-      // }
+      if (studentFee) {
+        await this.studentFeesService.updateFees(studentFee._id, {
+          feeList: updatedFees
+        });
+      } else {
+        await this.studentFeesService.createFees({
+          student: id,
+          tenant: req.user.tenant,
+          academicYear: academics.academicYear,
+          branch: req.user.branch,
+          academics: Array.isArray(academic) ? academic[0]._id : academic._id,
+          feeList: updatedFees,
+          createdBy: req.user._id
+        });
+      }
       return res
         .status(HttpStatus.OK)
         .json({ message: 'Student updated successfully', data: student });

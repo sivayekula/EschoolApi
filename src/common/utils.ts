@@ -1,6 +1,17 @@
 import moment from "moment";
 import * as mongoose from "mongoose";
 
+type Fee = {
+  fee: string;
+  duration?: string;
+  dueDate?: string;
+  paidAmount?: number;
+  discount?: number | string;
+  paybalAmount?: number;
+  paymentStatus?: string;
+  pendingAmount?: number;
+};
+
 export function getWorkingDays(startDate, endDate, holidays = [], weekends = [0, 6]) {
   let workingDays = 0;
   let currentDate = moment(startDate);
@@ -23,20 +34,22 @@ export function getWorkingDays(startDate, endDate, holidays = [], weekends = [0,
   return workingDays;
 }
 
-export function getListOfFees(oldFees, newFees) {
-  const feeMap = new Map();
+export function getListOfFees(oldFees: Fee[], newFees: Fee[]) {
+  const oldFeeMap = new Map<string, Fee>(
+    oldFees.map(fee => [fee.fee?.toString(), fee])
+  );
 
-  // Step 1: Add all newFees
-  newFees.forEach(fee => {
-    feeMap.set(fee.fee.toString(), fee);
+  const result = newFees.map(newFee => {
+    const feeId = newFee.fee?.toString();
+    const oldFee = oldFeeMap.get(feeId);
+
+    const mergedFee = {
+      ...(oldFee || {}),
+      ...(newFee || {}),
+    };
+
+    return mergedFee;
   });
 
-  // Step 2: Override with oldFees if same ID exists or add new ones
-  oldFees.forEach(fee => {
-    feeMap.set(fee.fee.toString(), fee); // this overrides the newFee with the same ID
-  });
-
-  // Return as array
-  return Array.from(feeMap.values());
-
+  return result;
 }
