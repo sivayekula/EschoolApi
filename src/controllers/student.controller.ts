@@ -31,7 +31,8 @@ function getFees(fees) {
         paybalAmount: fee.installmentAmount*1,
         totalFee: fee.totalFee*1,
         pendingAmount: fee.totalFee*1 - (fee.discount*1 + (fee.paidAmount*1 || 0)),
-        paymentStatus: fee.installmentAmount*1 === fee.paidAmount*1 ? 'paid' : fee.paymentStatus || 'pending'
+        paymentStatus: fee.installmentAmount*1 === fee.paidAmount*1 ? 'paid' : fee.paymentStatus || 'pending',
+        description: fee.description
       });
     }
   }
