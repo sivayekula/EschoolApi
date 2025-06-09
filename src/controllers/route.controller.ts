@@ -12,6 +12,7 @@ export class RouteController {
       body['tenant'] = req.user.tenant
       body['createdBy'] = req.user._id
       body['branch'] = req.user.branch
+      body['academicYear'] = req.user.academicYear
       const route = await this.routeService.createRoute(body);
       return res.status(HttpStatus.CREATED).json({ message: 'Route created successfully', data: route });
     } catch (error) {
@@ -22,7 +23,7 @@ export class RouteController {
   @Get()
   async getRoutes(@Req() req, @Res() res) {
     try {
-      const routes = await this.routeService.getRoutes(req.user.tenant, req.user.branch);
+      const routes = await this.routeService.getRoutes(req.user.tenant, req.user.branch, req.user.academicYear);
       return res.status(HttpStatus.OK).json({ message: 'Routes fetched successfully', data: routes });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

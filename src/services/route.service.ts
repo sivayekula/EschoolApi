@@ -14,9 +14,9 @@ export class RouteService {
     }
   }
 
-  async getRoutes(tenantId: string, branchId: string) {
+  async getRoutes(tenantId: string, branchId: string, academicYear: string) {
     try {
-      return await this.routeModel.find({tenant: tenantId, branch: branchId, status: 'active'});
+      return await this.routeModel.find({tenant: tenantId, branch: branchId, academicYear: academicYear, status: 'active'});
     } catch (error) {
       throw error;
     }

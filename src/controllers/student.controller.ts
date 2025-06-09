@@ -16,7 +16,7 @@ import { RoleService } from '../services/role.service';
 import { AcademicService } from '../services/academic.service';
 import { FeeService } from '../services/fee.service';
 import { StudentFeesService } from '../services/studentFees.service';
-import { getListOfFees } from '../common/utils';
+import { getListOfFees, mergeFeesIfNotExist } from '../common/utils';
 
 function getFees(fees) {
   const newFees = [];
@@ -223,8 +223,9 @@ export class StudentController {
       const allSelectedFees = getFees(body.fees);
       for (let student of body.studentIds) {
         const studentFee = await this.studentFeesService.getFeeByStudent(student, req.user.academicYear);
-        let updatedFees = getListOfFees(studentFee?.feeList || [], allSelectedFees);
+        let updatedFees = mergeFeesIfNotExist(studentFee?.feeList || [], allSelectedFees);
         if (studentFee) {
+          studentFee.feeList
           await this.studentFeesService.updateFees(studentFee._id, {
             feeList: updatedFees
           });

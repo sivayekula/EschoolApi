@@ -8,9 +8,9 @@ export class Branch {
   name: string
   @Prop({type: Object, required: false})
   logo: object
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: true, unique: true })
   email: string
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: true, unique: true })
   mobileNumber: string
   @Prop({
     type: {

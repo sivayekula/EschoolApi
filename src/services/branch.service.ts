@@ -50,7 +50,7 @@ export class BranchService {
 
   async deleteBranch(id: string) {
     try {
-      return await this.branchModel.findByIdAndUpdate(id, { status: 'inactive' });
+      return await this.branchModel.findByIdAndDelete(id);
     } catch (error) {
       throw error;
     }

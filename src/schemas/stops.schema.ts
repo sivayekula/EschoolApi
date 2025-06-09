@@ -21,6 +21,9 @@ export class Stop {
   branch: mongoose.Schema.Types.ObjectId
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
+  academicYear: mongoose.Schema.Types.ObjectId
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: mongoose.Schema.Types.ObjectId
   
   @Prop({ type: String, required: true, default: 'active' })

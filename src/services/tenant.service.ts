@@ -43,4 +43,12 @@ export class TenantService {
       throw error;
     }
   }
+
+  async deleteTenant(tenantId) {
+    try {
+      return await this.tenantModel.findByIdAndDelete(tenantId);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

@@ -13,6 +13,7 @@ export class StopsController {
       body['tenant'] = req.user.tenant
       body['createdBy'] = req.user._id
       body['branch'] = req.user.branch
+      body['academicYear'] = req.user.academicYear
       const stop = await this.stopsService.create(body);
       return res.status(HttpStatus.OK).json({ message: 'Stop created successfully', data: stop });
     } catch (error) {
@@ -23,7 +24,7 @@ export class StopsController {
   @Get()
   async getStops(@Req() req, @Res() res) {
     try {
-      const stops = await this.stopsService.findAll(req.user.tenant, req.user.branch);
+      const stops = await this.stopsService.findAll(req.user.tenant, req.user.branch, req.user.academicYear);
       return res.status(HttpStatus.OK).json({ message: 'Stops fetched successfully', data: stops });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });

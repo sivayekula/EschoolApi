@@ -34,6 +34,16 @@ export function getWorkingDays(startDate, endDate, holidays = [], weekends = [0,
   return workingDays;
 }
 
+export function mergeFeesIfNotExist(oldFees: Fee[], newFees: Fee[]) {
+  const existingFeeIds = new Set(oldFees.map(f => f.fee.toString()));
+
+  const newOnlyFees = newFees.filter(
+    f => !existingFeeIds.has(f.fee.toString())
+  );
+
+  return [...oldFees, ...newOnlyFees];
+}
+
 export function getListOfFees(oldFees: Fee[], newFees: Fee[]) {
   const oldFeeMap = new Map<string, Fee>(
     oldFees.map(fee => [fee.fee?.toString(), fee])

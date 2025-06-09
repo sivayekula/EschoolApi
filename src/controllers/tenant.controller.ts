@@ -28,13 +28,14 @@ export class TenantController {
 
   @Post()
   async createTenant(@Req() req, @Res() res) {
+    let savedRecord, savedBranch;
     try {
       let tenantWithMobile = await this.tenantService.getTenantByLoginId(req.body.mobileNumber);
       let tenantWithEmail = await this.tenantService.getTenantByLoginId(req.body.email);
       if(!req.body.organizationCode) throw new Error('Organization code is required');
     if(!tenantWithEmail && !tenantWithMobile) {
       let obj = {email: req.body.email, mobileNumber: req.body.mobileNumber, createdBy: req.user._id}
-      let savedRecord = await this.tenantService.createTenant(obj);
+      savedRecord = await this.tenantService.createTenant(obj);
       if(!savedRecord) throw new Error('Unable to create tenant')
       const role = await this.roleService.getRole('admin');
       let branchData = {
@@ -56,7 +57,7 @@ export class TenantController {
         whatsappPassword: req.body.whatsappPassword,
         createdBy: req.user._id
       }
-      const savedBranch = await this.branchService.createBranch(branchData);
+      savedBranch = await this.branchService.createBranch(branchData);
       let adminUser = {
         firstName: req.body.contactPerson, 
         email: req.body.email,
@@ -76,9 +77,21 @@ export class TenantController {
       await this.permissionService.createPermission({tenant: savedRecord._id,  role: role._id, permissions: data.permissions});
       res.status(200).json({status: 200, message: 'tenant details', data: user})
     } else {
+      if(savedRecord) {
+        await this.tenantService.deleteTenant(savedRecord._id);
+      }
+      if(savedBranch) {
+        await this.branchService.deleteBranch(savedBranch._id);
+      }
       throw new Error('Tenant already existed with this email/mobile')
     }
     } catch (error) {
+      if(savedRecord) {
+        await this.tenantService.deleteTenant(savedRecord._id);
+      }
+      if(savedBranch) {
+        await this.branchService.deleteBranch(savedBranch._id);
+      }
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }
   }
