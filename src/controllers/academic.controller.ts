@@ -55,6 +55,7 @@ export class AcademicController {
   async promoteStudents(@Req() req, @Res() res) {
     try {
       let remainingFees = {};
+      let newFees = {};
       const { studentIds, classId, sectionId, academicYear } = req.body;
       const academicdata = await this.academicYearService.getAcademicYear(req.user.tenant, req.user.branch, academicYear);
       if (!academicdata || academicdata.status !== 'upcoming') {
@@ -74,6 +75,25 @@ export class AcademicController {
           }
         })
       })
+      let key = Object.keys(remainingFees);
+      for (let studentId of key) {
+        if (remainingFees[studentId].length > 0) {
+          remainingFees[studentId].forEach(fee => {
+            fee.paymentStatus='pending';
+            fee.totalFee = fee.paybalAmount*1 + fee.discount*1;
+            fee.paybalAmount= fee.pendingAmount*1;
+            fee.paidAmount = 0;
+            fee.discount = 0;
+            fee.isCarryForward= true;
+            fee.description= fee.description ? fee.description +' and '+ 'Carry Forward fee' : 'Carry Forward fee';
+            if (newFees[studentId]) {
+              newFees[studentId].push(fee);
+            } else {
+              newFees[studentId] = [fee];
+            }
+          })
+        }
+      }
 
       let studentAcademics =  await this.academicService.getAcademicsByStudents(studentIds, req.user.academicYear);
       let isPromotedSameClass = true;
@@ -99,8 +119,8 @@ export class AcademicController {
           let prevAcademic = await this.academicService.updateAcademic(studentId, { status: 'promoted' });
           if(prevAcademic) {
             let currentAcademic = await this.academicService.createAcademic({ student: studentId, board: prevAcademic.board, class: classId, section: sectionId, academicYear: academicYear, status: 'active', tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id});
-            if (remainingFees[studentId]) {
-              await this.studentFeesService.createFees({ student: studentId, feeList: remainingFees[studentId], tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id, academics: currentAcademic._id, academicYear: academicYear });
+            if (newFees[studentId]) {
+              await this.studentFeesService.createFees({ student: studentId, feeList: newFees[studentId], tenant: req.user.tenant, branch:req.user.branch, createdBy: req.user._id, academics: currentAcademic._id, academicYear: academicYear });
             }
             let index = fees.findIndex(fee => fee.student.toString() === studentId.toString());
             if (index !== -1) {
