@@ -24,6 +24,17 @@ export class TransactionsController {
     }
   }
 
+  @Get('/daily')
+  async getDailyTransactionList(@Req() req, @Res() res) {
+    try {
+      if (!req.query.date) throw new Error('Date is required');
+      const transactions = await this.transactionService.getDailyTransactions(req.user.tenant, req.user.branch, req.user.academicYear, req.query.date);
+      return res.status(HttpStatus.OK).json({ message: 'Transactions fetched successfully', data: transactions });
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
+  }
+
   @Get(':id?')
   async getTransactions(@Req() req, @Res() res) {
     try {

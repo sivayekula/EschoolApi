@@ -185,7 +185,7 @@ export class StudentController {
       delete result.updatedAt;
       delete result.createdAt;
       result['busRoute'] = body.busRoute ? body.busRoute : null;
-      // const student = await this.studentService.updateStudent(id, result);
+      const student = await this.studentService.updateStudent(id, result);
       const academic = await this.academicService.updateAcademic(id, {
         class: academics.class,
         section: academics.section,
@@ -195,12 +195,10 @@ export class StudentController {
       let studentFee = await this.studentFeesService.getFeeByStudent(id, req.user.academicYear);
       const allSelectedFees = getFees(fees);
       let updatedFees = getListOfFees(studentFee?.feeList || [], allSelectedFees);
-      console.log(updatedFees)
-      throw new Error('stop')
       if (studentFee) {
-        // await this.studentFeesService.updateFees(studentFee._id, {
-        //   feeList: updatedFees
-        // });
+        await this.studentFeesService.updateFees(studentFee._id, {
+          feeList: updatedFees
+        });
       } else {
         await this.studentFeesService.createFees({
           student: id,
@@ -214,7 +212,7 @@ export class StudentController {
       }
       return res
         .status(HttpStatus.OK)
-        .json({ message: 'Student updated successfully', data: 'student' });
+        .json({ message: 'Student updated successfully', data: student });
     } catch (error) {
       return res
         .status(HttpStatus.BAD_REQUEST)
