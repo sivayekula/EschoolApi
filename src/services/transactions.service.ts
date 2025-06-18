@@ -92,54 +92,62 @@ export class TransactionsService {
   ) {
     const startOfDay = moment(date).startOf('day').toDate();
     const endOfDay = moment(date).endOf('day').toDate();
-
     const allBanks = await this.bankService.findAll(tenantId, branchId);
     const indx = allBanks.findIndex(bank => bank.accountNumber === 'cash');
     const CASH_BANK_ID = indx !== -1 ? allBanks[indx]._id : 'cash';
     try {
       // 1️⃣ Opening Balances up to selected day
       const openingBalances = await this.transactionModel.aggregate([
+        // Normalize the bank ID (online: transactionBank, offline: CASH_BANK_ID)
         {
           $addFields: {
             normalizedBankId: {
               $cond: [
                 { $eq: ['$transactionMode', 'offline'] },
-                CASH_BANK_ID !== 'cash' ? new Types.ObjectId(CASH_BANK_ID) : CASH_BANK_ID,
-                { $toObjectId: '$transactionBank' },
-              ],
-            },
-          },
+                CASH_BANK_ID,
+                '$transactionBank'
+              ]
+            }
+          }
         },
+
+        // Match transactions before the start of the selected date
         {
           $match: {
             tenant: new Types.ObjectId(tenantId),
             academicYear: new Types.ObjectId(academicYear),
             branch: new Types.ObjectId(branchId),
-            date: { $lt: startOfDay },
-          },
+            date: { $lt: startOfDay }
+          }
         },
-        { $unwind: '$fees' },
+
+        // Group by normalized bank ID
         {
           $group: {
             _id: '$normalizedBankId',
             credit: {
               $sum: {
-                $cond: [{ $eq: ['$transactionType', 'credit'] }, '$fees.amount', 0],
-              },
+                $cond: [{ $eq: ['$transactionType', 'credit'] }, '$amount', 0]
+              }
             },
             debit: {
               $sum: {
-                $cond: [{ $eq: ['$transactionType', 'debit'] }, '$fees.amount', 0],
-              },
-            },
-          },
+                $cond: [{ $eq: ['$transactionType', 'debit'] }, '$amount', 0]
+              }
+            }
+          }
         },
+
+        // Project the opening balance = credit - debit
         {
           $project: {
-            openingBalance: { $subtract: ['$credit', '$debit'] },
-          },
-        },
-      ]);
+            _id: 1,
+            bankId: '$_id',
+            openingBalance: { $subtract: ['$credit', '$debit'] }
+          }
+        }
+      ]
+      );
       // console.log('openingBalances', openingBalances);
       const openingMap = new Map();
       for (const entry of openingBalances) {
@@ -205,65 +213,66 @@ export class TransactionsService {
           },
         },
         {
-  $project: {
-    date: 1,
-    transactionType: 1,
-    amount: {
-      $cond: {
-        if: { $ifNull: ['$fees.amount', false] },
-        then: '$fees.amount',
-        else: '$amount'
-      }
-    },
-    category: {
-      $cond: {
-        if: { $eq: ['$fees', null] },
-        then: 'Other Expense',
-        else: 'Student Fees'
-      }
-    },
-    particulars: {
-      $cond: {
-        if: { $eq: ['$fees', null] },
-        then: '$reason',
-        else: 'Fee'
-      }
-    },
-    bank: '$bank',
-     credit: {
-      $cond: [
-        { $eq: ['$transactionType', 'credit'] },
-        {
-          $cond: {
-            if: { $ifNull: ['$fees.amount', false] },
-            then: '$fees.amount',
-            else: '$amount'
+          $project: {
+            date: 1,
+            transactionType: 1,
+            amount: {
+              $cond: {
+                if: { $ifNull: ['$fees.amount', false] },
+                then: '$amount',
+                else: '$amount'
+              }
+            },
+            category: {
+              $cond: {
+                if: { $eq: ['$fees', null] },
+                then: 'Other Expense',
+                else: 'Student Fees'
+              }
+            },
+            particulars: {
+              $cond: {
+                if: { $eq: ['$fees', null] },
+                then: '$reason',
+                else: 'Fee'
+              }
+            },
+            bank: '$bank',
+            credit: {
+              $cond: [
+                { $eq: ['$transactionType', 'credit'] },
+                {
+                  $cond: {
+                    if: { $ifNull: ['$fees.amount', false] },
+                    then: '$fees.amount',
+                    else: '$amount'
+                  }
+                },
+                0
+              ]
+            },
+            debit: {
+              $cond: [
+                { $eq: ['$transactionType', 'debit'] },
+                {
+                  $cond: {
+                    if: { $ifNull: ['$fees.amount', false] },
+                    then: '$fees.amount',
+                    else: '$amount'
+                  }
+                },
+                0
+              ]
+            },
+            type: 1,
+            reason: 1,
+            title: 1,
+            transactionMode: 1,
+            balanceAfter: '$balance',
+            normalizedBankId: 1, // 👈 ADD THIS LINE
+            feeDetails: 1         // 👈 OPTIONAL: if you use it in ledger construction
           }
-        },
-        0
-      ]
-    },
-    debit: {
-      $cond: [
-        { $eq: ['$transactionType', 'debit'] },
-        {
-          $cond: {
-            if: { $ifNull: ['$fees.amount', false] },
-            then: '$fees.amount',
-            else: '$amount'
-          }
-        },
-        0
-      ]
-    },
-    type: 1,
-    reason: 1,
-    transactionMode: 1,
-    balanceAfter: '$balance',
-    normalizedBankId: 1, // 👈 ADD THIS LINE
-    feeDetails: 1         // 👈 OPTIONAL: if you use it in ledger construction
-  }
-}
+        }
 
 
       ]);
@@ -298,7 +307,7 @@ export class TransactionsService {
         ledger.transactions.push({
           date: txn.date,
           category: txn.feeDetails?.category || txn.type || 'Student Fees',
-          particulars: txn.feeDetails?.name || txn.reason || 'Fee',
+          particulars: txn.feeDetails?.name || txn.title || txn.reason || 'Loan Repayment',
           bank: ledger.bankName,
           debit,
           credit,

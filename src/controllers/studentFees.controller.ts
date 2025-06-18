@@ -2,7 +2,12 @@ import { Body, Controller, Get, HttpStatus, Post, Req, Res } from "@nestjs/commo
 import { AcademicService } from "../services/academic.service";
 import { StudentFeesService } from "../services/studentFees.service";
 import { TransactionsService } from "../services/transactions.service";
-import { BankAccountService } from "src/services/bankAccount.service";
+import { BankAccountService } from "../services/bankAccount.service";
+import { SmsService } from "../services/sms.service";
+import { WhatsAppService } from "src/services/whatsApp.service";
+import { BranchService } from "src/services/branch.service";
+import { SmsTemplateService } from "src/services/smsTemplate.service";
+import * as moment from "moment";
 
 
 @Controller('studentFees')
@@ -11,7 +16,11 @@ export class StudentFeesController {
     private readonly studentFeesService: StudentFeesService,
     private readonly academicService: AcademicService,
     private readonly transactionService: TransactionsService,
-    private readonly bankAccountService: BankAccountService
+    private readonly bankAccountService: BankAccountService,
+    private readonly smsService: SmsService,
+    private readonly whatsAppService: WhatsAppService,
+    private readonly branchService: BranchService,
+    private readonly smsTemplateService: SmsTemplateService,
   ) {}
 
   @Get('reports')
@@ -151,6 +160,24 @@ export class StudentFeesController {
       const transaction = await this.transactionService.createTransaction(transactionObj);
       await this.bankAccountService.updateAccount(bankData._id, { currentBalance: balance});
       await this.studentFeesService.updateFees(studentFees._id, studentFees);
+      let {student, class: classData } = await this.academicService.getAcademicByStudent(req.body.studentId, req.user.academicYear);
+      let msgTemplate = await this.smsTemplateService.findTemplate('', 'paymentConfirmation_eng', 'whatsapp')
+      // let smsTemplate = await this.smsTemplateService.findTemplate('', 'attendance_eng', 'sms')
+      let branchData = await this.branchService.getBranch(req.user.branch);
+        let template = msgTemplate?.template;
+        if (template) {
+            let message = template
+            message = message.replace('{{ParentName}}', student?.fatherDetails?.name);
+            message = message.replace('{{StudentName}}', student.firstName + ' ' + student.lastName);
+            message = message.replace('{{SchoolName}}', branchData.name);
+            message = message.replace('{{PaymentDate}}', moment(req.body.transactionDate).format('DD-MM-YYYY')); //moment(req.body.transactionDate);
+            message = message.replace('{{ClassName}}', classData?.name);
+            message = message.replace('{{Amount}}', trxAmt);
+            message = message.replace('{{ReceiptNumber}}', transaction.receiptNumber);
+            // console.log(message);
+            await this.whatsAppService.sendSms(branchData.whatsappUserId, branchData.whatsappPassword, student.fatherDetails.mobileNumber, message);
+            // await this.smsService.sendSms(branchData.whatsappUserId, branchData.whatsappPassword, studentDetails.fatherDetails.mobileNumber, message, smsTemplate.templateId);
+        }
       return res.status(HttpStatus.OK).json({ message: 'Fees collected successfully', data: transaction});
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
