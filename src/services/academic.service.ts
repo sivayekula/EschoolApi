@@ -16,7 +16,7 @@ export class AcademicService {
     }
   }
 
-  async getAcademics(tenantId: string, branchId: string, academicYear: string, classId?: string, sectionId?: string, status?: string | string[]): Promise<any> {
+  async getAcademics(tenantId: string, branchId: string, academicYear: string, classId?: string, sectionId?: string, status?: string): Promise<any> {
     const qry = { tenant: tenantId, branch: branchId, academicYear: academicYear }
     if (classId) {
       qry['class'] = classId;
@@ -25,7 +25,7 @@ export class AcademicService {
       qry['section'] = sectionId;
     }
     if (status) {
-      qry['status'] = {$in: status};
+      qry['status'] = status === 'inactive' ? { $ne: 'active' } : 'active';
     }
     try {
       return await this.academicModel.find(qry).populate('student').populate('class').populate('section').populate('board');
@@ -44,7 +44,7 @@ export class AcademicService {
 
   async getStudentsCount(tenantId: string, branchId: string, academicYear: string) {
     try {
-      return await this.academicModel.countDocuments({ tenant: tenantId, branch: branchId, academicYear: academicYear, status: {$ne: 'deleted'}});
+      return await this.academicModel.countDocuments({ tenant: tenantId, branch: branchId, academicYear: academicYear, status: 'active' });
     } catch (error) {
       throw error;
     }
