@@ -63,3 +63,11 @@ export function getListOfFees(oldFees: Fee[], newFees: Fee[]) {
 
   return result;
 }
+
+export function formatMessage(template, data) {
+  let message = template;
+  for (const [key, value] of Object.entries(data)) {
+    message = message.replace(`{{${key}}}`, value);
+  }
+  return message;
+}

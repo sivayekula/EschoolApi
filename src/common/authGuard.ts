@@ -10,7 +10,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    const excludedRoutes = ['/api/login', '/api/health']; // Add routes you want to exclude
+    const excludedRoutes = ['/api/login', '/api/health', '/api/smsTemplate']; // Add routes you want to exclude
     const devices = ['webApp', 'mobile'];
     const { url } = request;
     // Allow excluded routes without authentication
