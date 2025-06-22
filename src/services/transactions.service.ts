@@ -53,12 +53,18 @@ async getTransactions(
       })
       .exec();
       // console.log(transactions);
-    let studentIds = transactions.map(tx => tx.student?._id?.toString());
+    const studentIds: string[] = Array.from(
+      new Set(
+        transactions
+          .map(tx => tx.student?._id?.toString?.()) // safely handle populated object
+          .filter((id): id is string => !!id)       // remove undefined/null
+      )
+    );
     const academicYearId = academicYear?.toString() || transactions[0].academicYear?.toString();
     const academicList = await this.academicService.getAcademicsByStudents(studentIds, academicYearId);
     const academicMap = new Map<string, any>();
     for (const academic of academicList) {
-      academicMap.set(academic.student.toString(), academic);
+      academicMap.set(academic.student?._id.toString(), academic);
     }
     return transactions.map(tx => ({
       transaction: tx,
