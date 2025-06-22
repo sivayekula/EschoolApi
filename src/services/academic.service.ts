@@ -70,7 +70,7 @@ export class AcademicService {
   async getAcademicsByStudents(studentIds: string[], academicYear: string) {
     const qry = { student: { $in: studentIds}, academicYear: academicYear, status: 'active' };
     try {
-      return await this.academicModel.find(qry);
+      return await this.academicModel.find(qry).populate('class').populate('section').populate('academicYear').populate('student');
     } catch (error) {
       throw error;
     }
