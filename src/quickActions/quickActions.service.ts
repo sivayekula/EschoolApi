@@ -19,6 +19,6 @@ export class QuickActionsService {
 
   async createorUpdateQuickAction(userId, quickAction) {
     quickAction.userId = userId
-    return await this.quickActionsModel.findOneAndUpdate({userId: userId}, quickAction, {upsert: true});
+    return await this.quickActionsModel.findOneAndUpdate({userId: userId}, quickAction, {upsert: true, new: true});
   }
 }

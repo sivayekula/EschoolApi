@@ -26,30 +26,21 @@ export class TransactionsService {
     }
   }
 
-  async getTransactions(
+async getTransactions(
   tenantId: string,
   branchId: string,
   academicYear?: string,
   studentId?: string
 ) {
   try {
-    // Build base query
     const query: any = {
       tenant: tenantId,
       branch: branchId,
     };
 
-    if (academicYear) {
-      query.academicYear = academicYear;
-    }
+    if (academicYear) query.academicYear = academicYear;
+    query.student = studentId ? studentId : { $exists: true };
 
-    if (studentId) {
-      query.student = studentId;
-    } else {
-      query.student = { $exists: true };
-    }
-
-    // Fetch transactions with required population
     const transactions = await this.transactionModel.find(query)
       .populate('receiptLabel')
       .populate({
@@ -61,21 +52,20 @@ export class TransactionsService {
         }
       })
       .exec();
-
-    // Prepare result with academic info
-    const transactionList = await Promise.all(
-      transactions.map(async (transaction) => {
-        const academic = await this.academicService.getAcademicByStudent(
-          transaction.student?._id,
-          transaction.academicYear
-        );
-        return { transaction, academic };
-      })
-    );
-
-    return transactionList;
+      // console.log(transactions);
+    let studentIds = transactions.map(tx => tx.student?._id?.toString());
+    const academicYearId = academicYear?.toString() || transactions[0].academicYear?.toString();
+    const academicList = await this.academicService.getAcademicsByStudents(studentIds, academicYearId);
+    const academicMap = new Map<string, any>();
+    for (const academic of academicList) {
+      academicMap.set(academic.student.toString(), academic);
+    }
+    return transactions.map(tx => ({
+      transaction: tx,
+      academic: academicMap.get(tx.student?._id?.toString()) || null
+    }));
+  
   } catch (error) {
-    // Consider logging here if needed
     throw error;
   }
 }
