@@ -26,30 +26,60 @@ export class TransactionsService {
     }
   }
 
-  async getTransactions(tenantId: string, branchId: string, academicYear?: string, studentId?: string) {
-    try {
-      let query = { tenant: tenantId, branch: branchId, academicYear: academicYear };
-      if (studentId) {
-        query['student'] = studentId;
-      } else {
-        query['student'] = { $exists: true };
-      }
-      let transactionList = [];
-      let transactions = await this.transactionModel.find(query).populate('receiptLabel').populate({
-        path: 'fees.fee', model: 'Fee', populate: {
-          path: "feeGroup", // Populate feeGroupId inside Fee
-          model: "FeeGroup"
-        }
-      }).exec();
-      for (let transaction of transactions) {
-        let academic = await this.academicService.getAcademicByStudent(transaction.student._id, transaction.academicYear);
-        transactionList.push({ transaction, academic });
-      }
-      return transactionList;
-    } catch (error) {
-      throw error;
+  async getTransactions(
+  tenantId: string,
+  branchId: string,
+  academicYear?: string,
+  studentId?: string
+) {
+  try {
+    // Build base query
+    const query: any = {
+      tenant: tenantId,
+      branch: branchId,
+    };
+
+    if (academicYear) {
+      query.academicYear = academicYear;
     }
+
+    if (studentId) {
+      query.student = studentId;
+    } else {
+      query.student = { $exists: true };
+    }
+
+    // Fetch transactions with required population
+    const transactions = await this.transactionModel.find(query)
+      .populate('receiptLabel')
+      .populate({
+        path: 'fees.fee',
+        model: 'Fee',
+        populate: {
+          path: 'feeGroup',
+          model: 'FeeGroup'
+        }
+      })
+      .exec();
+
+    // Prepare result with academic info
+    const transactionList = await Promise.all(
+      transactions.map(async (transaction) => {
+        const academic = await this.academicService.getAcademicByStudent(
+          transaction.student?._id,
+          transaction.academicYear
+        );
+        return { transaction, academic };
+      })
+    );
+
+    return transactionList;
+  } catch (error) {
+    // Consider logging here if needed
+    throw error;
   }
+}
+
 
   async getCollectedFee(tenant: string, branch: string, academicYear: string) {
     try {

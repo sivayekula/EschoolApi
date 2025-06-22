@@ -5,19 +5,19 @@ import { ImageDto } from "./image.dto";
 
 class Address {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly area: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly city: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly state: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly pincode: string;
 }
 
@@ -134,6 +134,22 @@ export class CreateStudentDto {
   @IsString()
   @IsOptional()
   readonly mobileNumber: string;
+
+  @IsString()
+  @IsOptional()
+  readonly UDISE: string;
+  
+  @IsString()
+  @IsOptional()
+  readonly chaildID: string;
+
+  @IsString()
+  @IsOptional()
+  readonly apparID: string;
+
+  @IsString()
+  @IsOptional()
+  readonly admissionDetails: string;
 
   @IsString()
   @IsNotEmpty()

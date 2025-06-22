@@ -79,12 +79,12 @@ export class Student extends mongoose.Document {
 
   @Prop({
     type: {
-      area : { type: String, required: true },
-      city : { type: String, required: true },
-      state : { type: String, required: true },
-      pincode : { type: String, required: true },
+      area : { type: String, required: false },
+      city : { type: String, required: false },
+      state : { type: String, required: false },
+      pincode : { type: String, required: false },
     },
-    required: true
+    required: false
   })
   presentAddress: {
     area: string;
@@ -95,12 +95,12 @@ export class Student extends mongoose.Document {
 
   @Prop({
     type: { 
-      area : { type: String, required: true },
-      city : { type: String, required: true },
-      state : { type: String, required: true },
-      pincode : { type: String, required: true },
+      area : { type: String, required: false },
+      city : { type: String, required: false },
+      state : { type: String, required: false },
+      pincode : { type: String, required: false },
     },
-    required: true
+    required: false
   })
   permanentAddress: {
     area: string;
@@ -117,6 +117,18 @@ export class Student extends mongoose.Document {
 
   @Prop({ type: String, required: false })
   mobileNumber: string;
+
+  @Prop({ type: String, required: false })
+  UDISE: string;
+
+  @Prop({ type: String, required: false })
+  chaildID: string;
+
+  @Prop({ type: String, required: false })
+  apparID: string;
+
+  @Prop({ type: String, required: false })
+  admissionDetails: string;
   
   @Prop({ type: String, required: true })
   admissionNumber: string;

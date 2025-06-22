@@ -117,6 +117,7 @@ import { LoansController } from './controllers/loans.controller';
 import { CounterSchema } from './schemas/counter.schema';
 import { CounterService } from './services/counter.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { QuickActionsModule } from './quickActions/quickActions.module';
 
 
 @Module({
@@ -175,6 +176,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       signOptions: { expiresIn: '24h' },
     }),
     TerminusModule,
+    QuickActionsModule
   ],
   controllers: [ 
     StudentController, 

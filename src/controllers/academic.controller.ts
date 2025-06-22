@@ -22,6 +22,7 @@ export class AcademicController {
       const academic = await this.academicService.getAcademicByStudent(req.params.studentId, req.user.academicYear);
       let resp = req.user.device === 'webApp' ? academic : { 
         academic: academic._id,
+        academicYear: academic.academicYear?.year,
         _id: academic.student._id,
         firstName: academic.student.firstName,
         lastName: academic.student.lastName,
@@ -29,6 +30,7 @@ export class AcademicController {
         dob: academic.student.DOB,
         profilePic: academic.student.profilePic,
         admissionNumber: academic.student.admissionNumber,
+        mobileNumber: academic.student.mobileNumber,
         class: academic.class,
         section: academic.section,
         fatherDetails: academic.student.fatherDetails,

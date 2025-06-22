@@ -6,7 +6,6 @@ import { WhatsAppService } from "../services/whatsApp.service";
 import { ClassService } from "../services/class.service";
 import { BranchService } from "src/services/branch.service";
 import { SmsService } from "src/services/sms.service";
-import { first } from "rxjs";
 
 
 @Controller('attendance')
@@ -26,6 +25,16 @@ export class AttendanceController {
     try {
       const attendance = await this.attendanceService.updateAttendances(req.body.id, req.body.userId, req.body.attendanceStatus);
       return res.status(HttpStatus.OK).json({message: 'Attendance updated successfully', data: attendance});
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({message: error.message});
+    }
+  }
+
+  @Get('student/:studentId')
+  async getAttendanceByStudentId(@Req() req, @Res() res) {
+    try {
+      const attendance = await this.attendanceService.getAttendanceByStudentId(req.params.studentId, req.query.month, req.query.year);
+      return res.status(HttpStatus.OK).json({message: 'Attendance fetched successfully', data: attendance});
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({message: error.message});
     }
