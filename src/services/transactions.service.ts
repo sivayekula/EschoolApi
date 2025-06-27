@@ -51,6 +51,7 @@ async getTransactions(
           model: 'FeeGroup'
         }
       })
+      .populate({path: 'createdBy',  select: 'firstName lastName'})
       .exec();
       // console.log(transactions);
     const studentIds: string[] = Array.from(

@@ -85,8 +85,11 @@ export class Transaction {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   branch: mongoose.Schema.Types.ObjectId
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
-  createdBy: mongoose.Schema.Types.ObjectId
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, refPath: 'createdByModel'})
+  createdBy:  mongoose.Schema.Types.ObjectId
+
+  @Prop({ type: String, required: true, enum: ['User', 'Staff'], default: 'User'})
+  createdByModel: string
 
   @Prop({ type: String, required: false })
   reason: string

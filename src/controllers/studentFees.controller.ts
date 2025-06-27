@@ -3,13 +3,12 @@ import { AcademicService } from "../services/academic.service";
 import { StudentFeesService } from "../services/studentFees.service";
 import { TransactionsService } from "../services/transactions.service";
 import { BankAccountService } from "../services/bankAccount.service";
-import { SmsService } from "../services/sms.service";
-import { WhatsAppService } from "src/services/whatsApp.service";
-import { BranchService } from "src/services/branch.service";
-import { SmsTemplateService } from "src/services/smsTemplate.service";
+import { SmsService } from "../notifications/sms/sms.service";
+import { WhatsAppService } from "../notifications/whatsApp/whatsApp.service";
+import { BranchService } from "../services/branch.service";
+import { TemplateService } from "../notifications/templates/template.service";
 import * as moment from "moment";
-import { format } from "path";
-import { formatMessage } from "src/common/utils";
+import { formatMessage } from "../common/utils";
 
 
 @Controller('studentFees')
@@ -22,7 +21,7 @@ export class StudentFeesController {
     private readonly smsService: SmsService,
     private readonly whatsAppService: WhatsAppService,
     private readonly branchService: BranchService,
-    private readonly smsTemplateService: SmsTemplateService,
+    private readonly templateService: TemplateService,
   ) {}
 
   @Get('reports')
@@ -163,8 +162,8 @@ export class StudentFeesController {
       await this.bankAccountService.updateAccount(bankData._id, { currentBalance: balance});
       await this.studentFeesService.updateFees(studentFees._id, studentFees);
       let {student, class: classData } = await this.academicService.getAcademicByStudent(req.body.studentId, req.user.academicYear);
-      let whatsAppTemplate = await this.smsTemplateService.findTemplate('', 'paymentConfirmation_eng', 'whatsapp')
-      let smsTemplate = await this.smsTemplateService.findTemplate('', 'paymentConfirmation_eng', 'sms')
+      let whatsAppTemplate = await this.templateService.findTemplate('', 'paymentConfirmation_eng', 'whatsapp')
+      let smsTemplate = await this.templateService.findTemplate('', 'paymentConfirmation_eng', 'sms')
       let branchData = await this.branchService.getBranch(req.user.branch);
       let msgData = {
         ParentName: student?.fatherDetails?.name,

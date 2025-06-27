@@ -1,18 +1,18 @@
 import { Body, Controller, Get, HttpStatus, Post, Put, Req, Res } from "@nestjs/common";
 import { AttendanceService } from "../services/attendance.service";
-import { SmsTemplateService } from '../services/smsTemplate.service';
+import { TemplateService } from '../notifications/templates/template.service';
 import { StudentService } from "../services/student.service";
-import { WhatsAppService } from "../services/whatsApp.service";
+import { WhatsAppService } from "../notifications/whatsApp/whatsApp.service";
 import { ClassService } from "../services/class.service";
 import { BranchService } from "src/services/branch.service";
-import { SmsService } from "src/services/sms.service";
+import { SmsService } from "src/notifications/sms/sms.service";
 
 
 @Controller('attendance')
 export class AttendanceController {
   constructor(
     private readonly attendanceService: AttendanceService,
-    private readonly smsTemplateService: SmsTemplateService,
+    private readonly templateService: TemplateService,
     private readonly classService: ClassService,
     private readonly studentService: StudentService,
     private readonly whatsAppService: WhatsAppService,
@@ -34,6 +34,16 @@ export class AttendanceController {
   async getAttendanceByStudentId(@Req() req, @Res() res) {
     try {
       const attendance = await this.attendanceService.getAttendanceByStudentId(req.params.studentId, req.query.month, req.query.year);
+      return res.status(HttpStatus.OK).json({message: 'Attendance fetched successfully', data: attendance});
+    } catch (error) {
+      return res.status(HttpStatus.BAD_REQUEST).json({message: error.message});
+    }
+  }
+
+  @Get('report')
+  async getAttendanceReport(@Req() req, @Res() res) {
+    try {
+      const attendance = await this.attendanceService.getAttendanceReport(req.user.tenant, req.user.branch, req.user.academicYear, req.query.type);
       return res.status(HttpStatus.OK).json({message: 'Attendance fetched successfully', data: attendance});
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({message: error.message});
@@ -105,8 +115,8 @@ export class AttendanceController {
       if (data.sendSms && absentStudents.length) {
         let students = await this.studentService.getStudentList(absentStudents);
         let classData = await this.classService.getClass(reqData.class);
-        let whatappTemplate = await this.smsTemplateService.findTemplate('', 'attendance_eng', 'whatsapp')
-        let smsTemplate = await this.smsTemplateService.findTemplate('', 'attendance_eng', 'sms')
+        let whatappTemplate = await this.templateService.findTemplate('', 'attendance_eng', 'whatsapp')
+        let smsTemplate = await this.templateService.findTemplate('', 'attendance_eng', 'sms')
         let branchData = await this.branchService.getBranch(req.user.branch);
         let template = whatappTemplate?.template;
         if (template) {

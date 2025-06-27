@@ -1,9 +1,9 @@
 import { Controller, Get, Post, Body, Put, Param, Delete, Res, HttpStatus, Req } from '@nestjs/common';
-import { SmsTemplateService } from '../services/smsTemplate.service';
+import { TemplateService } from './template.service';
 
-@Controller('smsTemplate')
-export class SmsTemplateController {
-    constructor(private readonly smsTemplateService: SmsTemplateService) {}
+@Controller('template')
+export class TemplateController {
+    constructor(private readonly smsTemplateService: TemplateService) {}
 
     @Post()
     async create(@Body() createSmsTemplateDto, @Res() res) {

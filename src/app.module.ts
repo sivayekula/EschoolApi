@@ -84,10 +84,6 @@ import { BranchSchema } from './schemas/branch.schema';
 import { BranchController } from './controllers/branch.controller';
 import { BranchService } from './services/branch.service';
 import { UserService } from './services/user.service';
-import { SmsController } from './controllers/sms.controller';
-import { SmsService } from './services/sms.service';
-import { WhatsAppController } from './controllers/whatsApp.controller';
-import { WhatsAppService } from './services/whatsApp.service';
 import { FeeSubCategorySchema } from './schemas/feeSubCategory';
 import { FeeCategorySchema } from './schemas/feeCategory.schema';
 import { FeeSubCategoryController } from './controllers/feeSubCategory.controller';
@@ -95,9 +91,6 @@ import { FeeSubCategoryService } from './services/feeSubCategory.service';
 import { FeeCategoryService } from './services/feeCategory.service';
 import { FeeCategoryController } from './controllers/feeCategory.controller';
 import { DashboardController } from './controllers/dashboard.controller';
-import { SmsTemplateSchema } from './schemas/smsTemplate.schema';
-import { SmsTemplateController } from './controllers/smsTemplate.controller';
-import { SmsTemplateService } from './services/smsTemplate.service';
 import { BankAccountsController } from './controllers/bankAccounts.controller';
 import { BankAccountService } from './services/bankAccount.service';
 import { BankAccountsSchema } from './schemas/bankAccounts.schema';
@@ -118,6 +111,7 @@ import { CounterSchema } from './schemas/counter.schema';
 import { CounterService } from './services/counter.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { QuickActionsModule } from './quickActions/quickActions.module';
+import { NotificationModule } from './notifications/notification.module';
 
 
 @Module({
@@ -163,7 +157,6 @@ import { QuickActionsModule } from './quickActions/quickActions.module';
       {name: 'Branch', schema: BranchSchema},
       {name: 'FeeCategory', schema: FeeCategorySchema},
       {name: 'FeeSubCategory', schema: FeeSubCategorySchema},
-      {name: 'SmsTemplate', schema: SmsTemplateSchema},
       {name: 'BankAccounts', schema: BankAccountsSchema},
       {name: 'Board', schema: BoardSchema},
       {name: 'TemplateNames', schema: TemplateNamesSchema},
@@ -176,7 +169,8 @@ import { QuickActionsModule } from './quickActions/quickActions.module';
       signOptions: { expiresIn: '24h' },
     }),
     TerminusModule,
-    QuickActionsModule
+    QuickActionsModule,
+    NotificationModule
   ],
   controllers: [ 
     StudentController, 
@@ -206,12 +200,9 @@ import { QuickActionsModule } from './quickActions/quickActions.module';
     RouteController,
     StopsController,
     BranchController,
-    SmsController,
-    WhatsAppController,
     FeeCategoryController,
     FeeSubCategoryController,
     DashboardController,
-    SmsTemplateController,
     BankAccountsController,
     BoardsController,
     ContactUsController,
@@ -245,11 +236,8 @@ import { QuickActionsModule } from './quickActions/quickActions.module';
     StopsService,
     BranchService,
     GlobalPermissionsService,
-    SmsService,
-    WhatsAppService,
     FeeCategoryService,
     FeeSubCategoryService,
-    SmsTemplateService,
     BankAccountService,
     BoardService,
     ContactUsService,

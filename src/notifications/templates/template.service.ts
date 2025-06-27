@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Template } from './template.schema';
 
 @Injectable()
-export class SmsTemplateService {
+export class TemplateService {
   constructor(
-    @InjectModel('SmsTemplate') private readonly smsTemplateModel
+    @InjectModel('SmsTemplate') private readonly smsTemplateModel: Model<Template>
   ) {}
     
   async create(createSmsTemplateDto) {

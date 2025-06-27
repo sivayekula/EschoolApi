@@ -55,6 +55,7 @@ export class TransactionsController {
       requestBody['tenant'] = req.user.tenant
       requestBody['branch'] = req.user.branch
       requestBody['createdBy'] = req.user._id
+      requestBody['createdByModel'] = req.user.role?.name === 'admin' ? "User" : "Staff"
       requestBody['academicYear'] = req.user.academicYear
       requestBody['transactionNo'] = `txn-${Date.now()}`
       requestBody['transactionBank'] = requestBody.account || null

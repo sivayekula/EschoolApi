@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 @Schema({ timestamps: true })
-export class SmsTemplate {
+export class Template {
   @Prop({ type: String, required: true })
   name: string;
 
@@ -18,4 +18,4 @@ export class SmsTemplate {
   status: string;
 }
 
-export const SmsTemplateSchema = SchemaFactory.createForClass(SmsTemplate);
+export const TemplateSchema = SchemaFactory.createForClass(Template);
