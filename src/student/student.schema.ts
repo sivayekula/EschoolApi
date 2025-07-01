@@ -43,6 +43,9 @@ export class Student extends mongoose.Document {
   @Prop({ type: String, required: true })
   aadharNumber: string;
 
+  @Prop({ type: String, required: false })
+  modeOfTransport: string;
+
   @Prop({ type: Object, required: false })
   aadharPic : object;
   @Prop({

@@ -138,6 +138,10 @@ export class CreateStudentDto {
   @IsString()
   @IsOptional()
   readonly UDISE: string;
+
+  @IsString()
+  @IsOptional()
+  readonly modeOfTransport: string;
   
   @IsString()
   @IsOptional()
