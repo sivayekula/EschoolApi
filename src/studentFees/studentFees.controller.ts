@@ -105,7 +105,7 @@ export class StudentFeesController {
       let totalAmount = 0;
       let paidAmount = 0;
       for(let fee of req.body.fees) {
-        const studentFee = studentFees.feeList.findIndex((item) => item.fee?.toString() === fee._id?.toString());
+        const studentFee = studentFees.feeList.findIndex((item) => (item.fee as any)._id?.toString() === fee._id?.toString());
         if (fee.paymentAmount*1 > 0) {
           transactions.push({
             amount: fee.paymentAmount*1,
@@ -178,7 +178,7 @@ export class StudentFeesController {
       if (whatsAppTemplate?.template) {
         let whatappMsg = formatMessage(whatsAppTemplate?.template, msgData);
         // console.log(whatappMsg);
-         this.whatsAppService.sendSms(branchData.whatsappUserId, branchData.whatsappPassword, student.fatherDetails?.mobileNumber, whatappMsg);
+        this.whatsAppService.sendSms(branchData.whatsappUserId, branchData.whatsappPassword, student.fatherDetails?.mobileNumber, whatappMsg);
       }
       if (smsTemplate?.template) {
         let message = formatMessage(smsTemplate?.template, msgData);
