@@ -5,45 +5,36 @@ import * as path from 'path';
 
 @Injectable()
 export class NotificationService {
-  private messaging: admin.messaging.Messaging;
-    constructor( private configService: ConfigService ) {
-    const app = admin.initializeApp({
-      credential: admin.credential.cert(path.join(__dirname, `../../${this.configService.get<string>('GCP_CREDENTIALS')}.json`) as admin.ServiceAccount),
+  constructor(private configService: ConfigService) {
+    const serviceAccount = require(path.join(__dirname, `../../${this.configService.get<string>('GCP_CREDENTIALS')}.json`));
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
     });
-
-    this.messaging = app.messaging();
   }
 
-  async sendNotification(token: string, title: string, body: string, data: Record<string, string> = {}) {
-    const message: admin.messaging.Message = {
-      token,
-      notification: { title, body },
-      data,
-      android: {
-        priority: 'high',
-      },
-      apns: {
-        payload: {
-          aps: {
-            sound: 'default',
-          },
-        },
-      },
-      webpush: {
-        headers: { Urgency: 'high' },
-        notification: {
-          icon: 'https://yourdomain.com/icon.png',
-        },
-      },
-    };
-
+  async sendNotification(deviceToken: string, payload: any) {
     try {
-      const response = await this.messaging.send(message);
-      console.log('Push sent:', response);
-      return response;
+      const response = await admin.messaging().send({
+        token: deviceToken,
+        notification: {
+          title: payload.title,
+          body: payload.body,
+        },
+        data: payload.data || {},
+      });
+      console.log('Successfully sent message:', response);
     } catch (error) {
-      console.error('Push failed:', error);
-      throw error;
+      console.error('Error sending message:', error);
     }
+  }
+
+  async createNotification(payload: any) {
+    try {
+      const response = await admin.messaging().send(payload);
+      console.log('Successfully sent message:', response);
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+
   }
 }

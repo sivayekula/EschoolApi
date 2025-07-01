@@ -9,11 +9,13 @@ import { SmsController } from "./sms/sms.controller";
 import { WhatsAppController } from "./whatsApp/whatsApp.controller";
 import { NotificationController } from "./notification.controller";
 import { NotificationService } from "./notification.service";
+import { NotificationSchema } from "./notification.schema";
 
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'SmsTemplate', schema: TemplateSchema }])
+    MongooseModule.forFeature([{ name: 'SmsTemplate', schema: TemplateSchema }]),
+    MongooseModule.forFeature([{ name: 'Events', schema: NotificationSchema }]),
   ],
   controllers: [TemplateController, SmsController, WhatsAppController, NotificationController],
   providers: [TemplateService, SmsService, WhatsAppService, NotificationService],
