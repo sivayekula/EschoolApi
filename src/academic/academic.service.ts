@@ -26,9 +26,7 @@ export class AcademicService {
     if (sectionId) {
       qry['section'] = sectionId;
     }
-    if (status) {
-      qry['status'] = status === 'inactive' ? { $ne: 'active' } : 'active';
-    }
+    qry['status'] = status === 'inactive' ? { $ne: 'active' } : 'active';
     try {
       return await this.academicModel.find(qry).populate('student').populate('class').populate('section').populate('board');
     } catch (error) {
@@ -88,7 +86,7 @@ export class AcademicService {
 
   async deleteAcademics(studentIds: string[], status?: string) {
     try {
-      return await this.academicModel.updateMany({ student: { $in: studentIds}, status: 'active' }, { status:  status ? status : 'inactive' });
+      return await this.academicModel.updateMany({ student: { $in: studentIds}}, { status:  status ? status : 'inactive' });
     } catch (error) {
       throw error;
     }

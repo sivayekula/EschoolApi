@@ -156,7 +156,8 @@ export class StudentFeesController {
         date: req.body.transactionDate,
         amount: trxAmt,
         proof: req.body.transactionProof,
-        createdBy: req.user._id
+        createdBy: req.user._id,
+        createdByModel: req.user.role?.name === 'admin' ? "User" : "Staff"
       }
       const transaction = await this.transactionService.createTransaction(transactionObj);
       await this.bankAccountService.updateAccount(bankData._id, { currentBalance: balance});

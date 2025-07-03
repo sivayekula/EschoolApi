@@ -152,7 +152,7 @@ export class AcademicController {
       // }
       await this.studentService.updateStudentBulk(studentIds, status);
       await this.academicService.deleteAcademics(studentIds, status);
-      return res.status(HttpStatus.OK).json({ message: 'Academic deleted successfully' });
+      return res.status(HttpStatus.OK).json({ message: status === 'active' ? 'student activated successfully' : 'Academic deleted successfully' });
     } catch (error) {
       return res.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
     }

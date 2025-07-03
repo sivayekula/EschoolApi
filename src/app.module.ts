@@ -37,6 +37,7 @@ import { BranchModule } from './branch/branch.module';
 import { TemplateNamesModule } from './templateNames/templateNames.module';
 import { TimetableModule } from './timeTable/timetable.module';
 import { BreakTimeModule } from './breakTime/breakTime.module';
+import { MarksModule } from './marks/marks.module';
 
 
 @Module({
@@ -90,7 +91,8 @@ import { BreakTimeModule } from './breakTime/breakTime.module';
     BranchModule,
     TemplateNamesModule,
     TimetableModule,
-    BreakTimeModule
+    BreakTimeModule,
+    MarksModule
   ],
   controllers: [],
   providers: [ 

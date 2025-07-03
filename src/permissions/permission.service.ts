@@ -19,7 +19,7 @@ export class PermissionService {
 
   async createPermission(permissionObj) {
     try {
-      return await this.permissionModel.updateOne({role: permissionObj.role, tenant: permissionObj.tenant}, permissionObj, {upsert: true, new: true, returnDocument: 'after'});
+      return await this.permissionModel.updateOne({role: permissionObj.role, tenant: permissionObj.tenant, branch: permissionObj.branch, designation: permissionObj.designation}, permissionObj, {upsert: true, new: true, returnDocument: 'after'});
     } catch (error) {
       throw error;
     }
