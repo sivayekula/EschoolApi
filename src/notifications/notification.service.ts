@@ -6,7 +6,7 @@ import * as path from 'path';
 @Injectable()
 export class NotificationService {
   constructor(private configService: ConfigService) {
-    const serviceAccount = require(path.join(__dirname, `../../${this.configService.get<string>('GCP_CREDENTIALS')}.json`));
+    const serviceAccount = path.join(__dirname, `../../${this.configService.get<string>('GCP_CREDENTIALS')}.json`);
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
     });
