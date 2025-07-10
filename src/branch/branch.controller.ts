@@ -25,6 +25,7 @@ export class BranchController {
   @Post()
   async createBranch(@Req() req, @Res() res) {
     try {
+      console.log(req.user);
       const body = JSON.parse(JSON.stringify(req.body))
       body['tenant'] = req.user.tenant
       const branch = await this.branchService.createBranch(body);

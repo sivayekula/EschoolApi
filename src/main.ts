@@ -4,8 +4,10 @@ import { ValidationPipe } from '@nestjs/common';
 import * as bodyParser from 'body-parser';
 import { ConfigService } from '@nestjs/config';
 import { GlobalHttpExceptionFilter } from './http-exception.filter';
+import * as moment from 'moment-timezone';
 
 async function bootstrap() {
+  moment.tz.setDefault('Asia/Kolkata');
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   app.useGlobalPipes(new ValidationPipe({

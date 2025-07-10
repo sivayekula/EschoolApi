@@ -10,6 +10,9 @@ export class Tenant extends mongoose.Document {
   @Prop({ type: String, unique: true, required: true })
   mobileNumber: string;
 
+  @Prop({ type: String, required: true, unique: true })
+  organizationCode: string
+
   @Prop({ type: String, required: false })
   metaInfo: String;
 

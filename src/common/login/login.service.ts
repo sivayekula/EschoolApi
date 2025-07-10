@@ -46,8 +46,14 @@ export class LoginService {
     }
   }
 
-  async updateDeviceId(id: string, deviceId: string, deviceType: string) {
-    return await this.studentService.updateStudent(id, { deviceId, deviceType });
+  async updateDeviceId(id: string, deviceId: string, deviceType: string, userType: string) {
+    if (userType === 'student') {
+      return await this.studentService.updateStudent(id, { deviceId, deviceType });
+    } else if (userType === 'staff') {
+      return await this.staffService.updateStaff(id, { deviceId, deviceType });
+    } else {
+      return await this.userService.updateUser(id, { deviceId, deviceType });
+    }
   }
 
   

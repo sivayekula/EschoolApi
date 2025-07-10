@@ -33,7 +33,7 @@ export class Branch {
   contactPerson: string
   @Prop({type: Boolean, required: true, default: false})
   isDefault: boolean
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: false })
   organizationCode: string
   @Prop({ type: Number, required: false })
   studentCount: number

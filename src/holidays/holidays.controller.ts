@@ -35,7 +35,7 @@ export class HolidaysController {
     data['tenant'] = req.user.tenant
     data['branch'] = req.user.branch
     try {
-      let holiday = await this.holidayService.getHoliday('', data.startDate, data.endDate);
+      let holiday = await this.holidayService.getHoliday('', data.startDate, data.endDate, req.user.tenant, req.user.branch);
       if(holiday) return res.status(HttpStatus.BAD_REQUEST).json({ message: 'Holidays already exists' });
       const holidays = await this.holidayService.createHoliday(data);
       return res.status(HttpStatus.CREATED).json({ message: 'Holidays created successfully', data: holidays });

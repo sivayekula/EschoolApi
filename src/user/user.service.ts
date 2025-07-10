@@ -35,4 +35,8 @@ export class UserService {
   login(loginId: string) {
     return this.userModel.findOne({ $or: [{ email: loginId }, { mobileNumber: loginId }] }).populate('role').lean();
   }
+
+  updateUser(id: string, user: any) {
+    return this.userModel.findOneAndUpdate({ _id: id }, { $set: user });
+  }
 }

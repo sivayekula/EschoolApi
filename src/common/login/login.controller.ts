@@ -42,9 +42,9 @@ constructor(
         branch: user.branch._id,
         role: user.role._id
       }
-      if(req.body.deviceId && req.body.deviceType) {
+      if(req.body.deviceId && req.body.deviceType) { 
         if(user.deviceId !== req.body.deviceId) {
-          await this.authService.updateDeviceId(user._id, req.body.deviceId, req.body.deviceType);
+          await this.authService.updateDeviceId(user._id, req.body.deviceId, req.body.deviceType, loginObj.userType);
         }
       }
       let token = this.jwtService.sign(result);

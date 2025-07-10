@@ -20,6 +20,7 @@ export class NotificationController {
 
   @Post('create')
   async createNotification(@Req() req, @Res() res) {
+    console.log(req.body);
     try {
       await this.notificationService.createNotification(req.body);
       res.status(HttpStatus.OK).json({ message: 'Notification created successfully' });

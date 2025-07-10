@@ -34,7 +34,7 @@ export class TenantController {
       let tenantWithEmail = await this.tenantService.getTenantByLoginId(req.body.email);
       if(!req.body.organizationCode) throw new Error('Organization code is required');
     if(!tenantWithEmail && !tenantWithMobile) {
-      let obj = {email: req.body.email, mobileNumber: req.body.mobileNumber, createdBy: req.user._id}
+      let obj = {email: req.body.email, mobileNumber: req.body.mobileNumber, createdBy: req.user._id, organizationCode: req.body.organizationCode}
       savedRecord = await this.tenantService.createTenant(obj);
       if(!savedRecord) throw new Error('Unable to create tenant')
       const role = await this.roleService.getRole('admin');

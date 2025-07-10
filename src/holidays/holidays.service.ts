@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Holidays } from "./holidays.schema";
 import { Model } from "mongoose";
+import moment from "moment";
 
 
 @Injectable()
@@ -18,13 +19,11 @@ export class HolidaysService {
     }
   }
 
-  async getHoliday(id: string, startDate?:string, endDate?:string) {
+  async getHoliday(id: string, startDate?:string, endDate?:string, tenantId?:string, branchId?:string) {
     try {
-      const startOfDay = new Date(startDate);
-      startOfDay.setHours(0, 0, 0, 0); // Start of the day (00:00:00.000)
-      const endOfDay = new Date(endDate);
-      endOfDay.setHours(23, 59, 59, 999);
-      let qry = id ? { _id: id } : { startDate : { $gte: startOfDay}, endDate : { $lte: endOfDay } };
+      const startOfDay = moment(startDate).startOf('day');
+      const endOfDay = moment(endDate).endOf('day');
+      let qry = id ? { _id: id } : { startDate : { $gte: startOfDay}, endDate : { $lte: endOfDay }, tenant: tenantId, branch: branchId, status: 'active' };
       return await this.holidayModel.findOne(qry);
     } catch (error) {
       throw error;

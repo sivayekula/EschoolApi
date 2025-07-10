@@ -25,6 +25,9 @@ export class Academics {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Branch' })
   branch: mongoose.Schema.Types.ObjectId;
 
+  @Prop({ type: mongoose.Schema.Types.ObjectId, required: false, ref: 'Stop' })
+  stop: mongoose.Schema.Types.ObjectId;
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true })
   createdBy: mongoose.Schema.Types.ObjectId;
 

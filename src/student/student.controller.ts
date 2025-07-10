@@ -75,6 +75,7 @@ export class StudentController {
         section: requestBoy.academics.section,
         academicYear: req.user.academicYear,
         board: requestBoy.academics.board,
+        stop: requestBoy.busRoute ? requestBoy.busRoute : null,
         branch: req.user.branch,
         tenant: req.user.tenant,
         createdBy: req.user._id
@@ -186,6 +187,7 @@ export class StudentController {
         class: academics.class,
         section: academics.section,
         board: academics.board,
+        stop: body.busRoute ? body.busRoute : null,
         academicYear: academics.academicYear,
       });
       let studentFee = await this.studentFeesService.getFeeByStudent(id, req.user.academicYear);

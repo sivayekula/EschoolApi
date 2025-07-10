@@ -49,6 +49,12 @@ export class User extends mongoose.Document {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: "Role" })
   role: mongoose.Schema.Types.ObjectId;
+
+  @Prop({ type: String, required: false })
+  deviceId: string;
+
+  @Prop({ type: String, required: false })
+  deviceType: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

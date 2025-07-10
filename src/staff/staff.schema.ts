@@ -126,6 +126,12 @@ export class Staff extends mongoose.Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true})
   tenant: mongoose.Schema.Types.ObjectId
 
+  @Prop({ type: String, required: false})
+  deviceId: string
+
+  @Prop({ type: String, required: false})
+  deviceType: string
+
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true})
   createdBy: mongoose.Schema.Types.ObjectId
 
