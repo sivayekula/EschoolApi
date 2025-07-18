@@ -181,7 +181,7 @@ export class CreateStudentDto {
   readonly bloodGroup: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly aadharNumber: string;
 
   @ValidateIf((obj) =>obj.aadharPic !== null)

@@ -40,7 +40,7 @@ export class Student extends mongoose.Document {
   @Prop({ type: String, required: false })
   bloodGroup: string;
 
-  @Prop({ type: String, required: true })
+  @Prop({ type: String, required: false })
   aadharNumber: string;
 
   @Prop({ type: String, required: false })
@@ -233,6 +233,4 @@ StudentSchema.index({ admissionNumber: 1, tenant: 1 },
   { unique: true }
 );
 
-StudentSchema.index({ aadharNumber: 1, tenant: 1, branch: 1 },
-  { unique: true }
-);
+// StudentSchema.index({ aadharNumber: 1, tenant: 1, branch: 1 },);
